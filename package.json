@@ -2,7 +2,7 @@
   "name": "wobsocketapi",
   "version": "1.0.0",
   "description": "",
-  "main": "test.js",
+  "main": "ws.js",
   "scripts": {
     "start": "ENV=dev ./node_modules/.bin/nodemon --harmony ws.js",
     "startdsdsds": "ENV=dev ./node_modules/.bin/nodemon --harmony test.js",
