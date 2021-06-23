@@ -1,0 +1,10 @@
+{
+  "MIN_PROFIT": 0.02,
+  "WS_URL_BITH": "wss://global-api.bithumb.pro/message/realtime",
+  "WS_URL_GATE": "wss://ws.gate.io/v3/",
+  "CURRENCY_NAME": "XRP",
+  "KEY_GATE": "your key",
+  "SECRET_Gate": "your secret",
+  "port": 5000,
+  "baseUrl": "http://localhost:5000"
+}
