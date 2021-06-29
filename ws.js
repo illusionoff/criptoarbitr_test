@@ -81,8 +81,9 @@ function init() {
 
   // gate.wsGet(Math.round(Math.random() * 1000), 'depth.query', ["XRP_USDT", 5, "0.0001"]);
   coinConfigBith();
-  wsStartBith('subscribe', "TRADE:XRP-USDT", initialGate);
-  // wsGetGate(Math.round(Math.random() * 1000), 'depth.subscribe', ["XRP_USDT", 10, "0.0001"], initialBith, writeableStream, counts); // передаем данные для сравнения из bithumb
+  // wsStartBith('subscribe', "TRADE:XRP-USDT", initialGate, counts, writeableStream); // была проблема с самим сервером Bithump, не отсылал сообщения 00007, поэтому делал альтернативный вариант
+  wsStartBith('subscribe', "ORDERBOOK10:XRP-USDT", initialGate, counts, writeableStream);
+  wsGetGate(Math.round(Math.random() * 1000), 'depth.subscribe', ["XRP_USDT", 10, "0.0001"], initialBith, writeableStream, counts); // передаем данные для сравнения из bithumb
   // gate.wsGet(Math.round(Math.random()*1000),'depth.unsubscribe', []);
   // gate.wsGet(Math.round(Math.random()*1000),'kline.query', ["BTC_USDT", 1, 1516951219, 1800]);
   // gate.wsGet(Math.round(Math.random()*1000),'kline.subscribe', ["BTC_USDT", 1800]);
