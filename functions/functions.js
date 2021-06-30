@@ -7,9 +7,10 @@ const assert = require('assert');
 const fs = require("fs");
 
 function goTrade(paramsGoTrade, counts, writeableStream) {
+  // counts.countMessageAll++;
   // TEST writting files
   console.log('countMessageAll 2=', counts.countMessageAll);
-  if (counts.countMessageAll > 10) {
+  if (counts.countMessageAll > 50) {
     console.log(' counts.countMessage  if ((counts.countMessage) > 20:', counts.countMessageAll);
     counts.countMessageAll = 0;
     writeableStream.end();
@@ -18,16 +19,23 @@ function goTrade(paramsGoTrade, counts, writeableStream) {
     // if (writeableStream._writableState.closed) {
     let time = new Date().getTime();
     console.log('time:', time);
-
     writeableStream = fs.createWriteStream(`logs/profit${time}.csv`, { flags: 'a' });
+
+    // writeableStream = fs.createWriteStream(`logs/profit${time}.csv`, { flags: 'a' });
+
     // }
   }
+  writeableStream.on('finish', function () {
+    console.log('writeableStream finish 1-----------------------------------------------:');
 
+    // writeableStream.write(`writeableStream_${counts.countMessageStartNew}\r\n`);
+  });
   if (!writeableStream._writableState.ended || !writeableStream._writableState.finished || !writeableStream._writableState.closed) {
     let time = new Date().getTime();
     console.log('time:', time);
     console.log('counts.countMessageStartNew 1:', counts.countMessageStartNew);
     writeableStream.write(`writeableStream_${counts.countMessageStartNew}\r\n`);
+
     // let stats = fs.stat("logs/profit.csv", (error, stats) => {
     //   if (error) {
     //     console.log(error);
@@ -90,7 +98,7 @@ function goTrade(paramsGoTrade, counts, writeableStream) {
     timeBith: paramsGoTrade.timeBith,
     init: paramsGoTrade.init
   }
-  writtenCSV(data, writeableStream, counts);
+  // writtenCSV(data, writeableStream, counts);
   // }
 
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
