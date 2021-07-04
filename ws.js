@@ -6,42 +6,11 @@ const { writtenCSV } = require('./functions/functions');
 
 function init() {
 
-  // let writeableStream = fs.createWriteStream("logs/profit.csv", { flags: 'a' });
-
   let counts = {
     count: 0,
     countMessageAll: 0,
     countMessageStartNew: 0
   }
-
-  // writeableStream.write('writeableStream');
-
-  // if (writeableStream) console.log('writeableStream create:', writeableStream._writableState.finished); //writeableStream.WriteStream._writableState.WritableState.finished
-  // writeableStream.end("завершение записи");
-  // if (writeableStream) console.log('writeableStream Exist?:');
-  // // console.log('writeableStream._writableState.finished:', writeableStream._writableState.finished); //writeableStream.WriteStream._writableState.WritableState.finished
-
-  // console.log('writeableStream._writableState:', writeableStream._writableState); //writeableStream.WriteStream._writableState.WritableState.finished
-
-  // writeableStream.on('finish', () => {
-  //   // console.log('wrote all data to file');
-  //   console.log('writeableStream._writableState.finished:', writeableStream._writableState.finished); //writeableStream.WriteStream._writableState.WritableState.finished
-  // });
-  // async () => console.log('writeableStream._writableState.finished2:', writeableStream._writableState.finished); //writeableStream.WriteStream._writableState.WritableState.finished
-  // writeableStream.on("close", function () {
-  //   console.log('writeableStream.close');
-  // });
-  // writeableStream.on("finish", function () {
-  //   writeableStream.close(() => {
-  //     console.log('writeableStream.close start');
-  //     console.log('writeableStream.close=======writeableStream._writableState:', writeableStream._writableState);
-  //     // writeableStream.write('writeableStream.write после close');
-  //     // writeableStream = '';
-  //   });
-  //   console.log('writeableStream.on("finish":');
-  // });
-  // console.log('delete writeableStream====', delete writeableStream);
-
 
   function fileNumber() {
     fs.readFile("logs/number.txt", "utf8",
