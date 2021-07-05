@@ -327,7 +327,7 @@ function TestWritable() {
         // if (writeableStream._writableState.closed) {
         let time = new Date().getTime();
         console.log('time:', time);
-        testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a' });
+        testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: 332 * 1024 });
         testWriteableStream.write_1.end();
 
         console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
@@ -351,7 +351,7 @@ function TestWritable() {
       // if (writeableStream._writableState.closed) {
       let time = new Date().getTime();
       console.log('time:', time);
-      testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a' });
+      testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: 332 * 1024 });
       testWriteableStream.write_2.end();
 
       console.log('testWriteableStream._writableState:', testWriteableStream.write_1._writableState);
