@@ -146,6 +146,7 @@ function writtenCSV(data, writeableStream, counts) {
     const stringifyDate = stringify([
       data
     ], {
+      header: true,
       columns: ['timeServer', 'timeBith', 'init', 'bayGate', 'bayBith', 'sellGate', 'sellBith', 'diffSell', 'diffBay']
       // timeServer,timeBith,init,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay
     }, function (err, data) {
@@ -273,16 +274,50 @@ function writtenCSV(data, writeableStream, counts) {
   });
 }
 
+function stringifyDate(writeableStream, data, header) {
+  stringify(
+    data
+    , {
+      header: header,
+      // columns: ['timeServer', 'timeBith', 'init', 'bayGate', 'bayBith', 'sellGate', 'sellBith', 'diffSell', 'diffBay']
+      columns: ['diffSell', 'diffBay']
+      // timeServer,timeBith,init,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay
+    }, function (err, data) {
+      // assert.equal(
+      //   data,
+      //   "XXX XXXX,XXXX,\n" +
+      //   "YYY YYYY,YYYY,\n"
+      // )
+      console.log('data=', data);
+      // writeableStream.write(`${data}\r\n`);
+
+      console.log('_writableState.length=', writeableStream._writableState.length);
+      let okWritable = writeableStream.write(data);
+      console.log('okWritable=', okWritable);
+      if (!okWritable) {
+        process.exit();
+      }
+      // return data;
+      // }).pipe(writeableStream);
+    });
+}
+
 function TestWritable() {
   let testFlag = 1;
   let testCount = 0;
   let testCountAll = 0;
+  const highWaterMark = 16 * 1024;
+  const headerName = [{ diffSell: 'diffSell', diffBay: 'diffBay' }];
+
   // {encoding: 'utf8', highWaterMark: 332 * 1024});// задать значение буфера
   // writable._writableState.getBuffer()// инфа из буффера
   let testWriteableStream = {
-    write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: 332 * 1024 }),
-    write_2: fs.createWriteStream("logs/test_profit_2.csv", { flags: 'a', highWaterMark: 332 * 1024 })
+    write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
+    write_2: fs.createWriteStream("logs/test_profit_2.csv", { flags: 'a', highWaterMark: highWaterMark })
   }
+
+  stringifyDate(testWriteableStream.write_1, headerName, false);
+  stringifyDate(testWriteableStream.write_2, headerName, false);
   // let testWriteableStream = {
   //   write_2: fs.createWriteStream("logs/test_profit_2.csv", { flags: 'a' })
   // }
@@ -327,7 +362,9 @@ function TestWritable() {
         // if (writeableStream._writableState.closed) {
         let time = new Date().getTime();
         console.log('time:', time);
-        testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: 332 * 1024 });
+        testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
+
+        // stringifyDate(testWriteableStream.write_2, headerName, false);
         testWriteableStream.write_1.end();
 
         console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
@@ -351,7 +388,8 @@ function TestWritable() {
       // if (writeableStream._writableState.closed) {
       let time = new Date().getTime();
       console.log('time:', time);
-      testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: 332 * 1024 });
+      testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
+      // stringifyDate(testWriteableStream.write_2, headerName, false);
       testWriteableStream.write_2.end();
 
       console.log('testWriteableStream._writableState:', testWriteableStream.write_1._writableState);
@@ -367,17 +405,42 @@ function TestWritable() {
 
 
     console.log(`testFlag=${testFlag},----------------------------------------------------------------------------------------------------`);
-
+    let data = [
+      { diffSell: '1.000045', diffBay: '2.000045' },
+      { diffSell: '3.000045', diffBay: '4.000045' }
+    ];
     if (testFlag === 1) {
       console.log('writeableStream_1');
-      let okWritable1 = testWriteableStream.write_1.write(`writeableStream_${testCountAll}\r\n`);
+
+      stringifyDate(testWriteableStream.write_1, data, false);
+      // let okWritable1 = stringifyDate(testWriteableStream.write_1, data, false);
+      // let okWritable1 = testWriteableStream.write_1.write(`writeableStream_${testCountAll}\r\n`);
+      // console.log('okWritable1=', okWritable1);
+      // if (!okWritable1) {
+      //   process.exit();
+      // }
+      // testWriteableStream.write_1.write(okWritable1);
+
       console.log('wtiten_1=---------------------------------------------------------------------');
     }
     if (testFlag === 2) {
       console.log('writeableStream_2');
       console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
       // console.log('testWriteableStream._writableState.onwrite :', testWriteableStream._writableState.onwrite);
-      let okWritable2 = testWriteableStream.write_2.write(`writeableStream_${testCountAll}\r\n`);
+
+      stringifyDate(testWriteableStream.write_2, data, false);
+      // let okWritable2 = stringifyDate(testWriteableStream.write_2, data, false);
+      // let okWritable2 = testWriteableStream.write_2.write(`writeableStream_${testCountAll}\r\n`);
+      // console.log('okWritable2:', okWritable2);
+      // if (!okWritable2) {
+      //   process.exit();
+      // }
+      // testWriteableStream.write_2.write(okWritable2);
+      // let okWritable2 = testWriteableStream.write_2.write(`writeableStream_${testCountAll}\r\n`);
+      // console.log('okWritable2=', okWritable2);
+      // if (!okWritable2) {
+      //   process.exit();
+      // }
     }
     testCount++;
     testCountAll++;
