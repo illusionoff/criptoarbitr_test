@@ -277,9 +277,11 @@ function TestWritable() {
   let testFlag = 1;
   let testCount = 0;
   let testCountAll = 0;
+  // {encoding: 'utf8', highWaterMark: 332 * 1024});// задать значение буфера
+  // writable._writableState.getBuffer()// инфа из буффера
   let testWriteableStream = {
-    write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a' }),
-    write_2: fs.createWriteStream("logs/test_profit_2.csv", { flags: 'a' })
+    write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: 332 * 1024 }),
+    write_2: fs.createWriteStream("logs/test_profit_2.csv", { flags: 'a', highWaterMark: 332 * 1024 })
   }
   // let testWriteableStream = {
   //   write_2: fs.createWriteStream("logs/test_profit_2.csv", { flags: 'a' })
