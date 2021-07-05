@@ -2,7 +2,7 @@
 
 const { wsGetGate, initialGate } = require('./lib/gate');
 const { wsStartBith, initialBith, coinConfigBith } = require('./lib/bithumbpro');
-const { writtenCSV } = require('./functions/functions');
+const { writtenCSV, TestWritable } = require('./functions/functions');
 
 function init() {
 
@@ -49,9 +49,10 @@ function init() {
   //  gate.wsGet(Math.round(Math.random()*1000),'trades.unsubscribe', []);
 
   // gate.wsGet(Math.round(Math.random() * 1000), 'depth.query', ["XRP_USDT", 5, "0.0001"]);
+  let variableWritable = TestWritable();
   coinConfigBith();
   // wsStartBith('subscribe', "TRADE:XRP-USDT", initialGate, counts, writeableStream); // была проблема с самим сервером Bithump, не отсылал сообщения 00007, поэтому делал альтернативный вариант
-  wsStartBith('subscribe', "ORDERBOOK10:XRP-USDT", initialGate, counts);
+  wsStartBith('subscribe', "ORDERBOOK10:XRP-USDT", initialGate, counts, variableWritable);
   wsGetGate(Math.round(Math.random() * 1000), 'depth.subscribe', ["XRP_USDT", 10, "0.0001"], initialBith, counts); // передаем данные для сравнения из bithumb
   // gate.wsGet(Math.round(Math.random()*1000),'depth.unsubscribe', []);
   // gate.wsGet(Math.round(Math.random()*1000),'kline.query', ["BTC_USDT", 1, 1516951219, 1800]);
