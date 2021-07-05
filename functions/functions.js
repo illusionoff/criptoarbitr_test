@@ -370,14 +370,14 @@ function TestWritable() {
 
     if (testFlag === 1) {
       console.log('writeableStream_1');
-      testWriteableStream.write_1.write(`writeableStream_${testCountAll}\r\n`);
+      let okWritable1 = testWriteableStream.write_1.write(`writeableStream_${testCountAll}\r\n`);
       console.log('wtiten_1=---------------------------------------------------------------------');
     }
     if (testFlag === 2) {
       console.log('writeableStream_2');
       console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
       // console.log('testWriteableStream._writableState.onwrite :', testWriteableStream._writableState.onwrite);
-      testWriteableStream.write_2.write(`writeableStream_${testCountAll}\r\n`);
+      let okWritable2 = testWriteableStream.write_2.write(`writeableStream_${testCountAll}\r\n`);
     }
     testCount++;
     testCountAll++;
