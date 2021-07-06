@@ -89,8 +89,7 @@ function goTrade(paramsGoTrade, writableFiles) {
     // writableFiles();
   }
 
-  // writableFiles('rrr');
-  writableFiles();
+  writableFiles(data);
 };
 
 
@@ -296,8 +295,18 @@ function TestWritable(dataSave1) {
   // let dataSave1 = dataSave;
   const highWaterMark = 16 * 1024;
   // const headerName = [{ diffSell: 'diffSell', diffBay: 'diffBay' }];
-  const headerName = 'diffSell, diffBay';
-
+  const headerName = 'bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,init';
+  // const data = {
+  //   bayGate: paramsGoTrade.bayGate,
+  //   bayBith: paramsGoTrade.bayBith,
+  //   sellGate: paramsGoTrade.sellGate,
+  //   sellBith: paramsGoTrade.sellBith,
+  //   diffSell: diffSell,
+  //   diffBay: diffBay,
+  //   timeServer: paramsGoTrade.timeServer,
+  //   timeBith: paramsGoTrade.timeBith,
+  //   init: paramsGoTrade.init
+  // }
   // {encoding: 'utf8', highWaterMark: 332 * 1024});// задать значение буфера
   // writable._writableState.getBuffer()// инфа из буффера
   let testWriteableStream = {
@@ -344,8 +353,13 @@ function TestWritable(dataSave1) {
   // }
   function main(dataSave1) {
     console.log('data Writable=', dataSave1);
-    process.exit();
-    let data = { diffSell: '1.000045', diffBay: '2.000045' };
+    // process.exit();
+    // let data = { diffSell: '1.000045', diffBay: '2.000045' };
+    // (`${data.diffSell},${data.diffBay}\n`)
+    // 'bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,init';
+    let data = (`${dataSave1.bayGate},${dataSave1.bayBith},${dataSave1.sellGate},${dataSave1.sellBith},${dataSave1.diffSell},${dataSave1.diffBay},${dataSave1.timeServer},${dataSave1.timeBith},${dataSave1.init}\n`);
+    //  {bayGate: dataSave1.bayGate,bayBith: dataSave1.bayBith,sellGate: dataSave1.sellGate,sellBith:dataSave1.sellBith,diffSell: dataSave1.diffSell,
+    //   diffBay :dataSave1.diffBay,timeServer :dataSave1.timeServer,timeBith: dataSave1.timeBith,init: dataSave1.init};
 
     if (testCount > 20) {
       testCount = 0;
@@ -413,7 +427,7 @@ function TestWritable(dataSave1) {
     if (testFlag === 1) {
       console.log('writeableStream_1');
       // testWriteableStream.write_1.write(`${data.diffSell},${data.diffBay}\r\n`);
-      testWriteableStream.write_1.write(`${data.diffSell},${data.diffBay}\n`);
+      testWriteableStream.write_1.write(`${data}`);
       // stringifyDate(testWriteableStream.write_1, data, false);
       // let okWritable1 = stringifyDate(testWriteableStream.write_1, data, false);
       // let okWritable1 = testWriteableStream.write_1.write(`writeableStream_${testCountAll}\r\n`);
@@ -431,7 +445,7 @@ function TestWritable(dataSave1) {
       // console.log('testWriteableStream._writableState.onwrite :', testWriteableStream._writableState.onwrite);
 
       // testWriteableStream.write_2.write(`${data.diffSell},${data.diffBay}\r\n`);
-      testWriteableStream.write_2.write(`${data.diffSell},${data.diffBay}\n`);
+      testWriteableStream.write_2.write(`${data}`);
 
       // stringifyDate(testWriteableStream.write_2, data, false);
       // let okWritable2 = stringifyDate(testWriteableStream.write_2, data, false);
