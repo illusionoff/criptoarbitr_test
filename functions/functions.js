@@ -6,6 +6,44 @@ const generate = require('csv-generate');
 const assert = require('assert');
 const fs = require("fs");
 
+const parse = require('csv-parse');
+
+function parseCSV() {
+  fs.readFile("./logs/test_profit_12.csv", "utf8",
+    function (error, input) {
+      console.log("Асинхронное чтение файла");
+      if (error) throw error; // если возникла ошибка
+      // console.log('data file:', data);
+      parse(input, {
+        comment: '#',
+        // columns: ['diffSell', 'diffBay']
+      }, function (err, output) {
+        if (err) throw err; // если возникла ошибка
+        console.log('output=', output);
+        // assert.deepStrictEqual(
+        //   output,
+        //   [ [ '1', '2', '3', '4' ], [ 'a', 'b', 'c', 'd' ] ]
+        // )
+      })
+
+    });
+}
+
+
+
+const input = '#Welcome\n"1","2","3","4"\n"a","b","c","d"'
+function parseTest() {
+  parse(input, {
+    comment: '#'
+  }, function (err, output) {
+    if (err) throw err; // если возникла ошибка
+    assert.deepStrictEqual(
+      output,
+      [['1', '2', '3', '4'], ['a', 'b', 'c', 'd']]
+    )
+  })
+}
+
 function goTrade(paramsGoTrade, counts, writeableStream) {
   // counts.countMessageAll++;
   // TEST writting files
@@ -317,7 +355,8 @@ function TestWritable() {
     write_2: null
   }
 
-  testWriteableStream.write_1.write(`${headerName}\r\n`);
+  // testWriteableStream.write_1.write(`${headerName}\r\n`);
+  testWriteableStream.write_1.write(`${headerName}\n`);
   // testWriteableStream.write_2.write(`${headerName}\r\n`);
   // stringifyDate(testWriteableStream.write_1, headerName, false);
   // stringifyDate(testWriteableStream.write_2, headerName, false);
@@ -375,7 +414,8 @@ function TestWritable() {
         testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
 
         // stringifyDate(testWriteableStream.write_2, headerName, false);
-        testWriteableStream.write_2.write(`${headerName}\r\n`);
+        // testWriteableStream.write_2.write(`${headerName}\r\n`);
+        testWriteableStream.write_2.write(`${headerName}\n`);
         testWriteableStream.write_1.end();
 
         console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
@@ -401,7 +441,8 @@ function TestWritable() {
       console.log('time:', time);
       testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
       // stringifyDate(testWriteableStream.write_2, headerName, false);
-      testWriteableStream.write_1.write(`${headerName}\r\n`);
+      // testWriteableStream.write_1.write(`${headerName}\r\n`);
+      testWriteableStream.write_1.write(`${headerName}\n`);
       testWriteableStream.write_2.end();
 
       console.log('testWriteableStream._writableState:', testWriteableStream.write_1._writableState);
@@ -420,7 +461,8 @@ function TestWritable() {
 
     if (testFlag === 1) {
       console.log('writeableStream_1');
-      testWriteableStream.write_1.write(`${data.diffSell},${data.diffBay}\r\n`);
+      // testWriteableStream.write_1.write(`${data.diffSell},${data.diffBay}\r\n`);
+      testWriteableStream.write_1.write(`${data.diffSell},${data.diffBay}\n`);
       // stringifyDate(testWriteableStream.write_1, data, false);
       // let okWritable1 = stringifyDate(testWriteableStream.write_1, data, false);
       // let okWritable1 = testWriteableStream.write_1.write(`writeableStream_${testCountAll}\r\n`);
@@ -437,7 +479,8 @@ function TestWritable() {
       console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
       // console.log('testWriteableStream._writableState.onwrite :', testWriteableStream._writableState.onwrite);
 
-      testWriteableStream.write_2.write(`${data.diffSell},${data.diffBay}\r\n`);
+      // testWriteableStream.write_2.write(`${data.diffSell},${data.diffBay}\r\n`);
+      testWriteableStream.write_2.write(`${data.diffSell},${data.diffBay}\n`);
 
       // stringifyDate(testWriteableStream.write_2, data, false);
       // let okWritable2 = stringifyDate(testWriteableStream.write_2, data, false);
@@ -460,4 +503,4 @@ function TestWritable() {
     return main(); // есть доступ к внешней переменной "count"
   };
 }
-module.exports = { goTrade, writtenCSV, TestWritable }
+module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest }

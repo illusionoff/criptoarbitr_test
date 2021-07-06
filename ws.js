@@ -2,10 +2,11 @@
 
 const { wsGetGate, initialGate } = require('./lib/gate');
 const { wsStartBith, initialBith, coinConfigBith } = require('./lib/bithumbpro');
-const { writtenCSV, TestWritable } = require('./functions/functions');
+const { writtenCSV, TestWritable, parseCSV, parseTest } = require('./functions/functions');
 
 function init() {
-
+  parseCSV();
+  parseTest();
   let counts = {
     count: 0,
     countMessageAll: 0,
