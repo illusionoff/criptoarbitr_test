@@ -307,17 +307,20 @@ function TestWritable() {
   let testCount = 0;
   let testCountAll = 0;
   const highWaterMark = 16 * 1024;
-  const headerName = [{ diffSell: 'diffSell', diffBay: 'diffBay' }];
+  // const headerName = [{ diffSell: 'diffSell', diffBay: 'diffBay' }];
+  const headerName = 'diffSell, diffBay';
 
   // {encoding: 'utf8', highWaterMark: 332 * 1024});// задать значение буфера
   // writable._writableState.getBuffer()// инфа из буффера
   let testWriteableStream = {
     write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
-    write_2: fs.createWriteStream("logs/test_profit_2.csv", { flags: 'a', highWaterMark: highWaterMark })
+    write_2: null
   }
 
-  stringifyDate(testWriteableStream.write_1, headerName, false);
-  stringifyDate(testWriteableStream.write_2, headerName, false);
+  testWriteableStream.write_1.write(`${headerName}\r\n`);
+  // testWriteableStream.write_2.write(`${headerName}\r\n`);
+  // stringifyDate(testWriteableStream.write_1, headerName, false);
+  // stringifyDate(testWriteableStream.write_2, headerName, false);
   // let testWriteableStream = {
   //   write_2: fs.createWriteStream("logs/test_profit_2.csv", { flags: 'a' })
   // }
@@ -351,6 +354,9 @@ function TestWritable() {
   //   }
   // }
   function main() {
+
+    let data = { diffSell: '1.000045', diffBay: '2.000045' };
+
     if (testCount > 20) {
       testCount = 0;
       if (testFlag === 1) {
@@ -358,6 +364,10 @@ function TestWritable() {
         console.log('testFlag=2----------------------------------------------------------------------------------------------------');
         // testWriteableStream_1.end();
         // testWriteableStream_1.close();
+        // let data = [
+        //   { diffSell: '1.000045', diffBay: '2.000045' },
+        //   { diffSell: '3.000045', diffBay: '4.000045' }
+        // ];
 
         // if (writeableStream._writableState.closed) {
         let time = new Date().getTime();
@@ -365,6 +375,7 @@ function TestWritable() {
         testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
 
         // stringifyDate(testWriteableStream.write_2, headerName, false);
+        testWriteableStream.write_2.write(`${headerName}\r\n`);
         testWriteableStream.write_1.end();
 
         console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
@@ -390,6 +401,7 @@ function TestWritable() {
       console.log('time:', time);
       testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
       // stringifyDate(testWriteableStream.write_2, headerName, false);
+      testWriteableStream.write_1.write(`${headerName}\r\n`);
       testWriteableStream.write_2.end();
 
       console.log('testWriteableStream._writableState:', testWriteableStream.write_1._writableState);
@@ -405,14 +417,11 @@ function TestWritable() {
 
 
     console.log(`testFlag=${testFlag},----------------------------------------------------------------------------------------------------`);
-    let data = [
-      { diffSell: '1.000045', diffBay: '2.000045' },
-      { diffSell: '3.000045', diffBay: '4.000045' }
-    ];
+
     if (testFlag === 1) {
       console.log('writeableStream_1');
-
-      stringifyDate(testWriteableStream.write_1, data, false);
+      testWriteableStream.write_1.write(`${data.diffSell},${data.diffBay}\r\n`);
+      // stringifyDate(testWriteableStream.write_1, data, false);
       // let okWritable1 = stringifyDate(testWriteableStream.write_1, data, false);
       // let okWritable1 = testWriteableStream.write_1.write(`writeableStream_${testCountAll}\r\n`);
       // console.log('okWritable1=', okWritable1);
@@ -428,7 +437,9 @@ function TestWritable() {
       console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
       // console.log('testWriteableStream._writableState.onwrite :', testWriteableStream._writableState.onwrite);
 
-      stringifyDate(testWriteableStream.write_2, data, false);
+      testWriteableStream.write_2.write(`${data.diffSell},${data.diffBay}\r\n`);
+
+      // stringifyDate(testWriteableStream.write_2, data, false);
       // let okWritable2 = stringifyDate(testWriteableStream.write_2, data, false);
       // let okWritable2 = testWriteableStream.write_2.write(`writeableStream_${testCountAll}\r\n`);
       // console.log('okWritable2:', okWritable2);
