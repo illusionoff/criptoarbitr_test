@@ -364,7 +364,7 @@ function TestWritable(dataSave1) {
     // let data = { diffSell: '1.000045', diffBay: '2.000045' };
     // (`${data.diffSell},${data.diffBay}\n`)
     // 'bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,init';
-    let data = (`${dataSave1.bayGate},${dataSave1.bayBith},${dataSave1.sellGate},${dataSave1.sellBith},${dataSave1.diffSell},${dataSave1.diffBay},${dataSave1.timeServer},${dataSave1.timeBith},${dataSave1.init}\n`);
+    let data = `${dataSave1.bayGate},${dataSave1.bayBith},${dataSave1.sellGate},${dataSave1.sellBith},${dataSave1.diffSell},${dataSave1.diffBay},${dataSave1.timeServer},${dataSave1.timeBith},${dataSave1.init}\n`;
     //  {bayGate: dataSave1.bayGate,bayBith: dataSave1.bayBith,sellGate: dataSave1.sellGate,sellBith:dataSave1.sellBith,diffSell: dataSave1.diffSell,
     //   diffBay :dataSave1.diffBay,timeServer :dataSave1.timeServer,timeBith: dataSave1.timeBith,init: dataSave1.init};
 
@@ -384,6 +384,8 @@ function TestWritable(dataSave1) {
         console.log('time:', time);
         testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
 
+        console.log('testWriteableStream.write_1.writableLength=', testWriteableStream.write_1.writableLength);
+        // process.exit();
         // stringifyDate(testWriteableStream.write_2, headerName, false);
         // testWriteableStream.write_2.write(`${headerName}\r\n`);
         testWriteableStream.write_2.write(`${headerName}\n`);
@@ -415,6 +417,7 @@ function TestWritable(dataSave1) {
       testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
       // stringifyDate(testWriteableStream.write_2, headerName, false);
       // testWriteableStream.write_1.write(`${headerName}\r\n`);
+
       testWriteableStream.write_1.write(`${headerName}\n`);
       testWriteableStream.write_2.end();
 
