@@ -89,7 +89,8 @@ function goTrade(paramsGoTrade, writableFiles) {
     // writableFiles();
   }
 
-  writableFiles(data);
+  // writableFiles('rrr');
+  writableFiles();
 };
 
 
@@ -288,10 +289,11 @@ function stringifyDate(writeableStream, data, header) {
     });
 }
 
-function TestWritable(dataSave) {
+function TestWritable(dataSave1) {
   let testFlag = 1;
   let testCount = 0;
   let testCountAll = 0;
+  // let dataSave1 = dataSave;
   const highWaterMark = 16 * 1024;
   // const headerName = [{ diffSell: 'diffSell', diffBay: 'diffBay' }];
   const headerName = 'diffSell, diffBay';
@@ -340,8 +342,8 @@ function TestWritable(dataSave) {
   //     }
   //   }
   // }
-  function main(dataSave) {
-    console.log('data Writable=', dataSave);
+  function main(dataSave1) {
+    console.log('data Writable=', dataSave1);
     process.exit();
     let data = { diffSell: '1.000045', diffBay: '2.000045' };
 
@@ -448,8 +450,8 @@ function TestWritable(dataSave) {
     testCount++;
     testCountAll++;
   }
-  return function () {
-    return main(); // есть доступ к внешней переменной "count"
+  return function (dataSave1) {
+    return main(dataSave1); // есть доступ к внешней переменной "count"
   };
 }
 module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest }

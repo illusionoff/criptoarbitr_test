@@ -51,6 +51,7 @@ function init() {
 
   // gate.wsGet(Math.round(Math.random() * 1000), 'depth.query', ["XRP_USDT", 5, "0.0001"]);
   let writableFiles = TestWritable();
+  // writableFiles('rrrr'); //работает ередача аргументов в замыкание!!!
   coinConfigBith();
   // wsStartBith('subscribe', "TRADE:XRP-USDT", initialGate, counts, writeableStream); // была проблема с самим сервером Bithump, не отсылал сообщения 00007, поэтому делал альтернативный вариант
   wsStartBith('subscribe', "ORDERBOOK10:XRP-USDT", initialGate, counts, writableFiles);
