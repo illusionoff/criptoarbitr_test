@@ -384,9 +384,9 @@ function TestWritable(dataSave1) {
         console.log('time:', time);
         testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
 
+        console.log('testWriteableStream.write_1._writableState=', testWriteableStream.write_1._writableState);
         console.log(' testWriteableStream.write_1._writableState.getBuffer()=', testWriteableStream.write_1._writableState.getBuffer());
         console.log(' testWriteableStream.write_1._writableState.getBuffer().length=', testWriteableStream.write_1._writableState.getBuffer().length);
-
         console.log('testWriteableStream.write_1.writableLength=', testWriteableStream.write_1.writableLength);
         process.exit();
         // stringifyDate(testWriteableStream.write_2, headerName, false);
