@@ -45,7 +45,7 @@ function parseTest() {
 }
 
 function goTrade(paramsGoTrade, writableFiles) {
-  // if (!writeableStream._writableState.ended || !writeableStream._writableState.finished || !writeableStream._writableState.closed) 
+  // if (!writeableStream._writableState.ended || !writeableStream._writableState.finished || !writeableStream._writableState.closed)
 
   // let counts = {
   //   count: 0,
@@ -74,7 +74,7 @@ function goTrade(paramsGoTrade, writableFiles) {
     return +(Math.round(this + "e+" + places) + "e-" + places);
   }
 
-  //   var n = 1.7777;    
+  //   var n = 1.7777;
   // n.round(2); // 1.78 .round(comma)
   const comma = 8;
   // if (diffSell > 0 || diffBay > 0) {
@@ -298,7 +298,7 @@ function stringifyDate(writeableStream, data, header) {
 function TestWritable(dataSave1) {
   let testFlag = 1;
   let testCount = 0;
-  let testCountAll = 0;
+  let testCountAll = 1;
   // let dataSave1 = dataSave;
   const highWaterMark = 320 * 1024;
   // const headerName = [{ diffSell: 'diffSell', diffBay: 'diffBay' }];
@@ -318,7 +318,7 @@ function TestWritable(dataSave1) {
   // writable._writableState.getBuffer()// инфа из буффера
   let testWriteableStream = {
     write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
-    write_2: null
+    write_2: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark })
   }
 
   // testWriteableStream.write_1.write(`${headerName}\r\n`);
@@ -368,10 +368,10 @@ function TestWritable(dataSave1) {
     //  {bayGate: dataSave1.bayGate,bayBith: dataSave1.bayBith,sellGate: dataSave1.sellGate,sellBith:dataSave1.sellBith,diffSell: dataSave1.diffSell,
     //   diffBay :dataSave1.diffBay,timeServer :dataSave1.timeServer,timeBith: dataSave1.timeBith,init: dataSave1.init};
 
-    if (testCount > 50) {
+    if (testCount >= 10) {
       testCount = 0;
       if (testFlag === 1) {
-        console.log('testFlag=2----------------------------------------------------------------------------------------------------');
+        console.log(`testFlag=${testFlag}--------------------------------------------------------------------------------------------------`);
         // testWriteableStream_1.end();
         // testWriteableStream_1.close();
         // let data = [
@@ -380,59 +380,86 @@ function TestWritable(dataSave1) {
         // ];
 
         // if (writeableStream._writableState.closed) {
-        let time = new Date().getTime();
-        console.log('time:', time);
-        testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
+        // testWriteableStream.write_2.end();
+
 
         console.log('testWriteableStream.write_1._writableState=', testWriteableStream.write_1._writableState);
         console.log(' testWriteableStream.write_1._writableState.getBuffer()=', testWriteableStream.write_1._writableState.getBuffer());
         console.log(' testWriteableStream.write_1._writableState.getBuffer().length=', testWriteableStream.write_1._writableState.getBuffer().length);
         console.log('testWriteableStream.write_1.writableLength=', testWriteableStream.write_1.writableLength);
-        process.exit();
+        // process.exit();
         // stringifyDate(testWriteableStream.write_2, headerName, false);
         // testWriteableStream.write_2.write(`${headerName}\r\n`);
-        testWriteableStream.write_2.write(`${headerName}\n`);
-        testWriteableStream.write_1.end();
+        // testWriteableStream.write_2.write(`${headerName}\n`);
+        // testWriteableStream.write_1.end();
 
-        console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
-        testWriteableStream.write_1.on('drain', () => {
-          process.exit();
-          console.log('estWriteableStream_1 drain buffer = 0-------------------------------------------------------------------------------');
-          testWriteableStream.write_1.end();
-        });
-        testWriteableStream.write_1.on('finish', () => {
-          console.log('estWriteableStream_1 The end-------------------------------------------------------------------------------');
-          testWriteableStream.write_1.close();
+        // console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
+        // testWriteableStream.write_1.on('drain', () => {
+        //   // process.exit();
+        //   console.log('estWriteableStream_1 drain buffer = 0----------------------------------------------------------------------------');
+        //   testWriteableStream.write_1.end();
+        // });
+        testWriteableStream.write_2.end();
+        testWriteableStream.write_2.on('finish', () => {
+          console.log('estWriteableStream_2 The end-------------------------------------------------------------------------------');
+          testWriteableStream.write_2.close();
           // testWriteableStream.destroy();
           // process.exit();
         });
-        testFlag = 2;
+
+        testWriteableStream.write_2.on('close', () => {
+          console.log('estWriteableStream_2 close sas The end-------------------------------------------------------------------------------');
+
+          let time = new Date().getTime();
+          console.log('time:', time);
+          testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
+          testWriteableStream.write_2.write(`${headerName}\n`);
+          testFlag = 2;
+          // testWriteableStream.destroy();
+          // process.exit();
+        });
+        // testFlag = 2;
         return
       }
-      testFlag = 1;
-      console.log('testFlag=1----------------------------------------------------------------------------------------------------');
+      // testFlag = 1;
+      console.log(`testFlag=${testFlag}--------------------------------------------------------------------------------------------------`);
       // testWriteableStream.end();
       // testWriteableStream.close();
 
       // if (writeableStream._writableState.closed) {
-      let time = new Date().getTime();
-      console.log('time:', time);
-      testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
-      // stringifyDate(testWriteableStream.write_2, headerName, false);
-      // testWriteableStream.write_1.write(`${headerName}\r\n`);
+      // testWriteableStream.write_1.end();
 
-      testWriteableStream.write_1.write(`${headerName}\n`);
-      testWriteableStream.write_2.end();
+      // testWriteableStream.write_2.end();
 
-      console.log('testWriteableStream._writableState:', testWriteableStream.write_1._writableState);
-      testWriteableStream.write_2.on('drain', () => {
-        console.log('estWriteableStream_1 drain buffer = 0-------------------------------------------------------------------------------');
-        testWriteableStream.write_2.end();
-      })
-      testWriteableStream.write_2.on('finish', () => {
-        console.log('estWriteableStream_2 The end-------------------------------------------------------------------------------');
-        testWriteableStream.write_2.close();
-      })
+      // console.log('testWriteableStream._writableState:', testWriteableStream.write_1._writableState);
+      // testWriteableStream.write_2.on('drain', () => {
+      //   console.log('estWriteableStream_1 drain buffer = 0-------------------------------------------------------------------------------');
+      //   testWriteableStream.write_2.end();
+      // })
+      // testWriteableStream.write_2.on('finish', () => {
+      //   console.log('estWriteableStream_2 The end-------------------------------------------------------------------------------');
+      //   testWriteableStream.write_2.close();
+      // })
+
+      testWriteableStream.write_1.end();
+      testWriteableStream.write_1.on('finish', () => {
+        console.log('estWriteableStream_1 The end-------------------------------------------------------------------------------');
+        testWriteableStream.write_1.close();
+        // testWriteableStream.destroy();
+        // process.exit();
+      });
+
+      testWriteableStream.write_1.on('close', () => {
+        console.log('estWriteableStream_1 close sas The end-------------------------------------------------------------------------------');
+
+        let time = new Date().getTime();
+        console.log('time:', time);
+        testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
+        testWriteableStream.write_1.write(`${headerName}\n`);
+        testFlag = 1;
+        // testWriteableStream.destroy();
+        // process.exit();
+      });
     };
 
 
@@ -441,7 +468,7 @@ function TestWritable(dataSave1) {
     if (testFlag === 1) {
       console.log('writeableStream_1');
       // testWriteableStream.write_1.write(`${data.diffSell},${data.diffBay}\r\n`);
-      let okWritable1 = testWriteableStream.write_1.write(`${data}`);
+      let okWritable1 = testWriteableStream.write_1.write(`${testCountAll},${data}`);
       // stringifyDate(testWriteableStream.write_1, data, false);
       // let okWritable1 = stringifyDate(testWriteableStream.write_1, data, false);
       // let okWritable1 = testWriteableStream.write_1.write(`writeableStream_${testCountAll}\r\n`);
@@ -459,7 +486,7 @@ function TestWritable(dataSave1) {
       // console.log('testWriteableStream._writableState.onwrite :', testWriteableStream._writableState.onwrite);
 
       // testWriteableStream.write_2.write(`${data.diffSell},${data.diffBay}\r\n`);
-      let okWritable2 = testWriteableStream.write_2.write(`${data}`);
+      let okWritable2 = testWriteableStream.write_2.write(`${testCountAll},${data}`);
 
       // stringifyDate(testWriteableStream.write_2, data, false);
       // let okWritable2 = stringifyDate(testWriteableStream.write_2, data, false);
@@ -475,6 +502,7 @@ function TestWritable(dataSave1) {
       //   process.exit();
       // }
     }
+    console.log('testCountAll=', testCountAll);
     testCount++;
     testCountAll++;
   }
