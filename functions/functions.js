@@ -44,62 +44,8 @@ function parseTest() {
   })
 }
 
-function goTrade(paramsGoTrade, counts, writeableStream) {
-  // counts.countMessageAll++;
-  // TEST writting files
-  console.log('countMessageAll 2=', counts.countMessageAll);
-  if (counts.countMessageAll > 50) {
-    console.log(' counts.countMessage  if ((counts.countMessage) > 20:', counts.countMessageAll);
-    counts.countMessageAll = 0;
-    writeableStream.end();
-    writeableStream.close();
-
-    // if (writeableStream._writableState.closed) {
-    let time = new Date().getTime();
-    console.log('time:', time);
-    writeableStream = fs.createWriteStream(`logs/profit${time}.csv`, { flags: 'a' });
-
-    // writeableStream = fs.createWriteStream(`logs/profit${time}.csv`, { flags: 'a' });
-
-    // }
-  }
-  writeableStream.on('finish', function () {
-    console.log('writeableStream finish 1-----------------------------------------------:');
-
-    // writeableStream.write(`writeableStream_${counts.countMessageStartNew}\r\n`);
-  });
-  if (!writeableStream._writableState.ended || !writeableStream._writableState.finished || !writeableStream._writableState.closed) {
-    let time = new Date().getTime();
-    console.log('time:', time);
-    console.log('counts.countMessageStartNew 1:', counts.countMessageStartNew);
-    writeableStream.write(`writeableStream_${counts.countMessageStartNew}\r\n`);
-
-    // let stats = fs.stat("logs/profit.csv", (error, stats) => {
-    //   if (error) {
-    //     console.log(error);
-    //   }
-    //   else {
-    //     // console.log("Stats object for: profit.csv");
-    //     // console.log(stats);
-
-    //     // Using methods of the Stats object
-    //     // console.log("Path is file:", stats.isFile());
-    //     // console.log("Path is directory:", stats.isDirectory());
-    //     let fileSizeInBytes = stats["size"];
-    //     console.log('fileSizeInBytes=', fileSizeInBytes);
-    //     writeableStream.write(`writeableStream_${countMessageAll}_size_${fileSizeInBytes}\r\n`);
-    //   }
-    // });
-
-
-  } else {
-    counts.count++;
-    console.log('if writeableStream._writableState.ended2:', writeableStream._writableState.ended);
-    console.log(' writeableStream._writableState.ended2 count :', counts.count);
-  }
-
-
-
+function goTrade(paramsGoTrade, writableFiles) {
+  // if (!writeableStream._writableState.ended || !writeableStream._writableState.finished || !writeableStream._writableState.closed) 
 
   // let counts = {
   //   count: 0,
@@ -140,8 +86,10 @@ function goTrade(paramsGoTrade, counts, writeableStream) {
   // }
 
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
-
+    // writableFiles();
   }
+
+  writableFiles(data);
 };
 
 
@@ -340,7 +288,7 @@ function stringifyDate(writeableStream, data, header) {
     });
 }
 
-function TestWritable() {
+function TestWritable(dataSave) {
   let testFlag = 1;
   let testCount = 0;
   let testCountAll = 0;
@@ -392,8 +340,9 @@ function TestWritable() {
   //     }
   //   }
   // }
-  function main() {
-
+  function main(dataSave) {
+    console.log('data Writable=', dataSave);
+    process.exit();
     let data = { diffSell: '1.000045', diffBay: '2.000045' };
 
     if (testCount > 20) {
