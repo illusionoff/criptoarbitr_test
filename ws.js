@@ -5,7 +5,7 @@ const { wsStartBith, initialBith, coinConfigBith } = require('./lib/bithumbpro')
 const { writtenCSV, TestWritable, goTrade, parseCSV, parseTest } = require('./functions/functions');
 
 function init() {
-  // parseCSV();
+  parseCSV();
   // parseTest();
   let counts = {
     count: 0,

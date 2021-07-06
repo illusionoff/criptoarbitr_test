@@ -16,7 +16,7 @@ function parseCSV() {
       // console.log('data file:', data);
       parse(input, {
         comment: '#',
-        // columns: ['diffSell', 'diffBay']
+        // columns: ['col', 'bayGate', 'bayBith', 'sellGate', 'sellBith', 'diffSell', 'diffBay', 'timeServer', 'timeBith', 'init']
       }, function (err, output) {
         if (err) throw err; // если возникла ошибка
         console.log('output=', output);
