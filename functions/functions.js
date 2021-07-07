@@ -368,7 +368,7 @@ function TestWritable(dataSave1) {
     //  {bayGate: dataSave1.bayGate,bayBith: dataSave1.bayBith,sellGate: dataSave1.sellGate,sellBith:dataSave1.sellBith,diffSell: dataSave1.diffSell,
     //   diffBay :dataSave1.diffBay,timeServer :dataSave1.timeServer,timeBith: dataSave1.timeBith,init: dataSave1.init};
 
-    if (testCount >= 10) {
+    if (testCount >= 50) {
       testCount = 0;
       if (testFlag === 1) {
         console.log(`testFlag=${testFlag}--------------------------------------------------------------------------------------------------`);
@@ -412,7 +412,7 @@ function TestWritable(dataSave1) {
 
           let time = new Date().getTime();
           console.log('time:', time);
-          testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
+          testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit_${testCountAll}_${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
           testWriteableStream.write_2.write(`${headerName}\n`);
           testFlag = 2;
           // testWriteableStream.destroy();
@@ -454,7 +454,7 @@ function TestWritable(dataSave1) {
 
         let time = new Date().getTime();
         console.log('time:', time);
-        testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
+        testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit_${testCountAll}_${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
         testWriteableStream.write_1.write(`${headerName}\n`);
         testFlag = 1;
         // testWriteableStream.destroy();
