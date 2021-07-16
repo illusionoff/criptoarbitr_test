@@ -45,6 +45,7 @@ function parseTest() {
 }
 
 function goTrade(paramsGoTrade, writableFiles) {
+  console.log('goTrade()----------------------------------------------------')
   // if (!writeableStream._writableState.ended || !writeableStream._writableState.finished || !writeableStream._writableState.closed)
 
   // let counts = {
@@ -88,7 +89,7 @@ function goTrade(paramsGoTrade, writableFiles) {
     timeServer: paramsGoTrade.timeServer,
     timeBith: paramsGoTrade.timeBith,
     timeGate: paramsGoTrade.timeGate,
-    bayOrSellGate: paramsGoTrade.bayOrSell,
+    bayOrSellGate: paramsGoTrade.bayOrSellGate,
     init: paramsGoTrade.init
   }
   // writtenCSV(data, writeableStream, counts);
@@ -100,7 +101,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
     // writableFiles();
   }
-
+  console.log('data========================================', data);
   writableFiles(data);
 };
 
@@ -301,6 +302,8 @@ function stringifyDate(writeableStream, data, header) {
 }
 
 function TestWritable(data) {
+
+  console.log('TestWritable(data)==============================', data);
   let testFlag = 1;
   let testCount = 0;
   let testCountAll = 1;
