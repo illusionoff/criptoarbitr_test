@@ -87,10 +87,15 @@ function goTrade(paramsGoTrade, writableFiles) {
     diffBay: diffBay.round(comma),
     timeServer: paramsGoTrade.timeServer,
     timeBith: paramsGoTrade.timeBith,
+    timeGate: paramsGoTrade.timeGate,
+    bayOrSellGate: paramsGoTrade.bayOrSell,
     init: paramsGoTrade.init
   }
   // writtenCSV(data, writeableStream, counts);
   // }
+  // timeGate: initialGate.timeGate,
+  // bayOrSellGate: bayOrSell,
+  // init: 0,
 
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
     // writableFiles();
@@ -300,7 +305,8 @@ function TestWritable(data) {
   let testCount = 0;
   let testCountAll = 1;
   const highWaterMark = 320 * 1024;
-  const headerName = 'bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,init';
+  const headerName = `bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,
+  bayOrSellGate,init`;
   let testWriteableStream = {
     write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
     write_2: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark })
@@ -311,7 +317,8 @@ function TestWritable(data) {
   // stringifyDate(testWriteableStream.write_1, headerName, false);
   function main(data) {
     console.log('data Writable=', data);
-    data = `${data.bayGate},${data.bayBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},${data.timeServer},${data.timeBith},${data.init}\n`;
+    data = `${data.bayGate},${data.bayBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},
+    ${data.timeServer},${data.timeBith},${data.timeGate},${data.bayOrSellGate},${data.init}\n`;
     if (testCount >= 50) {
       testCount = 0;
       if (testFlag === 1) {
