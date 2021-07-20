@@ -324,7 +324,7 @@ function TestWritable(data) {
       testCount = 0;
       if (testFlag === 1) {
         console.log(`testFlag=${testFlag}--------------------------------------------------------------------------------------------------`);
-        console.log('testWriteableStream.write_1._writableState=', testWriteableStream.write_1._writableState);
+        // console.log('testWriteableStream.write_1._writableState=', testWriteableStream.write_1._writableState);
         console.log(' testWriteableStream.write_1._writableState.getBuffer()=', testWriteableStream.write_1._writableState.getBuffer());
         console.log(' testWriteableStream.write_1._writableState.getBuffer().length=', testWriteableStream.write_1._writableState.getBuffer().length);
         console.log('testWriteableStream.write_1.writableLength=', testWriteableStream.write_1.writableLength);
@@ -373,7 +373,7 @@ function TestWritable(data) {
     }
     if (testFlag === 2) {
       console.log('writeableStream_2');
-      console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
+      // console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
       let okWritable2 = testWriteableStream.write_2.write(`${testCountAll},${data}`);
       // stringifyDate(testWriteableStream.write_2, data, false);
       // if (!okWritable2) {
