@@ -50,3 +50,5 @@ bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,
 48,0.56522004,0,0.56766,0,-0.56766,0.56522004,1626887185689,undefined,1626887185605,1,0
 49,0.56523,0,0.56766,0,-0.56766,0.56523,1626887185705,undefined,1626887185620,1,0
 50,0.56530968,0,0.56766,0,-0.56766,0.56530968,1626887185770,undefined,1626887185677,1,0
+bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,init
+bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,init
