@@ -56,9 +56,9 @@ function init() {
   coinConfigBith();
   // wsStartBith('subscribe', "TRADE:XRP-USDT", initialGate, counts, writeableStream); // была проблема с самим сервером Bithump, не отсылал сообщения 00007, поэтому делал альтернативный вариант
 
-  // wsStartBith('subscribe', "ORDERBOOK:XRP-USDT", initialGate, writableFiles);/////////////////////////
+  wsStartBith('subscribe', "ORDERBOOK:XRP-USDT", initialGate, writableFiles);/////////////////////////
 
-  wsStartBithOrder10('subscribe', "ORDERBOOK10:XRP-USDT");///////////////////////////////
+  // wsStartBithOrder10('subscribe', "ORDERBOOK10:XRP-USDT");///////////////////////////////
 
   // wsGetGate(Math.round(Math.random() * 1000), 'depth.subscribe', ["XRP_USDT", 10, "0.0001"], initialBith, writableFiles); // передаем данные для сравнения из bithumb
 
