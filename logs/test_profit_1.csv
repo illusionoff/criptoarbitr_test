@@ -1,22 +1,51 @@
 bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
-bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init
+1,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323328473,1627323330431,undefined,-1,0,1
+2,0,0.646297,0,0.67284,0.646297,-0.67284,1627323328604,1627323330560,undefined,-1,0,1
+3,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323330677,1627323332625,undefined,-1,0,1
+4,0,0.646297,0,0.67284,0.646297,-0.67284,1627323330762,1627323332740,undefined,-1,0,1
+5,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323332642,1627323334591,undefined,-1,0,1
+6,0,0.646297,0,0.67284,0.646297,-0.67284,1627323332747,1627323334694,undefined,-1,0,1
+7,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323343727,1627323345699,undefined,-1,0,1
+8,0,0.646297,0,0.67284,0.646297,-0.67284,1627323343795,1627323345800,undefined,-1,0,1
+9,0,0.6449294,0,0.67284,0.6449294,-0.67284,1627323350039,1627323352017,undefined,-1,1,1
+10,0,0.646297,0,0.67284,0.646297,-0.67284,1627323350704,1627323352666,undefined,-1,1,1
+11,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323371286,1627323373267,undefined,-1,0,1
+12,0,0.646297,0,0.67284,0.646297,-0.67284,1627323371457,1627323373429,undefined,-1,0,1
+13,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323373316,1627323375284,undefined,-1,0,1
+14,0,0.646297,0,0.67284,0.646297,-0.67284,1627323373383,1627323375398,undefined,-1,0,1
+15,0,0.6449294,0,0.67284,0.6449294,-0.67284,1627323373748,1627323375746,undefined,-1,1,1
+16,0,0.646297,0,0.67284,0.646297,-0.67284,1627323374289,1627323376263,undefined,-1,1,1
+17,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323379627,1627323381620,undefined,-1,0,1
+18,0,0.646297,0,0.67284,0.646297,-0.67284,1627323379750,1627323381731,undefined,-1,0,1
+19,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323382548,1627323384517,undefined,-1,0,1
+20,0,0.646297,0,0.67284,0.646297,-0.67284,1627323382619,1627323384638,undefined,-1,0,1
+21,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323384587,1627323386591,undefined,-1,0,1
+22,0,0.646297,0,0.67284,0.646297,-0.67284,1627323384730,1627323386709,undefined,-1,0,1
+23,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323391348,1627323393328,undefined,-1,0,1
+24,0,0.646297,0,0.67284,0.646297,-0.67284,1627323391419,1627323393441,undefined,-1,0,1
+25,0,0.6449294,0,0.67284,0.6449294,-0.67284,1627323397540,1627323399547,undefined,-1,1,1
+26,0,0.6449294,0,0.67384125,0.6449294,-0.67384125,1627323397906,1627323399920,undefined,-1,0,1
+27,0,0.6449294,0,0.67284,0.6449294,-0.67284,1627323397995,1627323400023,undefined,-1,0,1
+28,0,0.646297,0,0.67284,0.646297,-0.67284,1627323398035,1627323400035,undefined,-1,1,1
+29,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323416627,1627323418647,undefined,-1,0,1
+30,0,0.646297,0,0.67284,0.646297,-0.67284,1627323416749,1627323418777,undefined,-1,0,1
+31,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323418616,1627323420599,undefined,-1,0,1
+32,0,0.646297,0,0.67284,0.646297,-0.67284,1627323418681,1627323420715,undefined,-1,0,1
+33,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323420974,1627323422965,undefined,-1,0,1
+34,0,0.646297,0,0.67284,0.646297,-0.67284,1627323421077,1627323423086,undefined,-1,0,1
+35,0,0.6449294,0,0.67284,0.6449294,-0.67284,1627323422730,1627323424715,undefined,-1,1,1
+36,0,0.646297,0,0.67284,0.646297,-0.67284,1627323423357,1627323425332,undefined,-1,1,1
+37,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323423516,1627323425504,undefined,-1,0,1
+38,0,0.646297,0,0.67284,0.646297,-0.67284,1627323423620,1627323425641,undefined,-1,0,1
+39,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323425643,1627323427613,undefined,-1,0,1
+40,0,0.646297,0,0.67284,0.646297,-0.67284,1627323425699,1627323427721,undefined,-1,0,1
+41,0,0.646297,0,0.67384125,0.646297,-0.67384125,1627323427985,1627323429960,undefined,-1,0,1
+42,0,0.646297,0,0.67284,0.646297,-0.67284,1627323428099,1627323430089,undefined,-1,0,1
+43,0,0.646866,0,0.67284,0.646866,-0.67284,1627323428219,1627323430202,undefined,-1,1,1
+44,0,0.646297,0,0.67284,0.646297,-0.67284,1627323430208,1627323432180,undefined,-1,1,1
+45,0,0.6449294,0,0.67284,0.6449294,-0.67284,1627323430227,1627323432181,undefined,-1,1,1
+46,0,0.646297,0,0.67284,0.646297,-0.67284,1627323430282,1627323432296,undefined,-1,1,1
+47,0,0.646866,0,0.67284,0.646866,-0.67284,1627323432373,1627323434340,undefined,-1,1,1
+48,0,0.646297,0,0.67284,0.646297,-0.67284,1627323434609,1627323436597,undefined,-1,1,1
+49,0,0.646866,0,0.67284,0.646866,-0.67284,1627323434687,1627323436694,undefined,-1,1,1
+50,0,0.646866,0,0.67384125,0.646866,-0.67384125,1627323436515,1627323438463,undefined,-1,0,1

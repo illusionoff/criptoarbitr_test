@@ -1,9 +1,9 @@
 // const fs = require("fs");
 
 const { wsGetGate, initialGate } = require('./lib/gate');
-const { wsStartBith, initialBith, coinConfigBith } = require('./lib/bithumbpro');
+const { wsStartBith, initialBith } = require('./lib/bithumbpro');//coinConfigBith
 const { writtenCSV, TestWritable, parseCSV, parseTest } = require('./functions/functions');
-const { wsStartBithOrder10 } = require('./lib/bithOrderbook10');
+const { wsStartBithOrder10, coinConfigBith } = require('./lib/bithOrderbook10');
 
 function init() {
   parseCSV();

@@ -93,6 +93,8 @@ function goTrade(paramsGoTrade, writableFiles) {
     bayOrSellBith: paramsGoTrade.bayOrSellBith,
     init: paramsGoTrade.init
   }
+  console.log('data goTrade=', data);
+  // process.exit();
   // writtenCSV(data, writeableStream, counts);
   // }
   // timeGate: initialGate.timeGate,
@@ -418,7 +420,12 @@ function changeTradeArr(initialObj) {
       initialObj.bayOrSell = 0;
     }
     initialObj.orderbookFirstPreviousSell = sell;
+    console.log('typeof sell changeTradeArr()', typeof sell);
+    console.log('sell changeTradeArr()', sell);
+    console.log('typeof initialObj.makerComissions changeTradeArr()', typeof initialObj.makerComissions);
+    console.log('initialObj.makerComissions changeTradeArr()', initialObj.makerComissions);
     initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+    console.log('initialObj.priceAndComissionsSell changeTradeArr()=', initialObj.priceAndComissionsSell);
     trueSell = true;
     console.log('trueSell = true');
     // process.exit();
@@ -426,6 +433,15 @@ function changeTradeArr(initialObj) {
   console.log('initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
   console.log('initialObj.orderbookFirstPreviousSell=', initialObj.orderbookFirstPreviousSell);
   console.log('2 Boolean(initialObj.orderbookFirstPreviousBay)=', Boolean(initialObj.orderbookFirstPreviousBay));
+  console.log('bay changeTradeArr()=', bay);
+  console.log('sell changeTradeArr()=', sell);
+  console.log('initialObj.priceAndComissionsBay changeTradeArr()=', initialObj.priceAndComissionsBay);
+  console.log('initialObj.priceAndComissionsSell changeTradeArr()=', initialObj.priceAndComissionsSell);
+  // initialObj.priceAndComissionsSell = 100;
+  // initialObj.priceAndComissionsBay = 100;
+  console.log(' 100 initialObj.priceAndComissionsSell changeTradeArr()=', initialObj.priceAndComissionsSell);
+  console.log(' 100 initialObj.priceAndComissionsBay changeTradeArr()=', initialObj.priceAndComissionsBay);
+
   if (!Boolean(initialObj.orderbookFirstPreviousBay)) {
     initialObj.orderbookFirstPreviousBay = bay;
     console.log('!orderbookFirstPreviousBay');
@@ -434,7 +450,7 @@ function changeTradeArr(initialObj) {
     initialObj.orderbookFirstPreviousSell = sell;
     console.log('!orderbookFirstPreviousSell');
   }
-  if (trueBay || trueSell) return true
+  if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) return true
   return false
 }
 module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr }
