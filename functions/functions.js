@@ -90,6 +90,7 @@ function goTrade(paramsGoTrade, writableFiles) {
     timeBith: paramsGoTrade.timeBith,
     timeGate: paramsGoTrade.timeGate,
     bayOrSellGate: paramsGoTrade.bayOrSellGate,
+    bayOrSellBith: paramsGoTrade.bayOrSellBith,
     init: paramsGoTrade.init
   }
   // writtenCSV(data, writeableStream, counts);
@@ -308,7 +309,7 @@ function TestWritable(data) {
   let testCount = 0;
   let testCountAll = 1;
   const highWaterMark = 320 * 1024;
-  const headerName = `bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,init`;
+  const headerName = `bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init`;
   let testWriteableStream = {
     write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
     write_2: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark })
@@ -319,7 +320,7 @@ function TestWritable(data) {
   // stringifyDate(testWriteableStream.write_1, headerName, false);
   function main(data) {
     console.log('data Writable=', data);
-    data = `${data.bayGate},${data.bayBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},${data.timeServer},${data.timeBith},${data.timeGate},${data.bayOrSellGate},${data.init}\n`;
+    data = `${data.bayGate},${data.bayBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},${data.timeServer},${data.timeBith},${data.timeGate},${data.bayOrSellGate},${data.bayOrSellBith},${data.init}\n`;
     if (testCount >= 50) {
       testCount = 0;
       if (testFlag === 1) {
@@ -388,4 +389,51 @@ function TestWritable(data) {
     return main(data); // есть доступ к внешней переменной "count"
   };
 }
-module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest }
+
+function changeTradeArr(initialGate) {
+  let bay = initialGate.bay;
+  let sell = initialGate.sell;
+  let trueBay = false;
+  let trueSell = false;
+  initialGate.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
+
+  //  Инициализация первых предыдущих значений
+  console.log('1 Boolean(initialGate.orderbookFirstPreviousBay)=', Boolean(initialGate.orderbookFirstPreviousBay));
+  console.log('1 initialGate.orderbookFirstPreviousBay=', initialGate.orderbookFirstPreviousBay);
+  // проверка изменения значения для предотвращения лишних вычислений
+  if (initialGate.orderbookFirstPreviousBay && bay != initialGate.orderbookFirstPreviousBay) {
+    initialGate.bayOrSell = 1;
+    console.log('bay=', bay);
+    initialGate.orderbookFirstPreviousBay = bay;
+    initialGate.priceAndComissionsBay = bay - bay * initialGate.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+    trueBay = true;
+    console.log('trueBay = true');
+    // process.exit();
+  }
+  if (initialGate.orderbookFirstPreviousSell && sell != initialGate.orderbookFirstPreviousSell) {
+    // Если одновременно изменения и в bay и в sell
+    if (initialGate.bayOrSell === 1) {
+      initialGate.bayOrSell = 2;
+    } else {
+      initialGate.bayOrSell = 0;
+    }
+    initialGate.orderbookFirstPreviousSell = sell;
+    initialGate.priceAndComissionsSell = sell + sell * initialGate.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+    trueSell = true;
+    console.log('trueSell = true');
+    // process.exit();
+  }
+  console.log('initialGate.orderbookFirstPreviousBay=', initialGate.orderbookFirstPreviousBay);
+  console.log('initialGate.orderbookFirstPreviousSell=', initialGate.orderbookFirstPreviousSell);
+  console.log('2 Boolean(initialGate.orderbookFirstPreviousBay)=', Boolean(initialGate.orderbookFirstPreviousBay));
+  if (!Boolean(initialGate.orderbookFirstPreviousBay)) {
+    initialGate.orderbookFirstPreviousBay = bay;
+    console.log('!orderbookFirstPreviousBay');
+  }
+  if (!Boolean(initialGate.orderbookFirstPreviousSell)) {
+    initialGate.orderbookFirstPreviousSell = sell;
+    console.log('!orderbookFirstPreviousSell');
+  }
+  if (trueBay || trueSell) return true
+}
+module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr }
