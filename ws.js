@@ -58,7 +58,7 @@ function init() {
 
   // wsStartBith('subscribe', "ORDERBOOK:XRP-USDT", initialGate, writableFiles);/////////////////////////
 
-  wsStartBithOrder10('subscribe', "ORDERBOOK10:XRP-USDT");///////////////////////////////
+  wsStartBithOrder10('subscribe', "ORDERBOOK10:XRP-USDT", initialGate, writableFiles);///////////////////////////////
   // wsGetGate(Math.round(Math.random() * 1000), 'depth.subscribe', ["XRP_USDT", 10, "0.0001"], initialBith, writableFiles); // передаем данные для сравнения из bithumb
 
   // wsGetGate(Number(new Date().getTime()), 'spot.book_ticker', 'subscribe', ["XRP_USDT"], initialBith, writableFiles); // передаем данные для сравнения из bithumb//////////

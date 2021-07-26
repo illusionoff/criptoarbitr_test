@@ -390,50 +390,51 @@ function TestWritable(data) {
   };
 }
 
-function changeTradeArr(initialGate) {
-  let bay = initialGate.bay;
-  let sell = initialGate.sell;
+function changeTradeArr(initialObj) {
+  let bay = initialObj.bay;
+  let sell = initialObj.sell;
   let trueBay = false;
   let trueSell = false;
-  initialGate.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
+  initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
 
   //  Инициализация первых предыдущих значений
-  console.log('1 Boolean(initialGate.orderbookFirstPreviousBay)=', Boolean(initialGate.orderbookFirstPreviousBay));
-  console.log('1 initialGate.orderbookFirstPreviousBay=', initialGate.orderbookFirstPreviousBay);
+  console.log('1 Boolean(initialObj.orderbookFirstPreviousBay)=', Boolean(initialObj.orderbookFirstPreviousBay));
+  console.log('1 initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
   // проверка изменения значения для предотвращения лишних вычислений
-  if (initialGate.orderbookFirstPreviousBay && bay != initialGate.orderbookFirstPreviousBay) {
-    initialGate.bayOrSell = 1;
+  if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
+    initialObj.bayOrSell = 1;
     console.log('bay=', bay);
-    initialGate.orderbookFirstPreviousBay = bay;
-    initialGate.priceAndComissionsBay = bay - bay * initialGate.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+    initialObj.orderbookFirstPreviousBay = bay;
+    initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
     trueBay = true;
     console.log('trueBay = true');
     // process.exit();
   }
-  if (initialGate.orderbookFirstPreviousSell && sell != initialGate.orderbookFirstPreviousSell) {
+  if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
     // Если одновременно изменения и в bay и в sell
-    if (initialGate.bayOrSell === 1) {
-      initialGate.bayOrSell = 2;
+    if (initialObj.bayOrSell === 1) {
+      initialObj.bayOrSell = 2;
     } else {
-      initialGate.bayOrSell = 0;
+      initialObj.bayOrSell = 0;
     }
-    initialGate.orderbookFirstPreviousSell = sell;
-    initialGate.priceAndComissionsSell = sell + sell * initialGate.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+    initialObj.orderbookFirstPreviousSell = sell;
+    initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
     trueSell = true;
     console.log('trueSell = true');
     // process.exit();
   }
-  console.log('initialGate.orderbookFirstPreviousBay=', initialGate.orderbookFirstPreviousBay);
-  console.log('initialGate.orderbookFirstPreviousSell=', initialGate.orderbookFirstPreviousSell);
-  console.log('2 Boolean(initialGate.orderbookFirstPreviousBay)=', Boolean(initialGate.orderbookFirstPreviousBay));
-  if (!Boolean(initialGate.orderbookFirstPreviousBay)) {
-    initialGate.orderbookFirstPreviousBay = bay;
+  console.log('initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
+  console.log('initialObj.orderbookFirstPreviousSell=', initialObj.orderbookFirstPreviousSell);
+  console.log('2 Boolean(initialObj.orderbookFirstPreviousBay)=', Boolean(initialObj.orderbookFirstPreviousBay));
+  if (!Boolean(initialObj.orderbookFirstPreviousBay)) {
+    initialObj.orderbookFirstPreviousBay = bay;
     console.log('!orderbookFirstPreviousBay');
   }
-  if (!Boolean(initialGate.orderbookFirstPreviousSell)) {
-    initialGate.orderbookFirstPreviousSell = sell;
+  if (!Boolean(initialObj.orderbookFirstPreviousSell)) {
+    initialObj.orderbookFirstPreviousSell = sell;
     console.log('!orderbookFirstPreviousSell');
   }
   if (trueBay || trueSell) return true
+  return false
 }
 module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr }
