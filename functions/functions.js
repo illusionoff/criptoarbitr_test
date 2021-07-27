@@ -453,4 +453,39 @@ function changeTradeArr(initialObj) {
   if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) return true
   return false
 }
-module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr }
+
+function reconnectBithClosure(ws) {
+  let count = 0;// для разогрева - т.е не сразу начинать
+  let timeoutHandle;
+  let flag = false;
+
+  function start() {
+    timeoutHandle = setTimeout(function () {
+      console.log('Reconnect setTimeout');
+      count = 0;
+      return ws.reconnect(1006, 'Reconnect error');
+    }, 5000);
+  }
+
+  function stop() {
+    clearTimeout(timeoutHandle);
+  }
+
+  function startReconnect() {
+    count++;
+    console.log('function  count=', count);
+    if (count > 1) {
+      if (!flag) {
+        flag = true;
+        start();
+        console.log('start time');
+      }
+      stop();
+      start();
+    }
+  }
+  return function (ws) {
+    return startReconnect(ws);
+  }
+}
+module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure }
