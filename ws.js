@@ -58,12 +58,12 @@ function init() {
 
   // wsStartBith('subscribe', "ORDERBOOK:XRP-USDT", initialGate, writableFiles);/////////////////////////
 
-  wsStartBithOrder10('subscribe', "ORDERBOOK10:XRP-USDT", initialGate, writableFiles);///////////////////////////////
+  // wsStartBithOrder10('subscribe', "ORDERBOOK10:XRP-USDT", initialGate, writableFiles);///////////////////////////////
   // wsGetGate(Math.round(Math.random() * 1000), 'depth.subscribe', ["XRP_USDT", 10, "0.0001"], initialBith, writableFiles); // передаем данные для сравнения из bithumb
 
   // wsGetGate(Number(new Date().getTime()), 'spot.book_ticker', 'subscribe', ["XRP_USDT"], initialBith, writableFiles); // передаем данные для сравнения из bithumb//////////
 
-  // wsGetGate(Number(new Date().getTime()), 'spot.order_book', 'subscribe', ["XRP_USDT", "10", "100ms"], initialBith, writableFiles); // передаем данные для /////////
+  wsGetGate(Number(new Date().getTime()), 'spot.order_book', 'subscribe', ["XRP_USDT", "10", "100ms"], initialBith, writableFiles); // передаем данные для /////////
 
   // gate.wsGet(Math.round(Math.random()*1000),'depth.unsubscribe', []);
   // gate.wsGet(Math.round(Math.random()*1000),'kline.query', ["BTC_USDT", 1, 1516951219, 1800]);

@@ -79,6 +79,8 @@ function goTrade(paramsGoTrade, writableFiles) {
   // n.round(2); // 1.78 .round(comma)
   const comma = 8;
   // if (diffSell > 0 || diffBay > 0) {
+  console.log('paramsGoTrade.bayGate=', paramsGoTrade.bayGate);
+  console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
   const data = {
     bayGate: paramsGoTrade.bayGate.round(comma),
     bayBith: paramsGoTrade.bayBith.round(comma),
@@ -392,21 +394,43 @@ function TestWritable(data) {
   };
 }
 
+function closure() {
+  let count = 0;
+  function main() {
+    console.log('count=', count);
+    count++;
+  }
+  return function () {
+    return main()
+  }
+}
+
+let variableClosure = closure();
+let variableClosure2 = closure();
+
 function changeTradeArr(initialObj) {
   let bay = initialObj.bay;
   let sell = initialObj.sell;
   let trueBay = false;
   let trueSell = false;
   initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
+  console.log('variableClosure1');
+  variableClosure();//count= 0
+
+
+
   //  Инициализация первых предыдущих значений
   console.log('1 Boolean(initialObj.orderbookFirstPreviousBay)=', Boolean(initialObj.orderbookFirstPreviousBay));
   console.log('1 initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
   // проверка изменения значения для предотвращения лишних вычислений
+
+
+
+
   if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
     initialObj.bayOrSell = 1;
     console.log('bay=', bay);
     initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
-    initialObj.priceAndComissionsBay = bay;
     trueBay = true;
     console.log('trueBay = true');
     // process.exit();
@@ -441,6 +465,13 @@ function changeTradeArr(initialObj) {
   console.log(' 100 initialObj.priceAndComissionsSell changeTradeArr()=', initialObj.priceAndComissionsSell);
   console.log(' 100 initialObj.priceAndComissionsBay changeTradeArr()=', initialObj.priceAndComissionsBay);
 
+
+  // if (Boolean(initialObj.orderbookFirstPreviousBay) && Boolean(initialObj.orderbookFirstPreviousSell)) {
+  //   console.log('typeof initialObj.orderbookFirstPreviousBay=', typeof initialObj.orderbookFirstPreviousBay);
+  //   console.log('typeof bay=', typeof bay);
+  //   process.exit();
+  // }
+
   if (!Boolean(initialObj.orderbookFirstPreviousBay)) {
     initialObj.orderbookFirstPreviousBay = bay;
     console.log('!orderbookFirstPreviousBay');
@@ -449,7 +480,13 @@ function changeTradeArr(initialObj) {
     initialObj.orderbookFirstPreviousSell = sell;
     console.log('!orderbookFirstPreviousSell');
   }
-  if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) return true
+
+  if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
+    console.log('variableClosure2');
+    variableClosure2();
+    return true
+  }
+
   return false
 }
 
