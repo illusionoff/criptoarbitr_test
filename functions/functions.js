@@ -311,7 +311,7 @@ function TestWritable(data) {
   let testCount = 0;
   let testCountAll = 1;
   const highWaterMark = 320 * 1024;
-  const headerName = `bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init`;
+  const headerName = `Number,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init`;
   let testWriteableStream = {
     write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
     write_2: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark })
@@ -408,6 +408,7 @@ function changeTradeArr(initialObj) {
     console.log('bay=', bay);
     initialObj.orderbookFirstPreviousBay = bay;
     initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+    // initialObj.priceAndComissionsBay = bay;
     trueBay = true;
     console.log('trueBay = true');
     // process.exit();
@@ -425,6 +426,7 @@ function changeTradeArr(initialObj) {
     console.log('typeof initialObj.makerComissions changeTradeArr()', typeof initialObj.makerComissions);
     console.log('initialObj.makerComissions changeTradeArr()', initialObj.makerComissions);
     initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+    // initialObj.priceAndComissionsSell = sell;
     console.log('initialObj.priceAndComissionsSell changeTradeArr()=', initialObj.priceAndComissionsSell);
     trueSell = true;
     console.log('trueSell = true');
@@ -464,7 +466,7 @@ function reconnectBithClosure(ws) {
       console.log('Reconnect setTimeout');
       count = 0;
       return ws.reconnect(1006, 'Reconnect error');
-    }, 5000);
+    }, 20000);
   }
 
   function stop() {
