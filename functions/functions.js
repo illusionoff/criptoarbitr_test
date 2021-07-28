@@ -398,7 +398,6 @@ function changeTradeArr(initialObj) {
   let trueBay = false;
   let trueSell = false;
   initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
-
   //  Инициализация первых предыдущих значений
   console.log('1 Boolean(initialObj.orderbookFirstPreviousBay)=', Boolean(initialObj.orderbookFirstPreviousBay));
   console.log('1 initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
@@ -406,9 +405,8 @@ function changeTradeArr(initialObj) {
   if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
     initialObj.bayOrSell = 1;
     console.log('bay=', bay);
-    initialObj.orderbookFirstPreviousBay = bay;
     initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
-    // initialObj.priceAndComissionsBay = bay;
+    initialObj.priceAndComissionsBay = bay;
     trueBay = true;
     console.log('trueBay = true');
     // process.exit();
@@ -426,7 +424,6 @@ function changeTradeArr(initialObj) {
     console.log('typeof initialObj.makerComissions changeTradeArr()', typeof initialObj.makerComissions);
     console.log('initialObj.makerComissions changeTradeArr()', initialObj.makerComissions);
     initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
-    // initialObj.priceAndComissionsSell = sell;
     console.log('initialObj.priceAndComissionsSell changeTradeArr()=', initialObj.priceAndComissionsSell);
     trueSell = true;
     console.log('trueSell = true');
