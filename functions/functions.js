@@ -429,6 +429,7 @@ function changeTradeArr(initialObj) {
 
   if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
     initialObj.bayOrSell = 1;
+    initialObj.orderbookFirstPreviousBay = bay;
     console.log('bay=', bay);
     initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
     trueBay = true;
