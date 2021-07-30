@@ -104,10 +104,10 @@ function goTrade(paramsGoTrade, writableFiles) {
   // init: 0,
 
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
-    // writableFiles();
+    // writableFiles(data);
   }
   console.log('data========================================', data);
-  writableFiles(data);
+  // writableFiles(data);
 };
 
 
