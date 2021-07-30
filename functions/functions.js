@@ -107,7 +107,7 @@ function goTrade(paramsGoTrade, writableFiles) {
     // writableFiles(data);
   }
   console.log('data========================================', data);
-  // writableFiles(data);
+  writableFiles(data);
 };
 
 
