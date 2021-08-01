@@ -485,4 +485,51 @@ function reconnectBithClosure(ws) {
     return startReconnect(ws);
   }
 }
-module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure }
+
+function correctTimeServerClosure(initialBith, ws, colMessage) {
+  let count = 0;
+  let arrTimesPingPong = [];
+  let timePing;
+  let code00001 = false;
+  initialBith.messageObj = JSON.parse(message.data); //utf8Data  с сервера это строка преобразуем в объект
+  if (initialBith.messageObj.code && initialBith.messageObj.code === '00001') code00001 = true;
+  // разогрев для подсчета синхронизации времени
+  function timeServer(colMessage) {
+    // if (colMessage > 3) {
+    if (code00001 === true) {
+      process.exit();
+
+      if (count < 11) {
+        // отправка первого сообщения Ping
+        if (count === 0) {
+          ws.send(JSON.stringify({ "cmd": "ping" }));
+          timePing = new Date().getTime();
+          console.log(`!Pong synchronization  first time count=${count}`);// пришел ответ Pong
+
+        }
+        if (initialBith.messageObj.code && initialBith.messageObj.code === '0' &&
+          initialBith.messageObj.msg && initialBith.messageObj.msg === 'Pong') {
+          console.log(`!Pong synchronization time count=${count}`);// пришел ответ Pong
+          let timePong = new Date().getTime();
+          arrTimesPingPong.push([timePing, timePong]);
+          // отправка последующих сообщений Ping
+          ws.send(JSON.stringify({ "cmd": "ping" }));
+          timePing = new Date().getTime();
+          count++;
+        }
+      } else {
+        // подсчет синхронизированного времени
+        let arrTimes = arrTimesPingPong.map((elem) => {
+          return Math.round((elem[1] - elem[0]) / 2);
+        });
+        let timeSync = Math.round(arrTimes.reduce((sum, current) => sum + current, 0) / 10);
+        console.log(`arrTimes= ${arrTimes} timeSync = ${timeSync}`);
+        process.exit();
+      }
+    }
+  }
+  return function (colMessage) {
+    return timeServer(colMessage); // есть доступ к внешней переменной "count"
+  };
+}
+module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure, correctTimeServerClosure }
