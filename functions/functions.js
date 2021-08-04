@@ -488,19 +488,15 @@ function reconnectBithClosure(ws) {
 
 function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
   let timeSync = 0;
-  let end = false;
+  let end = false; // положительное завершение функции, теперь она будет выдавать всегда среднее значение задержки сообщений
   let count = 0;
   let arrTimesPingPong = [];
   let timePing;
   let code00001 = false;
   let timeStart = undefined;
-  // initialBith.messageObj = JSON.parse(message.data); //utf8Data  с сервера это строка преобразуем в объект
-  // if (initialBith.messageObj.code && initialBith.messageObj.code === '00001') code00001 = true;
-  // разогрев для подсчета синхронизации времени
   function timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
     console.log('initialObj=*******************************', messageObj);
     console.log('BithOrGate=*******************************', BithOrGate);
-    // if (colMessage > 3) code00001 = true;
     if (messageObj.code && messageObj.code === '00001') {
       timeStart = new Date().getTime();
       code00001 = true;
@@ -534,8 +530,6 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
               count = 0;
               arrTimesPingPong = [];
               code00001 = false;
-              // ws.reconnect(1006, 'Reconnect error');
-              // result = false;
               return false;
             }
           }
@@ -570,7 +564,6 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
             count = 0;
             arrTimesPingPong = [];
             code00001 = false;
-            // ws.reconnect(1006, 'Reconnect error');
             return false
           }
           console.log('timeSync1=', timeSync);
@@ -581,13 +574,9 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
         }
         console.log('timeSync2=', timeSync);
         console.log('end2=', end);
-
-        // process.exit();
         return timeSync
       }
     }
-
-    // result = true;
     return false
   }
   return function (ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
