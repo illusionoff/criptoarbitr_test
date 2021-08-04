@@ -555,7 +555,7 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
           timePing = new Date().getTime();
           count++;
           console.log(`@ !Pong synchronization time count=${count}`);// пришел ответ Pong
-          if (count === 4) process.exit();
+          if (count === 11) process.exit();
 
         }
       } else {
@@ -597,7 +597,7 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
         return timeSync
       }
     }
-    return false
+    return true
   }
   return function (ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
     return timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING); // есть доступ к внешней переменной "count"
