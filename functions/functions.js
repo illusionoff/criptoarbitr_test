@@ -494,14 +494,17 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
   let timePing; // метка времени ping
   let code00001 = false; // стартовое сообщение для запуска основной функции
   let timeStart = undefined;
+  let pingObj;
   if (BithOrGate) {
-    const ping = { "cmd": "ping" };
+    pingObj = { "cmd": "ping" };
   } else {
-    let time = new Date().getTime();
-    console.log('time ping', time);
-    const ping = { "time": time, "channel": "spot.ping" };
+    // let time = new Date().getTime();
+    // console.log('time ping', time);
+    const time = 1628080537768;
+    pingObj = { "time": time, "channel": "spot.ping" };
   }
   function timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
+    console.log('count initialObj=*******************************', count);
     console.log('initialObj=*******************************', messageObj);
     console.log('BithOrGate=*******************************', BithOrGate);
     // сообщение инициализирующее запуск основного алгоритма - разные для Gate и Bith
@@ -509,6 +512,7 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
       (!BithOrGate && messageObj.event === 'subscribe' && messageObj.result.status === 'success')) {
       timeStart = new Date().getTime();
       code00001 = true;
+      // process.exit();
     }
 
     console.log('messageObj=', messageObj);
@@ -518,14 +522,16 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
       if (count < 12) {
         // отправка первого сообщения Ping
         if (count === 0) {
-          ws.send(JSON.stringify({ "cmd": "ping" }));
+          ws.send(JSON.stringify(pingObj));
           timePing = new Date().getTime();
           console.log(`!Pong synchronization  first time timePing=${timePing}`);// пришел ответ Pong
           console.log(`!Pong synchronization  first time count=${count}`);// пришел ответ Pong
         }
         // если получили ответ pong вида 
-        if (messageObj.code && messageObj.code === '0' &&
-          messageObj.msg && messageObj.msg === 'Pong') {
+        // { time: 1628081023, channel: 'spot.pong', event: '', result: null }
+        if ((BithOrGate && messageObj.code && messageObj.code === '0' &&
+          messageObj.msg && messageObj.msg === 'Pong') ||
+          (!BithOrGate && messageObj.channel === 'spot.pong' && messageObj.result === null)) {
           console.log(`!Pong synchronization time count=${count}`);// пришел ответ Pong
           let timePong = new Date().getTime();
           console.log(`!Pong synchronization  first time timePong=${timePong}`);// пришел ответ Pong
@@ -545,11 +551,15 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
           }
           console.log('arrTimesPingPong=', arrTimesPingPong);
           // отправка последующих сообщений Ping
-          ws.send(JSON.stringify({ "cmd": "ping" }));
+          ws.send(JSON.stringify(pingObj));
           timePing = new Date().getTime();
           count++;
+          console.log(`@ !Pong synchronization time count=${count}`);// пришел ответ Pong
+          if (count === 4) process.exit();
+
         }
       } else {
+        // process.exit();
         if (!end) {
           // подсчет синхронизированного времени
           let arrTimes = arrTimesPingPong.map((elem) => {
