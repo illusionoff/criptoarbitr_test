@@ -486,50 +486,112 @@ function reconnectBithClosure(ws) {
   }
 }
 
-function correctTimeServerClosure(initialBith, ws, colMessage) {
+function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
+  let timeSync = 0;
+  let end = false;
   let count = 0;
   let arrTimesPingPong = [];
   let timePing;
   let code00001 = false;
-  initialBith.messageObj = JSON.parse(message.data); //utf8Data  с сервера это строка преобразуем в объект
-  if (initialBith.messageObj.code && initialBith.messageObj.code === '00001') code00001 = true;
+  let timeStart = undefined;
+  // initialBith.messageObj = JSON.parse(message.data); //utf8Data  с сервера это строка преобразуем в объект
+  // if (initialBith.messageObj.code && initialBith.messageObj.code === '00001') code00001 = true;
   // разогрев для подсчета синхронизации времени
-  function timeServer(colMessage) {
+  function timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
+    console.log('initialObj=*******************************', messageObj);
+    console.log('BithOrGate=*******************************', BithOrGate);
+    // if (colMessage > 3) code00001 = true;
+    if (messageObj.code && messageObj.code === '00001') {
+      timeStart = new Date().getTime();
+      code00001 = true;
+    }
+    console.log('messageObj=', messageObj);
+    console.log('code00001=', code00001);
     // if (colMessage > 3) {
     if (code00001 === true) {
-      process.exit();
-
-      if (count < 11) {
+      console.log(`!Pong synchronization  code00001`);// пришел ответ Pong
+      if (count < 12) {
         // отправка первого сообщения Ping
         if (count === 0) {
           ws.send(JSON.stringify({ "cmd": "ping" }));
           timePing = new Date().getTime();
+          console.log(`!Pong synchronization  first time timePing=${timePing}`);// пришел ответ Pong
           console.log(`!Pong synchronization  first time count=${count}`);// пришел ответ Pong
-
         }
-        if (initialBith.messageObj.code && initialBith.messageObj.code === '0' &&
-          initialBith.messageObj.msg && initialBith.messageObj.msg === 'Pong') {
+        if (messageObj.code && messageObj.code === '0' &&
+          messageObj.msg && messageObj.msg === 'Pong') {
           console.log(`!Pong synchronization time count=${count}`);// пришел ответ Pong
           let timePong = new Date().getTime();
+          console.log(`!Pong synchronization  first time timePong=${timePong}`);// пришел ответ Pong
           arrTimesPingPong.push([timePing, timePong]);
+          // начинаем с индекса 2, тоесть пропускаем 2 элемента(они сильно искажают общую картину)
+          if (arrTimesPingPong.length > 2) {
+            let timeDelta = timePong - timePing;
+            if (timeDelta > MINTIME_ONE_PING) {
+              console.log(`(timePong - timePing) > MINTIME_ONE_PING ms timeDelta =${timeDelta}`);// пришел ответ Pong
+              // обнуление переменных
+              timeStart = undefined;
+              count = 0;
+              arrTimesPingPong = [];
+              code00001 = false;
+              // ws.reconnect(1006, 'Reconnect error');
+              // result = false;
+              return false;
+            }
+          }
+          console.log('arrTimesPingPong=', arrTimesPingPong);
           // отправка последующих сообщений Ping
           ws.send(JSON.stringify({ "cmd": "ping" }));
           timePing = new Date().getTime();
           count++;
         }
       } else {
-        // подсчет синхронизированного времени
-        let arrTimes = arrTimesPingPong.map((elem) => {
-          return Math.round((elem[1] - elem[0]) / 2);
-        });
-        let timeSync = Math.round(arrTimes.reduce((sum, current) => sum + current, 0) / 10);
-        console.log(`arrTimes= ${arrTimes} timeSync = ${timeSync}`);
-        process.exit();
+        if (!end) {
+          // подсчет синхронизированного времени
+          let arrTimes = arrTimesPingPong.map((elem) => {
+            return Math.round((elem[1] - elem[0]) / 2);
+          });
+          // удаляем первые два элемента, тоесть пропускаем 2 элемента(они сильно искажают общую картину)
+          arrTimes.splice(0, 2);
+          timeSync = Math.round(arrTimes.reduce((sum, current) => sum + current, 0) / 10);
+          console.log(`arrTimes= ${arrTimes} timeSync = ${timeSync} arrTimes.length =${arrTimes.length}`);
+          console.log('arrTimesPingPong=', arrTimesPingPong);
+          console.log('MINTIME_ONE_PING=', MINTIME_ONE_PING);
+          console.log('MINTIME_ALL_PING=', MINTIME_ALL_PING);
+
+          let timeEnd = new Date().getTime();
+          // если  ответовs Pong заняли более 4 sec то ws.reconnect
+          let timeAllPing = timeEnd - timeStart;
+          console.log('timeAllPing=', timeAllPing);
+          if (timeStart !== undefined && timeAllPing > MINTIME_ALL_PING) {
+            console.log(`(timeEnd-timeStart)>4000ms`);// пришел ответ Pong
+            // обнуление переменных
+            timeStart = undefined;
+            count = 0;
+            arrTimesPingPong = [];
+            code00001 = false;
+            // ws.reconnect(1006, 'Reconnect error');
+            return false
+          }
+          console.log('timeSync1=', timeSync);
+          end = true;
+          console.log('end1=', end);
+          // process.exit();
+          return timeSync
+        }
+        console.log('timeSync2=', timeSync);
+        console.log('end2=', end);
+
+        // process.exit();
+        return timeSync
       }
     }
+
+    // result = true;
+    return false
   }
-  return function (colMessage) {
-    return timeServer(colMessage); // есть доступ к внешней переменной "count"
+  return function (ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
+    return timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING); // есть доступ к внешней переменной "count"
   };
 }
 module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure, correctTimeServerClosure }
