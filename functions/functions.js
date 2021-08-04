@@ -487,23 +487,32 @@ function reconnectBithClosure(ws) {
 }
 
 function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
-  let timeSync = 0;
+  let timeSync = 0; // возвращаемое среднее значение задержки сообщений с api сервера в одну сторону
   let end = false; // положительное завершение функции, теперь она будет выдавать всегда среднее значение задержки сообщений
-  let count = 0;
-  let arrTimesPingPong = [];
-  let timePing;
-  let code00001 = false;
+  let count = 0; // количество сообщений ping-pong
+  let arrTimesPingPong = []; // массив временных меток отправки ping и получинения pong
+  let timePing; // метка времени ping
+  let code00001 = false; // стартовое сообщение для запуска основной функции
   let timeStart = undefined;
+  if (BithOrGate) {
+    const ping = { "cmd": "ping" };
+  } else {
+    let time = new Date().getTime();
+    console.log('time ping', time);
+    const ping = { "time": time, "channel": "spot.ping" };
+  }
   function timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
     console.log('initialObj=*******************************', messageObj);
     console.log('BithOrGate=*******************************', BithOrGate);
-    if (messageObj.code && messageObj.code === '00001') {
+    // сообщение инициализирующее запуск основного алгоритма - разные для Gate и Bith
+    if ((BithOrGate && messageObj.code && messageObj.code === '00001') ||
+      (!BithOrGate && messageObj.event === 'subscribe' && messageObj.result.status === 'success')) {
       timeStart = new Date().getTime();
       code00001 = true;
     }
+
     console.log('messageObj=', messageObj);
     console.log('code00001=', code00001);
-    // if (colMessage > 3) {
     if (code00001 === true) {
       console.log(`!Pong synchronization  code00001`);// пришел ответ Pong
       if (count < 12) {
@@ -514,6 +523,7 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
           console.log(`!Pong synchronization  first time timePing=${timePing}`);// пришел ответ Pong
           console.log(`!Pong synchronization  first time count=${count}`);// пришел ответ Pong
         }
+        // если получили ответ pong вида 
         if (messageObj.code && messageObj.code === '0' &&
           messageObj.msg && messageObj.msg === 'Pong') {
           console.log(`!Pong synchronization time count=${count}`);// пришел ответ Pong
