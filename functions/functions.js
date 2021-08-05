@@ -495,6 +495,7 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
   let code00001 = false; // стартовое сообщение для запуска основной функции
   let timeStart = undefined;
   let pingObj;
+  let testCount0 = 0;
   if (BithOrGate) {
     pingObj = { "cmd": "ping" };
   } else {
@@ -505,7 +506,7 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
   }
   function timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
     console.log('count initialObj=*******************************', count);
-    console.log('initialObj=*******************************', messageObj);
+    // console.log('initialObj=*******************************', messageObj);
     console.log('BithOrGate=*******************************', BithOrGate);
     // сообщение инициализирующее запуск основного алгоритма - разные для Gate и Bith
     if ((BithOrGate && messageObj.code && messageObj.code === '00001') ||
@@ -524,6 +525,8 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
         if (count === 0) {
           ws.send(JSON.stringify(pingObj));
           timePing = new Date().getTime();
+          testCount0++;
+          console.log(`!Pong synchronization  first  testCount0======${testCount0}`);// пришел ответ Pong
           console.log(`!Pong synchronization  first time timePing=${timePing}`);// пришел ответ Pong
           console.log(`!Pong synchronization  first time count=${count}`);// пришел ответ Pong
         }
@@ -554,11 +557,10 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
           ws.send(JSON.stringify(pingObj));
           timePing = new Date().getTime();
           count++;
-          console.log(`@ !Pong synchronization time count=${count}`);// пришел ответ Pong
-          if (count === 11) process.exit();
-
         }
       } else {
+        console.log(`@ !Pong synchronization time count=${count}`);// пришел ответ Pong
+        if (count === 12) process.exit();
         // process.exit();
         if (!end) {
           // подсчет синхронизированного времени
