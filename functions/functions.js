@@ -496,24 +496,28 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
   let timeStart = undefined;
   let pingObj;
   let testCount0 = 0;
-  if (BithOrGate) {
-    pingObj = { "cmd": "ping" };
-  } else {
-    // let time = new Date().getTime();
-    // console.log('time ping', time);
-    const time = 1628080537768;
-    pingObj = { "time": time, "channel": "spot.ping" };
+  let reinitialization = () => {
+    // обнуление переменных
+    console.log('reinitialization');
+    timeStart = undefined;
+    count = 0;
+    arrTimesPingPong = [];
+    code00001 = false;
   }
   function timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
     console.log('count initialObj=*******************************', count);
-    // console.log('initialObj=*******************************', messageObj);
+    console.log('initialObj=*******************************', messageObj);
     console.log('BithOrGate=*******************************', BithOrGate);
     // сообщение инициализирующее запуск основного алгоритма - разные для Gate и Bith
-    if ((BithOrGate && messageObj.code && messageObj.code === '00001') ||
-      (!BithOrGate && messageObj.event === 'subscribe' && messageObj.result.status === 'success')) {
+    if (messageObj.code && messageObj.code === '00001') {
       timeStart = new Date().getTime();
       code00001 = true;
-      // process.exit();
+      pingObj = { "cmd": "ping" };
+    }
+    if (messageObj.event === 'subscribe' && messageObj.result.status === 'success') {
+      timeStart = new Date().getTime();
+      code00001 = true;
+      pingObj = { "time": 1628080537768, "channel": "spot.ping" };
     }
 
     console.log('messageObj=', messageObj);
@@ -532,9 +536,9 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
         }
         // если получили ответ pong вида 
         // { time: 1628081023, channel: 'spot.pong', event: '', result: null }
-        if ((BithOrGate && messageObj.code && messageObj.code === '0' &&
+        if ((messageObj.code && messageObj.code === '0' &&
           messageObj.msg && messageObj.msg === 'Pong') ||
-          (!BithOrGate && messageObj.channel === 'spot.pong' && messageObj.result === null)) {
+          (messageObj.channel === 'spot.pong' && messageObj.result === null)) {
           console.log(`!Pong synchronization time count=${count}`);// пришел ответ Pong
           let timePong = new Date().getTime();
           console.log(`!Pong synchronization  first time timePong=${timePong}`);// пришел ответ Pong
@@ -545,11 +549,7 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
             if (timeDelta > MINTIME_ONE_PING) {
               console.log(`(timePong - timePing) > MINTIME_ONE_PING ms timeDelta =${timeDelta}`);// пришел ответ Pong
               // обнуление переменных
-              timeStart = undefined;
-              count = 0;
-              arrTimesPingPong = [];
-              code00001 = false;
-              return false;
+              reinitialization();
             }
           }
           console.log('arrTimesPingPong=', arrTimesPingPong);
@@ -560,7 +560,7 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
         }
       } else {
         console.log(`@ !Pong synchronization time count=${count}`);// пришел ответ Pong
-        if (count === 12) process.exit();
+        // if (count === 12) process.exit();
         // process.exit();
         if (!end) {
           // подсчет синхронизированного времени
@@ -575,19 +575,6 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
           console.log('MINTIME_ONE_PING=', MINTIME_ONE_PING);
           console.log('MINTIME_ALL_PING=', MINTIME_ALL_PING);
 
-          let timeEnd = new Date().getTime();
-          // если  ответовs Pong заняли более 4 sec то ws.reconnect
-          let timeAllPing = timeEnd - timeStart;
-          console.log('timeAllPing=', timeAllPing);
-          if (timeStart !== undefined && timeAllPing > MINTIME_ALL_PING) {
-            console.log(`(timeEnd-timeStart)>4000ms`);// пришел ответ Pong
-            // обнуление переменных
-            timeStart = undefined;
-            count = 0;
-            arrTimesPingPong = [];
-            code00001 = false;
-            return false
-          }
           console.log('timeSync1=', timeSync);
           end = true;
           console.log('end1=', end);
@@ -597,6 +584,16 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
         console.log('timeSync2=', timeSync);
         console.log('end2=', end);
         return timeSync
+      }
+      let timeEnd = new Date().getTime();
+      // если  ответовs Pong заняли более 4 sec то ws.reconnect
+      let timeAllPing = timeEnd - timeStart;
+      console.log('timeAllPing=', timeAllPing);
+      if (timeStart !== undefined && timeAllPing > MINTIME_ALL_PING) {
+        console.log(`(timeEnd-timeStart)>4000ms`);// пришел ответ Pong
+        // обнуление переменных
+        reinitialization();
+        process.exit();
       }
     }
     return true
