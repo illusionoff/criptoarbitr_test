@@ -481,9 +481,8 @@ function reconnectBithClosure(ws) {
       start();
     }
   }
-  return function (ws) {
-    return startReconnect(ws);
-  }
+  return (ws) => startReconnect(ws);
+
 }
 
 function correctTimeServerClosure(ws, initialObj) {
@@ -507,6 +506,7 @@ function correctTimeServerClosure(ws, initialObj) {
     count = 0;
     arrTimesPingPong = [];
     code00001 = false;
+    start = false;
   }
   function timeServer(ws, initialObj) {
     // запуск таймера первого запуска функции
@@ -514,12 +514,16 @@ function correctTimeServerClosure(ws, initialObj) {
       if (!start) {
         timeStart = new Date().getTime();
         start = true;
+        console.log('timeStart111=', timeStart);
+        console.log('start111=', start);
+
+        // process.exit()
       }
 
       if (initialObj.name === 'gate') {
         pingObj = { "time": 1628080537768, "channel": "spot.ping" };
-        MINTIME_ONE_PING = 5000;
-        MINTIME_ALL_PING = 60000;
+        MINTIME_ONE_PING = 4000;
+        MINTIME_ALL_PING = 20000;
       }
       if (initialObj.name === 'bith') {
         pingObj = { "cmd": "ping" };
@@ -614,16 +618,14 @@ function correctTimeServerClosure(ws, initialObj) {
         console.log(`(timeEnd-timeStart)>4000ms`);// пришел ответ Pong
         // обнуление переменных
         reinitialization();
-        // process.exit();
+        process.exit();
         return false
       }
       return true
     }
     return timeSync
   }
-  return function (ws, initialObj) {
-    return timeServer(ws, initialObj); // есть доступ к внешней переменной "count"
-  };
+  return (ws, initialObj) => timeServer(ws, initialObj); // есть доступ к внешней переменной "count"
 }
 
 // once = function (func) {
