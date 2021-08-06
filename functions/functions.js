@@ -498,6 +498,7 @@ function correctTimeServerClosure(ws, initialObj) {
   let testCount0 = 0;
   let MINTIME_ONE_PING;
   let MINTIME_ALL_PING;
+  let start = false;
 
   let reinitialization = () => {
     // обнуление переменных
@@ -508,10 +509,16 @@ function correctTimeServerClosure(ws, initialObj) {
     code00001 = false;
   }
   function timeServer(ws, initialObj) {
+    // запуск таймера первого запуска функции
+    if (!start) {
+      timeStart = new Date().getTime();
+      start = true;
+    }
+
     if (initialObj.name === 'gate') {
       pingObj = { "time": 1628080537768, "channel": "spot.ping" };
-      MINTIME_ONE_PING = 3000;
-      MINTIME_ALL_PING = 5000;
+      MINTIME_ONE_PING = 5000;
+      MINTIME_ALL_PING = 20000;
     }
     if (initialObj.name === 'bith') {
       pingObj = { "cmd": "ping" };
@@ -527,7 +534,6 @@ function correctTimeServerClosure(ws, initialObj) {
     // сообщение инициализирующее запуск основного алгоритма - разные для Gate и Bith
     if ((messageObj.code && messageObj.code === '00001') ||
       (messageObj.event === 'subscribe' && messageObj.result.status === 'success')) {
-      timeStart = new Date().getTime();
       code00001 = true;
     }
 
@@ -555,6 +561,12 @@ function correctTimeServerClosure(ws, initialObj) {
           let timePong = new Date().getTime();
           console.log(`!Pong synchronization  first time timePong=${timePong}`);// пришел ответ Pong
           arrTimesPingPong.push([timePing, timePong]);
+          console.log(`timePing=${timePing}`);// пришел ответ Pong
+
+          console.log('arrTimesPingPong1=', arrTimesPingPong);// пришел ответ Pong
+
+
+          // if (count === 10) { process.exit() }
           // начинаем с индекса 2, тоесть пропускаем 2 элемента(они сильно искажают общую картину)
           if (arrTimesPingPong.length > 2) {
             let timeDelta = timePong - timePing;
@@ -562,9 +574,10 @@ function correctTimeServerClosure(ws, initialObj) {
               console.log(`(timePong - timePing) > MINTIME_ONE_PING ms timeDelta =${timeDelta}`);// пришел ответ Pong
               // обнуление переменных
               reinitialization();
+              return false
             }
           }
-          console.log('arrTimesPingPong=', arrTimesPingPong);
+          console.log('arrTimesPingPong2=', arrTimesPingPong);
           // отправка последующих сообщений Ping
           ws.send(JSON.stringify(pingObj));
           timePing = new Date().getTime();
@@ -597,16 +610,20 @@ function correctTimeServerClosure(ws, initialObj) {
         console.log('end2=', end);
         return timeSync
       }
-      let timeEnd = new Date().getTime();
-      // если  ответовs Pong заняли более 4 sec то ws.reconnect
-      let timeAllPing = timeEnd - timeStart;
-      console.log('timeAllPing=', timeAllPing);
-      if (timeStart !== undefined && timeAllPing > MINTIME_ALL_PING) {
-        console.log(`(timeEnd-timeStart)>4000ms`);// пришел ответ Pong
-        // обнуление переменных
-        reinitialization();
-        process.exit();
-      }
+
+    }
+    let timeEnd = new Date().getTime();
+    // если  ответовs Pong заняли более 4 sec то ws.reconnect
+    let timeAllPing = timeEnd - timeStart;
+    console.log('timeAllPing=', timeAllPing);
+    console.log('timeEnd=', timeEnd);
+    console.log('timeStart=', timeStart);
+    if (timeStart !== undefined && timeAllPing > MINTIME_ALL_PING) {
+      console.log(`(timeEnd-timeStart)>4000ms`);// пришел ответ Pong
+      // обнуление переменных
+      reinitialization();
+      // process.exit();
+      return false
     }
     return true
   }
