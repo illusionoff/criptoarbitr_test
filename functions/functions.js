@@ -509,8 +509,8 @@ function correctTimeServerClosure(ws, initialObj) {
     code00001 = false;
   }
   function timeServer(ws, initialObj) {
+    // запуск таймера первого запуска функции
     if (!end) {
-      // запуск таймера первого запуска функции
       if (!start) {
         timeStart = new Date().getTime();
         start = true;
@@ -537,8 +537,6 @@ function correctTimeServerClosure(ws, initialObj) {
         (messageObj.event === 'subscribe' && messageObj.result.status === 'success')) {
         code00001 = true;
       }
-
-
       console.log('messageObj=', messageObj);
       console.log('code00001=', code00001);
       if (code00001 === true) {
@@ -588,7 +586,6 @@ function correctTimeServerClosure(ws, initialObj) {
           console.log(`@ !Pong synchronization time count=${count}`);// пришел ответ Pong
           // if (count === 12) process.exit();
           // process.exit();
-
           // подсчет синхронизированного времени
           let arrTimes = arrTimesPingPong.map((elem) => {
             return Math.round((elem[1] - elem[0]) / 2);
@@ -628,4 +625,28 @@ function correctTimeServerClosure(ws, initialObj) {
     return timeServer(ws, initialObj); // есть доступ к внешней переменной "count"
   };
 }
+
+// once = function (func) {
+//   var ran = false, memo;
+//   return function () {
+//     if (ran) return memo;
+//     ran = true;
+//     memo = func.apply(this, arguments);
+//     func = null;
+//     return memo;
+//   };
+// };
+
+// once = function (func) {
+//   var result;
+
+//   return function () {
+//     if (func) {
+//       result = func.apply(this, arguments);
+//       func = null;
+//     }
+
+//     return result;
+//   }
+// };
 module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure, correctTimeServerClosure }

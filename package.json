@@ -21,6 +21,7 @@
     "moment": "^2.13.0",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.7",
+    "once": "^1.4.0",
     "pako": "^1.0.6",
     "reconnecting-websocket": "^4.4.0",
     "redis": "^2.4.2",
