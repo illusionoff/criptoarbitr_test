@@ -486,7 +486,7 @@ function reconnectBithClosure(ws) {
   }
 }
 
-function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
+function correctTimeServerClosure(ws, initialObj) {
   let timeSync = 0; // возвращаемое среднее значение задержки сообщений с api сервера в одну сторону
   let end = false; // положительное завершение функции, теперь она будет выдавать всегда среднее значение задержки сообщений
   let count = 0; // количество сообщений ping-pong
@@ -496,6 +496,9 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
   let timeStart = undefined;
   let pingObj;
   let testCount0 = 0;
+  let MINTIME_ONE_PING;
+  let MINTIME_ALL_PING;
+
   let reinitialization = () => {
     // обнуление переменных
     console.log('reinitialization');
@@ -504,21 +507,30 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
     arrTimesPingPong = [];
     code00001 = false;
   }
-  function timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
+  function timeServer(ws, initialObj) {
+    if (initialObj.name === 'gate') {
+      pingObj = { "time": 1628080537768, "channel": "spot.ping" };
+      MINTIME_ONE_PING = 3000;
+      MINTIME_ALL_PING = 5000;
+    }
+    if (initialObj.name === 'bith') {
+      pingObj = { "cmd": "ping" };
+      MINTIME_ONE_PING = 600;
+      MINTIME_ALL_PING = 8000;
+    }
+    console.log('initialObj=', initialObj);
+    let messageObj = initialObj.messageObj;
+
+
     console.log('count initialObj=*******************************', count);
     console.log('initialObj=*******************************', messageObj);
-    console.log('BithOrGate=*******************************', BithOrGate);
     // сообщение инициализирующее запуск основного алгоритма - разные для Gate и Bith
-    if (messageObj.code && messageObj.code === '00001') {
+    if ((messageObj.code && messageObj.code === '00001') ||
+      (messageObj.event === 'subscribe' && messageObj.result.status === 'success')) {
       timeStart = new Date().getTime();
       code00001 = true;
-      pingObj = { "cmd": "ping" };
     }
-    if (messageObj.event === 'subscribe' && messageObj.result.status === 'success') {
-      timeStart = new Date().getTime();
-      code00001 = true;
-      pingObj = { "time": 1628080537768, "channel": "spot.ping" };
-    }
+
 
     console.log('messageObj=', messageObj);
     console.log('code00001=', code00001);
@@ -598,8 +610,8 @@ function correctTimeServerClosure(ws, initialObj, BithOrGate, MINTIME_ONE_PING, 
     }
     return true
   }
-  return function (ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING) {
-    return timeServer(ws, messageObj, BithOrGate, MINTIME_ONE_PING, MINTIME_ALL_PING); // есть доступ к внешней переменной "count"
+  return function (ws, initialObj) {
+    return timeServer(ws, initialObj); // есть доступ к внешней переменной "count"
   };
 }
 module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure, correctTimeServerClosure }
