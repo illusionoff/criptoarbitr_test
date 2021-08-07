@@ -482,7 +482,6 @@ function reconnectBithClosure(ws) {
     }
   }
   return (ws) => startReconnect(ws);
-
 }
 
 function correctTimeServerClosure(ws, initialObj) {
@@ -522,7 +521,7 @@ function correctTimeServerClosure(ws, initialObj) {
 
       if (initialObj.name === 'gate') {
         pingObj = { "time": 1628080537768, "channel": "spot.ping" };
-        MINTIME_ONE_PING = 4000;
+        MINTIME_ONE_PING = 100;
         MINTIME_ALL_PING = 20000;
       }
       if (initialObj.name === 'bith') {
@@ -555,7 +554,7 @@ function correctTimeServerClosure(ws, initialObj) {
             console.log(`!Pong synchronization  first time timePing=${timePing}`);// пришел ответ Pong
             console.log(`!Pong synchronization  first time count=${count}`);// пришел ответ Pong
           }
-          // если получили ответ pong вида 
+          // если получили ответ pong вида
           // { time: 1628081023, channel: 'spot.pong', event: '', result: null }
           if ((messageObj.code && messageObj.code === '0' &&
             messageObj.msg && messageObj.msg === 'Pong') ||
@@ -618,7 +617,7 @@ function correctTimeServerClosure(ws, initialObj) {
         console.log(`(timeEnd-timeStart)>4000ms`);// пришел ответ Pong
         // обнуление переменных
         reinitialization();
-        process.exit();
+        // process.exit();
         return false
       }
       return true
