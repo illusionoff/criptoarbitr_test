@@ -521,7 +521,7 @@ function correctTimeServerClosure(ws, initialObj) {
 
       if (initialObj.name === 'gate') {
         pingObj = { "time": 1628080537768, "channel": "spot.ping" };
-        MINTIME_ONE_PING = 100;
+        MINTIME_ONE_PING = 200;
         MINTIME_ALL_PING = 20000;
       }
       if (initialObj.name === 'bith') {
