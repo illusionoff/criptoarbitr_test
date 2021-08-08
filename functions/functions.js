@@ -626,6 +626,43 @@ function correctTimeServerClosure(ws, initialObj) {
   return (ws, initialObj) => timeServer(ws, initialObj); // есть доступ к внешней переменной "count"
 }
 
+// определение средней разницы времени между своим серверным в момент получения сообщения и временем записанном в объекте биржы в момент создания ею сообщения
+function averageTimeDiffMessageClosure(initialObj) {
+  let count = 0;
+  let averageTimeArr = [];
+  let start = true;
+  let result = undefined;
+  function resultFun(initialObj) {
+    if (start) {
+      let messageObj = initialObj.messageObj;
+      if (initialObj.messageObj.event == "update" && initialObj.messageObj.result.bids) {
+        console.log('averageTimeDiffMessageClosure messageObj=', messageObj);
+        let timeExchange = messageObj.result.t;
+        let timeServer = initialObj.timeServer;
+        console.log('timeExchange=', timeExchange);
+        console.log('timeServer=', timeServer);
+
+        averageTimeArr.push([timeExchange, timeServer]);
+        console.log('averageTimeArr=', averageTimeArr);
+
+        if (count === 59) {
+          let arrTimes = averageTimeArr.map((elem) => {
+            return Math.round((elem[1] - elem[0]));
+          });
+          result = Math.round(arrTimes.reduce((sum, current) => sum + current, 0) / 60);
+          console.log(`arrTimes= ${arrTimes} , arrTimes.length =${arrTimes.length}`);
+          start = false;
+          return result
+        }
+        count++;
+        return false
+      }
+    }
+    return result
+  }
+  return (initialObj) => resultFun(initialObj); // есть доступ к внешней переменной "count"
+}
+
 // once = function (func) {
 //   var ran = false, memo;
 //   return function () {
@@ -679,4 +716,4 @@ function correctTimeServerClosure(ws, initialObj) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure, correctTimeServerClosure }
+module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure, correctTimeServerClosure, averageTimeDiffMessageClosure }
