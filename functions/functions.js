@@ -45,14 +45,7 @@ function parseTest() {
 }
 
 function goTrade(paramsGoTrade, writableFiles) {
-  console.log('goTrade()----------------------------------------------------')
-  // if (!writeableStream._writableState.ended || !writeableStream._writableState.finished || !writeableStream._writableState.closed)
-
-  // let counts = {
-  //   count: 0,
-  //   countMessageAll: 0,
-  //   countMessageStartNew: 0
-  // }
+  console.log('goTrade()----------------------------------------------------');
 
   let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
   let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
@@ -96,12 +89,6 @@ function goTrade(paramsGoTrade, writableFiles) {
     init: paramsGoTrade.init
   }
   console.log('data goTrade=', data);
-  // process.exit();
-  // writtenCSV(data, writeableStream, counts);
-  // }
-  // timeGate: initialGate.timeGate,
-  // bayOrSellGate: bayOrSell,
-  // init: 0,
 
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
     // writableFiles(data);
@@ -400,9 +387,7 @@ function closure() {
     console.log('count=', count);
     count++;
   }
-  return function () {
-    return main()
-  }
+  return () => main()
 }
 
 let variableClosure = closure();
@@ -481,7 +466,7 @@ function reconnectBithClosure(ws) {
       start();
     }
   }
-  return (ws) => startReconnect(ws);
+  return (ws) => startReconnect(ws)
 }
 
 function correctTimeServerClosure(ws, initialObj) {
@@ -627,65 +612,7 @@ function correctTimeServerClosure(ws, initialObj) {
 }
 
 // определение средней разницы времени между своим серверным в момент получения сообщения и временем записанном в объекте биржы в момент создания ею сообщения
-function averageTimeDiffMessageClosure(initialObj) {
-  let count = 0;
-  let averageTimeArr = [];
-  let start = true;
-  let result = undefined;
-  function resultFun(initialObj) {
-    if (start) {
-      let messageObj = initialObj.messageObj;
-      if (initialObj.messageObj.event == "update" && initialObj.messageObj.result.bids) {
-        console.log('averageTimeDiffMessageClosure messageObj=', messageObj);
-        let timeExchange = messageObj.result.t;
-        let timeServer = initialObj.timeServer;
-        console.log('timeExchange=', timeExchange);
-        console.log('timeServer=', timeServer);
 
-        averageTimeArr.push([timeExchange, timeServer]);
-        console.log('averageTimeArr=', averageTimeArr);
-
-        if (count === 59) {
-          let arrTimes = averageTimeArr.map((elem) => {
-            return Math.round((elem[1] - elem[0]));
-          });
-          result = Math.round(arrTimes.reduce((sum, current) => sum + current, 0) / 60);
-          console.log(`arrTimes= ${arrTimes} , arrTimes.length =${arrTimes.length}`);
-          start = false;
-          return result
-        }
-        count++;
-        return false
-      }
-    }
-    return result
-  }
-  return (initialObj) => resultFun(initialObj); // есть доступ к внешней переменной "count"
-}
-
-// once = function (func) {
-//   var ran = false, memo;
-//   return function () {
-//     if (ran) return memo;
-//     ran = true;
-//     memo = func.apply(this, arguments);
-//     func = null;
-//     return memo;
-//   };
-// };
-
-// once = function (func) {
-//   var result;
-
-//   return function () {
-//     if (func) {
-//       result = func.apply(this, arguments);
-//       func = null;
-//     }
-
-//     return result;
-//   }
-// };
 
 // function changeTrade(initialGate) {
 //   if (initialGate.messageObj.result.u > initialGate.ver) {
@@ -716,4 +643,4 @@ function averageTimeDiffMessageClosure(initialObj) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure, correctTimeServerClosure, averageTimeDiffMessageClosure }
+module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure }
