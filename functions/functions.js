@@ -436,14 +436,14 @@ function changeTradeArr(initialObj) {
   return false
 }
 
-function reconnectBithClosure(ws) {
+function reconnectTimeMessageClosure(ws) {
   let count = 0;// для разогрева - т.е не сразу начинать
   let timeoutHandle;
   let flag = false;
 
   function start() {
     timeoutHandle = setTimeout(function () {
-      console.log('Reconnect setTimeout');
+      console.log('Reconnect setTimeout messages');
       count = 0;
       return ws.reconnect(1006, 'Reconnect error');
     }, 20000);
@@ -643,4 +643,4 @@ function correctTimeServerClosure(ws, initialObj) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectBithClosure }
+module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectTimeMessageClosure }
