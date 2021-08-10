@@ -367,12 +367,13 @@ function TestWritable(data) {
       console.log('writeableStream_2');
       // console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
       let okWritable2 = testWriteableStream.write_2.write(`${testCountAll},${data}`);
+
       // stringifyDate(testWriteableStream.write_2, data, false);
       // if (!okWritable2) {
       // process.exit();
       // }
     }
-    console.log('testCountAll=', testCountAll);
+    console.log('testCountAll writting=', testCountAll);
     testCount++;
     testCountAll++;
   }
@@ -381,13 +382,13 @@ function TestWritable(data) {
   };
 }
 
-function closure() {
+function closure(name) {
   let count = 0;
-  function main() {
-    console.log('count=', count);
+  function main(name) {
+    console.log(`${name} count=`, count);
     count++;
   }
-  return () => main()
+  return (name) => main(name)
 }
 
 let variableClosure = closure();
@@ -399,7 +400,7 @@ function changeTradeArr(initialObj) {
   let trueBay = false;
   let trueSell = false;
   initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
-  variableClosure();//count= 0
+  variableClosure('1');//count= 0
   //  Инициализация первых предыдущих значений
   // проверка изменения значения для предотвращения лишних вычислений
   if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
@@ -417,19 +418,13 @@ function changeTradeArr(initialObj) {
       initialObj.bayOrSell = 0;
     }
     initialObj.orderbookFirstPreviousSell = sell;
+    console.log('sell=', sell);
     initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
     trueSell = true;
   }
 
-  if (!Boolean(initialObj.orderbookFirstPreviousBay)) {
-    initialObj.orderbookFirstPreviousBay = bay;
-  }
-  if (!Boolean(initialObj.orderbookFirstPreviousSell)) {
-    initialObj.orderbookFirstPreviousSell = sell;
-  }
-
   if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
-    variableClosure2();
+    variableClosure2('2');
     return true
   }
 
