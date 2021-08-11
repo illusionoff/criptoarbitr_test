@@ -27,6 +27,30 @@ function parseCSV() {
       })
 
     });
+  console.log('parseCSV');
+
+}
+
+function parseCSV2() {
+  fs.readFile("./logs/test_profit_12.csv", "utf8",
+    function (error, input) {
+      console.log("Асинхронное чтение файла");
+      if (error) throw error; // если возникла ошибка
+      // console.log('data file:', data);
+      parse(input, {
+        comment: '#',
+        // columns: ['col', 'bayGate', 'bayBith', 'sellGate', 'sellBith', 'diffSell', 'diffBay', 'timeServer', 'timeBith', 'init']
+      }, function (err, output) {
+        if (err) throw err; // если возникла ошибка
+        console.log('output=', output);
+        // assert.deepStrictEqual(
+        //   output,
+        //   [ [ '1', '2', '3', '4' ], [ 'a', 'b', 'c', 'd' ] ]
+        // )
+      })
+
+    });
+  console.log('parseCSV2');
 }
 
 
@@ -497,4 +521,4 @@ function reconnectTimeMessageClosure(ws) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectTimeMessageClosure }
+module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectTimeMessageClosure, parseCSV2 }

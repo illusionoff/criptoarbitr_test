@@ -2,11 +2,15 @@
 
 const { wsGetGate, initialGate } = require('./lib/gate');
 const { wsStartBith, initialBith, coinConfigBith } = require('./lib/bithumbpro');//coinConfigBith
-const { writtenCSV, TestWritable, parseCSV } = require('./functions/functions');
+const { writtenCSV, TestWritable, parseCSV, parseCSV2 } = require('./functions/functions');
 // const { coinConfigBith } = require('./lib/bithOrderbook');
 
 function init() {
-  parseCSV();
+  parseCSV2();
+  // process.exit();
+  setTimeout(() => { process.exit() }, 1000);
+  // parseCSV();
+
   let writableFiles = TestWritable();
   coinConfigBith().then(() => {
     console.log('then=');
