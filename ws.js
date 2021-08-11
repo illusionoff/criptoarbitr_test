@@ -17,7 +17,7 @@ function init() {
     .catch((err) => {
       console.log('catch');
       console.log('err=', err);
-      init();
+      // init(); // можно рекурсивно перезапускать
     });
 }
 
