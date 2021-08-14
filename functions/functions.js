@@ -317,7 +317,7 @@ function stringifyDate(writeableStream, data, header) {
     });
 }
 
-function TestWritable(data) {
+function testWritable(data) {
 
   console.log('TestWritable(data)==============================', data);
   let testFlag = 1;
@@ -521,4 +521,4 @@ function reconnectTimeMessageClosure(ws) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, TestWritable, parseCSV, parseTest, changeTradeArr, reconnectTimeMessageClosure, parseCSV2 }
+module.exports = { goTrade, writtenCSV, testWritable, parseCSV, parseTest, changeTradeArr, reconnectTimeMessageClosure }
