@@ -74,6 +74,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
   let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
 
+  let percentBonus = 0;
   if (diffSell > 0) {
     console.log('Выгодно купить на Gate и продать на Bith = #1');
     const percentBonus = diffSell / paramsGoTrade.sellGate;
@@ -95,6 +96,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   //   var n = 1.7777;
   // n.round(2); // 1.78 .round(comma)
   const comma = 8;
+  const commaPercent = 4;
   // if (diffSell > 0 || diffBay > 0) {
   console.log('paramsGoTrade.bayGate=', paramsGoTrade.bayGate);
   console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
@@ -108,6 +110,7 @@ function goTrade(paramsGoTrade, writableFiles) {
     timeServer: paramsGoTrade.timeServer,
     timeBith: paramsGoTrade.timeBith,
     timeGate: paramsGoTrade.timeGate,
+    percentBonus: percentBonus.round(commaPercent),
     bayOrSellGate: paramsGoTrade.bayOrSellGate,
     bayOrSellBith: paramsGoTrade.bayOrSellBith,
     init: paramsGoTrade.init
@@ -324,7 +327,7 @@ function testWritable(data) {
   let testCount = 0;
   let testCountAll = 1;
   const highWaterMark = 320 * 1024;
-  const headerName = `Number,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,bayOrSellGate,bayOrSellBith, init`;
+  const headerName = `Number,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,percentBonus,bayOrSellGate,bayOrSellBith, init`;
   let testWriteableStream = {
     write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
     write_2: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark })
@@ -335,7 +338,7 @@ function testWritable(data) {
   // stringifyDate(testWriteableStream.write_1, headerName, false);
   function main(data) {
     console.log('data Writable=', data);
-    data = `${data.bayGate},${data.bayBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},${data.timeServer},${data.timeBith},${data.timeGate},${data.bayOrSellGate},${data.bayOrSellBith},${data.init}\n`;
+    data = `${data.bayGate},${data.bayBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},${data.timeServer},${data.timeBith},${data.timeGate},${data.percentBonus},${data.bayOrSellGate},${data.bayOrSellBith},${data.init}\n`;
     if (testCount >= 50) {
       testCount = 0;
       if (testFlag === 1) {
