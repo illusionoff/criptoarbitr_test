@@ -117,10 +117,10 @@ function goTrade(paramsGoTrade, writableFiles) {
       bayOrSellBith: paramsGoTrade.bayOrSellBith,
       init: paramsGoTrade.init
     }
-    console.log('data goTrade=', data);
+    console.log('data========================================', data);
     writableFiles(data);
   }
-  console.log('data========================================', data);
+
   // writableFiles(data);
 };
 
