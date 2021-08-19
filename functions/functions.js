@@ -1,6 +1,7 @@
 
 const config = require('config');
 const MIN_PROFIT = config.get('MIN_PROFIT');
+const TIME_DEPRECAT = config.get('TIME_DEPRECAT');
 const stringify = require('csv-stringify');
 const generate = require('csv-generate');
 const assert = require('assert');
@@ -76,7 +77,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   // Если в данных есть ноль
   if (arrPrice.includes(0)) return
   // если данные устарели
-  if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > 30000 || paramsGoTrade.timeServer - paramsGoTrade.timeGate > 30000) return
+  if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
 
   let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
   let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;

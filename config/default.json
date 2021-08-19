@@ -8,5 +8,6 @@
   "SECRET_Gate": "your secret",
   "port": 5000,
   "baseUrl": "http://localhost:5000",
-  "TIME_DALAY": 50
+  "TIME_DALAY": 50,
+  "TIME_DEPRECAT": 20000
 }
