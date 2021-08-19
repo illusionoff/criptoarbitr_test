@@ -109,7 +109,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   console.log('paramsGoTrade.bayGate=', paramsGoTrade.bayGate);
   console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
 
-  // if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
+  if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
   const data = {
     bayGate: paramsGoTrade.bayGate.round(comma),
     bayBith: paramsGoTrade.bayBith.round(comma),
@@ -127,7 +127,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   }
   console.log('data========================================', data);
   writableFiles(data);
-  // }
+  }
 
   // writableFiles(data);
 };
