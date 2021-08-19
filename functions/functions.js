@@ -70,6 +70,8 @@ function parseTest() {
 
 function goTrade(paramsGoTrade, writableFiles) {
   console.log('goTrade()----------------------------------------------------');
+  const arrPrice = [paramsGoTrade.bayGate, paramsGoTrade.bayBith, paramsGoTrade.sellGate, paramsGoTrade.sellBith];
+  if (arrPrice.includes(0)) return
 
   let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
   let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
@@ -422,6 +424,7 @@ let variableClosure = closure();
 let variableClosure2 = closure();
 
 function changeTradeArr(initialObj) {
+  console.log('initialObj.name=', initialObj.name);
   let bay = initialObj.bay;
   let sell = initialObj.sell;
   let trueBay = false;
@@ -431,24 +434,28 @@ function changeTradeArr(initialObj) {
   //  Инициализация первых предыдущих значений
   // проверка изменения значения для предотвращения лишних вычислений
   if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
+    console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
+    console.log('function changeTradeArr() initialObj.bay=', bay);
+    // process.exit();
+
     initialObj.bayOrSell = 1;
     initialObj.orderbookFirstPreviousBay = bay;
     console.log('bay=', bay);
     initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
     trueBay = true;
   }
-  if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
-    // Если одновременно изменения и в bay и в sell
-    if (initialObj.bayOrSell === 1) {
-      initialObj.bayOrSell = 2;
-    } else {
-      initialObj.bayOrSell = 0;
-    }
-    initialObj.orderbookFirstPreviousSell = sell;
-    console.log('sell=', sell);
-    initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
-    trueSell = true;
-  }
+  // if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
+  //   // Если одновременно изменения и в bay и в sell
+  //   if (initialObj.bayOrSell === 1) {
+  //     initialObj.bayOrSell = 2;
+  //   } else {
+  //     initialObj.bayOrSell = 0;
+  //   }
+  //   initialObj.orderbookFirstPreviousSell = sell;
+  //   console.log('sell=', sell);
+  //   initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+  //   trueSell = true;
+  // }
 
   if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
     variableClosure2('2');
