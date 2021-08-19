@@ -71,7 +71,12 @@ function parseTest() {
 function goTrade(paramsGoTrade, writableFiles) {
   console.log('goTrade()----------------------------------------------------');
   const arrPrice = [paramsGoTrade.bayGate, paramsGoTrade.bayBith, paramsGoTrade.sellGate, paramsGoTrade.sellBith];
+  // console.log('arrPrice=', arrPrice);
+  // process.exit();
+  // Если в данных есть ноль
   if (arrPrice.includes(0)) return
+  // если данные устарели
+  if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > 30000 || paramsGoTrade.timeServer - paramsGoTrade.timeGate > 30000) return
 
   let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
   let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
@@ -444,18 +449,18 @@ function changeTradeArr(initialObj) {
     initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
     trueBay = true;
   }
-  // if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
-  //   // Если одновременно изменения и в bay и в sell
-  //   if (initialObj.bayOrSell === 1) {
-  //     initialObj.bayOrSell = 2;
-  //   } else {
-  //     initialObj.bayOrSell = 0;
-  //   }
-  //   initialObj.orderbookFirstPreviousSell = sell;
-  //   console.log('sell=', sell);
-  //   initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
-  //   trueSell = true;
-  // }
+  if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
+    // Если одновременно изменения и в bay и в sell
+    if (initialObj.bayOrSell === 1) {
+      initialObj.bayOrSell = 2;
+    } else {
+      initialObj.bayOrSell = 0;
+    }
+    initialObj.orderbookFirstPreviousSell = sell;
+    console.log('sell=', sell);
+    initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+    trueSell = true;
+  }
 
   if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
     variableClosure2('2');
