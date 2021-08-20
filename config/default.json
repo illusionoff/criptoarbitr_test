@@ -10,5 +10,5 @@
   "baseUrl": "http://localhost:5000",
   "TIME_DALAY": 50,
   "TIME_DEPRECAT": 20000,
-  "TRACK_ELEMENT_ORDERBOOK": 9
+  "TRACK_ELEMENT_ORDERBOOK": 0
 }
