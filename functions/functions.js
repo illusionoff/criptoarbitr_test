@@ -85,13 +85,13 @@ function goTrade(paramsGoTrade, writableFiles) {
   let percentBonus = 0;
   if (diffSell > 0) {
     console.log('Выгодно купить на Gate и продать на Bith = #1');
-    const percentBonus = diffSell / paramsGoTrade.sellGate;
+    percentBonus = diffSell / paramsGoTrade.sellGate;
     console.log('percentBonus #1 =', percentBonus);
   }
 
   if (diffBay > 0) {
     console.log('Выгодно продать на Gate и купить на Bith = #2');
-    const percentBonus = diffBay / paramsGoTrade.sellBith;
+    percentBonus = diffBay / paramsGoTrade.sellBith;
     console.log('percentBonus #2=', percentBonus);
   }
   console.log('diffSell=', diffSell);
@@ -110,23 +110,23 @@ function goTrade(paramsGoTrade, writableFiles) {
   console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
 
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
-  const data = {
-    bayGate: paramsGoTrade.bayGate.round(comma),
-    bayBith: paramsGoTrade.bayBith.round(comma),
-    sellGate: paramsGoTrade.sellGate.round(comma),
-    sellBith: paramsGoTrade.sellBith.round(comma),
-    diffSell: diffSell.round(comma),
-    diffBay: diffBay.round(comma),
-    timeServer: paramsGoTrade.timeServer,
-    timeBith: paramsGoTrade.timeBith,
-    timeGate: paramsGoTrade.timeGate,
-    percentBonus: percentBonus.round(commaPercent),
-    bayOrSellGate: paramsGoTrade.bayOrSellGate,
-    bayOrSellBith: paramsGoTrade.bayOrSellBith,
-    init: paramsGoTrade.init
-  }
-  console.log('data========================================', data);
-  writableFiles(data);
+    const data = {
+      bayGate: paramsGoTrade.bayGate.round(comma),
+      bayBith: paramsGoTrade.bayBith.round(comma),
+      sellGate: paramsGoTrade.sellGate.round(comma),
+      sellBith: paramsGoTrade.sellBith.round(comma),
+      diffSell: diffSell.round(comma),
+      diffBay: diffBay.round(comma),
+      timeServer: paramsGoTrade.timeServer,
+      timeBith: paramsGoTrade.timeBith,
+      timeGate: paramsGoTrade.timeGate,
+      percentBonus: percentBonus.round(commaPercent),
+      bayOrSellGate: paramsGoTrade.bayOrSellGate,
+      bayOrSellBith: paramsGoTrade.bayOrSellBith,
+      init: paramsGoTrade.init
+    }
+    console.log('data========================================', data);
+    writableFiles(data);
   }
 
   // writableFiles(data);
