@@ -2,6 +2,7 @@
 const config = require('config');
 const MIN_PROFIT = config.get('MIN_PROFIT');
 const TIME_DEPRECAT = config.get('TIME_DEPRECAT');
+const TIME_DEPRECAT_ALL = config.get('TIME_DEPRECAT');
 const stringify = require('csv-stringify');
 const generate = require('csv-generate');
 const assert = require('assert');
@@ -76,9 +77,18 @@ function goTrade(paramsGoTrade, writableFiles) {
   // process.exit();
   // Если в данных есть ноль
   if (arrPrice.includes(0)) return
-  // если данные устарели
-  if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
 
+  // если данные устарели 1
+  if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
+  // если данные устарели все 4 times
+  //1629570661475
+  const arrTimesAll = [1629570681475, 1629570662475, 1629570663475, 1629570664475];
+  paramsGoTrade.timeServer = 1629570660475;
+  // const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
+  console.log('Проверка 4 times')
+  arrTimesAll.forEach((item) => {
+    if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) process.exit()
+  });
   let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
   let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
 
@@ -437,6 +447,8 @@ function changeTradeArr(initialObj) {
   let trueSell = false;
   initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
   variableClosure('1');//count= 0
+  // выход при устаревании данных
+  // if ()
   //  Инициализация первых предыдущих значений
   // проверка изменения значения для предотвращения лишних вычислений
   if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
@@ -445,6 +457,7 @@ function changeTradeArr(initialObj) {
     // process.exit();
 
     initialObj.bayOrSell = 1;
+    initialObj.timeBay = new Date().getTime();
     initialObj.orderbookFirstPreviousBay = bay;
     console.log('bay=', bay);
     initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
@@ -457,6 +470,7 @@ function changeTradeArr(initialObj) {
     } else {
       initialObj.bayOrSell = 0;
     }
+    initialObj.timeSell = new Date().getTime();
     initialObj.orderbookFirstPreviousSell = sell;
     console.log('sell=', sell);
     initialObj.priceAndComissionsSell = sell + sell * initialObj.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
