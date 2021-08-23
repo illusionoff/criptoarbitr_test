@@ -79,7 +79,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   if (arrPrice.includes(0)) return
 
   // если данные устарели 1
-  // if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
+  if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
   // если данные устарели все 4 times
   //1629570661475
   // const arrTimesAll = [1629570640474, 1629570662475, 1629570663475, 1629570664475];
