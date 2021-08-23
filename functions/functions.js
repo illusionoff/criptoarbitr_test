@@ -79,15 +79,15 @@ function goTrade(paramsGoTrade, writableFiles) {
   if (arrPrice.includes(0)) return
 
   // если данные устарели 1
-  if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
+  // if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
   // если данные устарели все 4 times
   //1629570661475
-  const arrTimesAll = [1629570681475, 1629570662475, 1629570663475, 1629570664475];
-  paramsGoTrade.timeServer = 1629570660475;
-  // const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
+  // const arrTimesAll = [1629570640474, 1629570662475, 1629570663475, 1629570664475];
+  // paramsGoTrade.timeServer = 1629570660475;
+  const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
   console.log('Проверка 4 times')
   arrTimesAll.forEach((item) => {
-    if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) process.exit()
+    if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return
   });
   let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
   let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
@@ -445,7 +445,7 @@ function changeTradeArr(initialObj) {
   let sell = initialObj.sell;
   let trueBay = false;
   let trueSell = false;
-  initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
+  // initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
   variableClosure('1');//count= 0
   // выход при устаревании данных
   // if ()
