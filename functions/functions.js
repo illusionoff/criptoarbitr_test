@@ -451,6 +451,7 @@ function changeTradeArr(initialObj) {
   let sell = initialObj.sell;
   let trueBay = false;
   let trueSell = false;
+  let bayOrSell = -1;
   // initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
   variableClosure('1');//count= 0
   // выход при устаревании данных
@@ -462,7 +463,7 @@ function changeTradeArr(initialObj) {
     console.log('function changeTradeArr() initialObj.bay=', bay);
     // process.exit();
 
-    initialObj.bayOrSell = 1;
+    bayOrSell = 1;
     initialObj.timeBay = new Date().getTime();
     initialObj.orderbookFirstPreviousBay = bay;
     console.log('bay=', bay);
@@ -471,10 +472,10 @@ function changeTradeArr(initialObj) {
   }
   if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
     // Если одновременно изменения и в bay и в sell
-    if (initialObj.bayOrSell === 1) {
-      initialObj.bayOrSell = 2;
+    if (bayOrSell === 1) {
+      bayOrSell = 2;
     } else {
-      initialObj.bayOrSell = 0;
+      bayOrSell = 0;
     }
     initialObj.timeSell = new Date().getTime();
     initialObj.orderbookFirstPreviousSell = sell;
@@ -484,6 +485,7 @@ function changeTradeArr(initialObj) {
   }
 
   if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
+    initialObj.bayOrSell = bayOrSell;
     variableClosure2('2');
     return true
   }
