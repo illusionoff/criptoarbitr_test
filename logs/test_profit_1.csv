@@ -25,3 +25,5 @@ Number,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,ti
 15,1.26452588,1.26978398,1.2696843,1.2762333,0.00009968,-0.01170742,1629724818435,1629724699539,1629724801479,0.0001,1,0,1
 16,1.26449594,1.26978398,1.2696843,1.2762333,0.00009968,-0.01173736,1629724818799,1629724699539,1629724801572,0.0001,1,0,1
 17,1.26449594,1.26978398,1.26977448,1.2762333,0.0000095,-0.01173736,1629724819740,1629724699539,1629724801677,0,2,0,1
+Number,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,percentBonus,bayOrSellGate,bayOrSellBith, init
+Number,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeBith,timeGate,percentBonus,bayOrSellGate,bayOrSellBith, init

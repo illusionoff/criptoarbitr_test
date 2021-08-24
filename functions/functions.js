@@ -85,7 +85,9 @@ function goTrade(paramsGoTrade, writableFiles) {
   // const arrTimesAll = [1629570640474, 1629570662475, 1629570663475, 1629570664475];
   // paramsGoTrade.timeServer = 1629570660475;
   const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
-  console.log('Проверка 4 times')
+  console.log('Проверка 4 times');
+  console.log('arrTimesAll=', arrTimesAll);
+  process.exit();
   arrTimesAll.forEach((item) => {
     if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return
   });
