@@ -91,9 +91,10 @@ function goTrade(paramsGoTrade, writableFiles) {
   console.log('paramsGoTrade.timeServer=', paramsGoTrade.timeServer);
   console.log('paramsGoTrade.timeBith=', paramsGoTrade.timeBith);
   console.log('paramsGoTrade.timeGate=', paramsGoTrade.timeGate);
-  arrTimesAll.forEach((item) => {
-    if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return
+  const timeOutAll = arrTimesAll.some((item) => {
+    if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return true
   });
+  if (timeOutAll) return
   let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
   let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
 
