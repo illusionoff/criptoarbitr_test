@@ -1,5 +1,5 @@
 {
-  "MIN_PROFIT": 0.03,
+  "MIN_PROFIT": 0.01,
   "WS_URL_BITH": "wss://global-api.bithumb.pro/message/realtime",
   "WS_URL_GATE": "wss://ws.gate.io/v3/",
   "WS_URL_GATE_v4": "wss://api.gateio.ws/ws/v4/",
@@ -9,7 +9,7 @@
   "port": 5000,
   "baseUrl": "http://localhost:5000",
   "TIME_DALAY": 50,
-  "TIME_DEPRECAT": 20000,
-  "TIME_DEPRECAT_ALL": 20000,
+  "TIME_DEPRECAT": 30000,
+  "TIME_DEPRECAT_ALL": 30000,
   "TRACK_ELEMENT_ORDERBOOK": 0
 }

@@ -125,6 +125,11 @@ function goTrade(paramsGoTrade, writableFiles) {
   console.log('paramsGoTrade.bayGate=', paramsGoTrade.bayGate);
   console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
 
+  // console.log('diffSell', config.get("MIN_PROFIT")>diffSell);
+  // console.log('diffSell', config.get("MIN_PROFIT")>diffSell);
+
+  // console.log('config.get("MIN_PROFIT")>diffSell', config.get("MIN_PROFIT")>diffSell);
+  // console.log('config.get("MIN_PROFIT")>diffBay', config.get("MIN_PROFIT")>diffBay);
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
     const data = {
       bayGate: paramsGoTrade.bayGate.round(comma),
@@ -384,6 +389,8 @@ function testWritable(data) {
           testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit_${testCountAll}_${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
           testWriteableStream.write_2.write(`${headerName}\n`);
           testFlag = 2;
+
+          // process.exit();
         });
         return
       }
@@ -487,6 +494,8 @@ function changeTradeArr(initialObj) {
   if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
     initialObj.bayOrSell = bayOrSell;
     variableClosure2('2');
+    // console.log('changeTradeArr()');
+    // process.exit();
     return true
   }
 
