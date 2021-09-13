@@ -9,53 +9,7 @@ const assert = require('assert');
 const fs = require("fs");
 
 const parse = require('csv-parse');
-
-function parseCSV() {
-  fs.readFile("./logs/test_profit_12.csv", "utf8",
-    function (error, input) {
-      console.log("Асинхронное чтение файла");
-      if (error) throw error; // если возникла ошибка
-      // console.log('data file:', data);
-      parse(input, {
-        comment: '#',
-        // columns: ['col', 'bayGate', 'bayBith', 'sellGate', 'sellBith', 'diffSell', 'diffBay', 'timeServer', 'timeBith', 'init']
-      }, function (err, output) {
-        if (err) throw err; // если возникла ошибка
-        console.log('output=', output);
-        // assert.deepStrictEqual(
-        //   output,
-        //   [ [ '1', '2', '3', '4' ], [ 'a', 'b', 'c', 'd' ] ]
-        // )
-      })
-
-    });
-  console.log('parseCSV');
-
-}
-
-function parseCSV2() {
-  fs.readFile("./logs/test_profit_12.csv", "utf8",
-    function (error, input) {
-      console.log("Асинхронное чтение файла");
-      if (error) throw error; // если возникла ошибка
-      // console.log('data file:', data);
-      parse(input, {
-        comment: '#',
-        // columns: ['col', 'bayGate', 'bayBith', 'sellGate', 'sellBith', 'diffSell', 'diffBay', 'timeServer', 'timeBith', 'init']
-      }, function (err, output) {
-        if (err) throw err; // если возникла ошибка
-        console.log('output=', output);
-        // assert.deepStrictEqual(
-        //   output,
-        //   [ [ '1', '2', '3', '4' ], [ 'a', 'b', 'c', 'd' ] ]
-        // )
-      })
-
-    });
-  console.log('parseCSV2');
-}
-
-
+const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
 
 const input = '#Welcome\n"1","2","3","4"\n"a","b","c","d"'
 function parseTest() {
@@ -505,14 +459,13 @@ function changeTradeArr(initialObj) {
 function reconnectTimeMessageClosure(ws) {
   let count = 0;// для разогрева - т.е не сразу начинать
   let timeoutHandle;
-  let flag = false;
 
   function start() {
     timeoutHandle = setTimeout(function () {
       console.log('Reconnect setTimeout messages');
       count = 0;
       return ws.reconnect(1006, 'Reconnect error');
-    }, 20000);
+    }, TIMER_RECONNECT_MESSAGE);
   }
 
   function stop() {
@@ -522,12 +475,8 @@ function reconnectTimeMessageClosure(ws) {
   function startReconnect() {
     count++;
     console.log('function  count=', count);
-    if (count > 1) {
-      if (!flag) {
-        flag = true;
-        start();
-        console.log('start time');
-      }
+    if (count > 1) { // действие reconnect только после второго запуска функции
+      console.log('start time');
       stop();
       start();
     }
@@ -568,4 +517,4 @@ function reconnectTimeMessageClosure(ws) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, testWritable, parseCSV, parseTest, changeTradeArr, reconnectTimeMessageClosure }
+module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure }
