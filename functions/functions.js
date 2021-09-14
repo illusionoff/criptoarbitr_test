@@ -516,6 +516,11 @@ function closureTimeStopTest() {
   return (countReconnect, countErrors) => main(countReconnect, countErrors)
 }
 
+function consoleGroupLog(objVars, optionalArr = []) {
+  if (optionalArr.length != 0) optionalArr.forEach((item) => console.log(item));
+  for (let key in objVars) console.log(`${key} = `, objVars[key]);
+}
+
 // определение средней разницы времени между своим серверным в момент получения сообщения и временем записанном в объекте биржы в момент создания ею сообщения
 
 
@@ -548,4 +553,4 @@ function closureTimeStopTest() {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest }
+module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest, consoleGroupLog }
