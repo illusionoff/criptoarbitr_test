@@ -10,6 +10,8 @@ const fs = require("fs");
 
 const parse = require('csv-parse');
 const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
+const TIME_STOP_TEST = config.get('TIME_STOP_TEST');
+
 
 const input = '#Welcome\n"1","2","3","4"\n"a","b","c","d"'
 function parseTest() {
@@ -484,6 +486,35 @@ function reconnectTimeMessageClosure(ws) {
   return (ws) => startReconnect(ws)
 }
 
+function closureTimeStopTest() {
+  let colMessage = 0;
+  let maxTimePeriod = 0;
+  let timeAll = 0;
+  let timePrevious = 0;
+  const timeStart = new Date().getTime();
+  function main(countReconnect, countErrors) {
+    let timeNaw = new Date().getTime();
+    console.log('timeNaw=', timeNaw);
+    console.log('timeStart=', timeStart);
+    colMessage++;
+    console.log('colMessage======================================================', colMessage);
+
+    let varPeriod = timeNaw - timePrevious;
+    if (colMessage > 20 && varPeriod > maxTimePeriod) { maxTimePeriod = varPeriod }
+    timeAll = Math.round((timeNaw - timeStart) / 1000);// переводим микросекунды в секунды
+    let viewMAxTimePeriod = Math.round((maxTimePeriod) / 1000);
+    console.log(` BITHUMB viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`);
+    timePrevious = timeNaw;
+    if (timeAll > TIME_STOP_TEST) {
+      console.log('TEST_ORDERBOOB10=');
+      console.log('countReconnect=', countReconnect);
+      console.log('countErrors=', countErrors);
+      console.log('|Time OUT 5 min test');
+      process.exit();
+    }
+  }
+  return (countReconnect, countErrors) => main(countReconnect, countErrors)
+}
 
 // определение средней разницы времени между своим серверным в момент получения сообщения и временем записанном в объекте биржы в момент создания ею сообщения
 
@@ -517,4 +548,4 @@ function reconnectTimeMessageClosure(ws) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure }
+module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest }
