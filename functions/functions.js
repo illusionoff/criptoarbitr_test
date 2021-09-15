@@ -12,7 +12,6 @@ const parse = require('csv-parse');
 const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
 const TIME_STOP_TEST = config.get('TIME_STOP_TEST');
 
-
 const input = '#Welcome\n"1","2","3","4"\n"a","b","c","d"'
 function parseTest() {
   parse(input, {
@@ -29,11 +28,8 @@ function parseTest() {
 function goTrade(paramsGoTrade, writableFiles) {
   console.log('goTrade()----------------------------------------------------');
   const arrPrice = [paramsGoTrade.bayGate, paramsGoTrade.bayBith, paramsGoTrade.sellGate, paramsGoTrade.sellBith];
-  // console.log('arrPrice=', arrPrice);
-  // process.exit();
   // Если в данных есть ноль
   if (arrPrice.includes(0)) return
-
   // если данные устарели 1
   if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
   // если данные устарели все 4 times
@@ -41,12 +37,20 @@ function goTrade(paramsGoTrade, writableFiles) {
   // const arrTimesAll = [1629570640474, 1629570662475, 1629570663475, 1629570664475];
   // paramsGoTrade.timeServer = 1629570660475;
   const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
-  console.log('Проверка 4 times');
-  console.log('arrTimesAll=', arrTimesAll);
-  console.log('arrPrice=', arrPrice);
-  console.log('paramsGoTrade.timeServer=', paramsGoTrade.timeServer);
-  console.log('paramsGoTrade.timeBith=', paramsGoTrade.timeBith);
-  console.log('paramsGoTrade.timeGate=', paramsGoTrade.timeGate);
+  // console.log('Проверка 4 times');
+  // console.log('arrTimesAll=', arrTimesAll);
+  // console.log('arrPrice=', arrPrice);
+  // console.log('paramsGoTrade.timeServer=', paramsGoTrade.timeServer);
+  // console.log('paramsGoTrade.timeBith=', paramsGoTrade.timeBith);
+  // console.log('paramsGoTrade.timeGate=', paramsGoTrade.timeGate);
+  const strTimers = `Проверка 4 times
+  arrTimesAll = ${arrTimesAll}
+  arrPrice = ${arrPrice}
+  paramsGoTrade.timeServer = ${paramsGoTrade.timeServer}
+  paramsGoTrade.timeBith = ${paramsGoTrade.timeBith}
+  paramsGoTrade.timeGate = ${paramsGoTrade.timeGate}`;
+  consoleLogGroup(strTimers);
+
   const timeOutAll = arrTimesAll.some((item) => {
     if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return true
   });
