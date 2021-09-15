@@ -510,7 +510,7 @@ function closureTimeStopTest() {
       countErrors = ${obj.countErrors}
       |Time OUT sec stop = ${TIME_STOP_TEST}`
       consoleLogGroup(strCounts);
-      process.exit();
+      // process.exit();
     }
   }
   return (obj) => main(obj)
@@ -524,6 +524,38 @@ function closureTimeStopTest() {
 // удаляем лишние пробелы для устранения эффекта форматирования шаблонных строк VSCode.
 function consoleLogGroup(str) {
   console.log(str.split('\n').map((item) => item.trim()).join('\n'));
+}
+
+function reinitGate(initialGate) {
+  initialGate = {
+    name: 'gate',
+    globalFlag: false, // Глобальный ключ готовности программы для основного цикла работы
+    messageObj: {},
+    messageEdit: {},
+    messageRefresh: {},
+    allOrderbookBay: [],
+    allOrderbookSell: [],
+    takerComissions: 0.002,
+    makerComissions: 0.002,
+    speedComissions: 0.002,
+    priceAndComissionsBay: 0,
+    priceAndComissionsSell: 0,
+    bay: 0,
+    sell: 0,
+    ver: 0,
+    orderbookFirstPreviousBay: undefined,
+    orderbookFirstPreviousSell: undefined,
+    bayOrSell: -1,
+    // bayTimestamp: undefined,
+    // sellTimestamp: undefined,
+    timeServer: undefined,
+    timeFileServerCorrect: undefined,
+    bayQuantity: undefined,
+    sellQuantity: undefined,
+    timeBay: undefined,
+    timeSell: undefined,
+    time: undefined,
+  };
 }
 // определение средней разницы времени между своим серверным в момент получения сообщения и временем записанном в объекте биржы в момент создания ею сообщения
 
@@ -557,4 +589,4 @@ function consoleLogGroup(str) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest, consoleLogGroup }
+module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest, consoleLogGroup, reinitGate }
