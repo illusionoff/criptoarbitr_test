@@ -149,7 +149,7 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
       // process.exit();
     } else {
       // Не учитываем сообщения Pong
-      timeStopTest({ countReconnect, countErrors, name: initialGate.name });
+      timeStopTest(countReconnect, countErrors);
       reconnectTimeMessage(); // если превышено время между сообщениями
     }
 
@@ -182,6 +182,7 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
       initialGate.orderbookFirstPreviousBay = ${initialGate.orderbookFirstPreviousBay}
       initialGate.bay = ${initialGate.bay}`;
       consoleLogGroup(strPrevious);
+      process.exit();
       if (initialGate.globalFlag && initialBith.globalFlag) { // если готовы данные из bithumb
         if (changeTradeArr(initialGate)) {
           const paramsGoTrade = {
@@ -203,7 +204,136 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
           goTrade(paramsGoTrade, writableFiles);
         }
       }
+
     }
+
+
+    // console.log('typeof evt.data:', typeof evt.data);
+    // initialGate.messageObj = JSON.parse(evt.data);//initialBith.messageObj
+    // // console.log('initialGate.messageObj:', initialGate.messageObj);
+    // console.log('initialGate.messageObj:', initialGate.messageObj);
+    // if (initialGate.messageObj.params) {
+    //   console.log('initialGate.globalFlag:', initialGate.globalFlag);
+
+    //   if (initialGate.messageObj.params[0] === true) {
+    //     initialGate.allOrderbookBay = initialGate.messageObj.params[1].bids;
+    //     initialGate.allOrderbookSell = initialGate.messageObj.params[1].asks;
+    //   }
+    //   console.log('initialGate.allOrderbookBay=GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG', initialGate.allOrderbookBay);
+    //   // console.log('initialGate.messageObj.params[1].bids=GGGGGGGGGGGGGGGGGGGGGGGGGGG', initialGate.messageObj.params[1].bids);
+    //   // console.log('initialGate.messageObj.params[1].asks=GGGGGGGGGGGGGGGGGGGGGGGGGGG', initialGate.messageObj.params[1].asks);
+    //   // TEST
+    //   // initialGate.messageObj.params[1].asks = [['0.71873', '0']]; //// TEST
+    //   // initialGate.messageObj.params[1].asks = []; //// TEST
+    //   //  Удаляем элемениты массивов где количество 0
+    //   if (initialGate.messageObj.params[1].asks) {
+    //     //asks продавцы bids покупатели
+    //     initialGate.messageObj.params[1].asks = initialGate.messageObj.params[1].asks.filter((number) => {
+    //       return number[1] !== '0';
+    //     });
+    //     console.log('initialGate.messageObj.params[1].asks:', initialGate.messageObj.params[1].asks);
+    //     console.log('initialGate.messageObj.params[1].asks.length:', initialGate.messageObj.params[1].asks.length);
+    //     // initialGate.messageObj.params[1].asks.forEach((element, i, arr) => {
+    //     //   arr[i] = String(Number(element[0]) + Number(element[0]) * initialGate.takerComissions)
+
+    //     // });
+    //   };
+    //   // TEST
+    //   // TEST
+    //   // initialGate.messageObj.params[1].bids = [['0.71859', '1251.54']]; //// TEST
+    //   if (initialGate.messageObj.params[1].bids) {
+    //     initialGate.messageObj.params[1].bids = initialGate.messageObj.params[1].bids.filter((number) => {
+    //       return number[1] !== '0';
+    //     });
+    //     // с учетом комиссий
+    //     // initialGate.messageObj.params[1].bids.forEach((element, i, arr) => arr[i] = String(Number(element[0]) + Number(element[0]) * initialGate.makerComissions));
+
+    //   };
+    //   // console.log('initialGate.messageObj:', initialGate.messageObj);
+    //   console.log('initialGate.messageObj.params[1]', initialGate.messageObj.params[1]);
+    //   if (initialGate.messageObj.params[1].bids && initialGate.messageObj.params[1].bids.length != 0) {
+    //     initialGate.bay = Number(initialGate.messageObj.params[1].bids[0][0]);
+    //     initialGate.bayQuantity = Number(initialGate.messageObj.params[1].bids[0][1]);
+    //     initialGate.bayTimestamp = new Date().getTime;
+    //   }
+    //   if (initialGate.messageObj.params[1].asks && initialGate.messageObj.params[1].asks.length != 0) {
+    //     initialGate.sell = Number(initialGate.messageObj.params[1].asks[0][0]);
+    //     initialGate.sellQuantity = Number(initialGate.messageObj.params[1].asks[0][1]);
+    //     initialGate.sellTimestamp = new Date().getTime;
+    //   }
+    //   console.log('initialGate.bay:', initialGate.bay);//для отладки себе включить
+    //   console.log('initialGate.sell:', initialGate.sell);//для отладки себе включить
+    //   // Если массивы существуют, если они не пусты,
+    //   if (initialGate.messageObj.params[1].asks && initialGate.messageObj.params[1].bids) {
+    //     if (initialGate.messageObj.params[1].asks.length != 0 && initialGate.messageObj.params[1].bids.lengt != 0 &&
+    //       initialGate.sell != undefined && initialGate.sell > 0 && initialGate.bay != undefined && initialGate.bay > 0) initialGate.globalFlag = true;
+    //   }
+    //   //  Если глобальный флаг Gate готов то инициализируем обычную работу программы
+    //   if (initialGate.globalFlag) {
+    //     // выбираем первые значения в стаканах на bay и sell и прибавляем комисиии
+    //     initialGate.priceAndComissionsBay = initialGate.bay - initialGate.bay * initialGate.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+    //     console.log('initialGate.priceAndComissionsBay:', initialGate.priceAndComissionsBay);//для отладки себе включить
+
+    //     initialGate.priceAndComissionsSell = initialGate.sell + initialGate.sell * initialGate.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
+    //     console.log('initialGate.priceAndComissionsSell:', initialGate.priceAndComissionsSell);//для отладки себе включить
+
+
+    //     console.log('initialBith.initialFetchURL=', initialBith.initialFetchURL);
+    //     console.log('initialBith.initialWs=', initialBith.initialWs);
+
+    //     // initialGate.messageEdit = {
+    //     //   b: initialGate.messageObj.data.b,
+    //     //   s: initialGate.messageObj.data.s,
+    //     //   ver: initialGate.messageObj.data.ver,
+    //     //   timestamp: initialGate.messageObj.timestamp
+    //     // };
+    //     if (initialBith.initialFetchURL && initialBith.initialWs) { // если готовы данные из bithumb
+    //       console.log('priceAndComissionsBay For Gate:', initialBith.priceAndComissionsBay);
+    //       console.log('priceAndComissionsSell For Gate:', initialBith.priceAndComissionsSell);
+
+    //       const paramsGoTrade = {
+    //         bayGate: initialGate.priceAndComissionsBay,
+    //         bayBith: initialBith.priceAndComissionsBay,
+    //         sellGate: initialGate.priceAndComissionsSell,
+    //         sellBith: initialBith.priceAndComissionsSell,
+    //         timeServer: new Date().getTime(),
+    //         timeBith: initialBith.baySellTimestamp,
+    //         timeGateSell: initialGate.sellTimestamp,
+    //         timeGateBuy: initialGate.bayTimestamp,
+    //         init: false,
+    //       }
+
+    //       // console.log('new Date().getTime():', new Date().getTime());
+
+    //       // for (let i = 0; i < 100; i++) {
+    //       //   goTrade(paramsGoTrade, writableFiles);
+    //       // }
+    //       goTrade(paramsGoTrade, writableFiles);
+    //     };
+    //     // let diffSellGate = initialBith.priceAndComissionsBay - initialGate.priceAndComissionsSell;
+    //     // let diffBaylGate = initialGate.priceAndComissionsBay - initialBith.priceAndComissionsSell;
+
+    //     // if (initialBith.initialFetchURL && initialBith.initialWs) { // если готовы данные из bithumb
+
+    //     //   if (diffSellGate > 0) {
+    //     //     console.log('Выгодно купить на Gate и продать на Bith = #1');
+    //     //     const percentBonus = diffSellGate / initialGate.priceAndComissionsSell;
+    //     //     console.log('percentBonus #1 =', percentBonus);
+    //     //   }
+
+    //     //   if (diffBaylGate > 0) {
+    //     //     console.log('Выгодно продать на Gate и купить на Bith = #2');
+    //     //     const percentBonus = diffBaylGate / initialBith.priceAndComissionsSell;
+    //     //     console.log('percentBonus #2=', percentBonus);
+    //     //   }
+    //     //   console.log('diffSellGate=', diffSellGate);
+    //     //   console.log('diffBaylGate=', diffBaylGate);
+    //     // }
+
+    //   }
+
+
+    // }
   };
 
   ws.onclose = function () {

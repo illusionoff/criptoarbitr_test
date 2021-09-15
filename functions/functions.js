@@ -492,7 +492,7 @@ function closureTimeStopTest() {
   let timeAll = 0;
   let timePrevious = 0;
   const timeStart = new Date().getTime();
-  function main(countReconnect, countErrors) {
+  function main(obj) {//{countReconnect, countErrors,name:initialBith.name}
     let timeNaw = new Date().getTime();
     console.log('timeNaw=', timeNaw);
     console.log('timeStart=', timeStart);
@@ -503,24 +503,28 @@ function closureTimeStopTest() {
     if (colMessage > 20 && varPeriod > maxTimePeriod) { maxTimePeriod = varPeriod }
     timeAll = Math.round((timeNaw - timeStart) / 1000);// переводим микросекунды в секунды
     let viewMAxTimePeriod = Math.round((maxTimePeriod) / 1000);
-    console.log(` BITHUMB viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`);
+    console.log(`${obj.name} viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`);
     timePrevious = timeNaw;
     if (timeAll > TIME_STOP_TEST) {
-      console.log('TEST_ORDERBOOB10=');
-      console.log('countReconnect=', countReconnect);
-      console.log('countErrors=', countErrors);
-      console.log('|Time OUT 5 min test');
+      const strCounts = `countReconnect = ${obj.countReconnect}
+      countErrors = ${obj.countErrors}
+      |Time OUT sec stop = ${TIME_STOP_TEST}`
+      consoleLogGroup(strCounts);
       process.exit();
     }
   }
-  return (countReconnect, countErrors) => main(countReconnect, countErrors)
+  return (obj) => main(obj)
 }
 
-function consoleGroupLog(objVars, optionalArr = []) {
-  if (optionalArr.length != 0) optionalArr.forEach((item) => console.log(item));
-  for (let key in objVars) console.log(`${key} = `, objVars[key]);
-}
+// function consoleGroupLog(objVars, optionalArr = []) {
+//   if (optionalArr.length != 0) optionalArr.forEach((item) => console.log(item));
+//   for (let key in objVars) console.log(`${key} = `, objVars[key]);
+// }
 
+// удаляем лишние пробелы для устранения эффекта форматирования шаблонных строк VSCode.
+function consoleLogGroup(str) {
+  console.log(str.split('\n').map((item) => item.trim()).join('\n'));
+}
 // определение средней разницы времени между своим серверным в момент получения сообщения и временем записанном в объекте биржы в момент создания ею сообщения
 
 
@@ -553,4 +557,4 @@ function consoleGroupLog(objVars, optionalArr = []) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest, consoleGroupLog }
+module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest, consoleLogGroup }
