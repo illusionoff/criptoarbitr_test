@@ -50,7 +50,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   paramsGoTrade.timeBith = ${paramsGoTrade.timeBith}
   paramsGoTrade.timeGate = ${paramsGoTrade.timeGate}`;
   consoleLogGroup(strTimers);
-
+  process.exit()
   const timeOutAll = arrTimesAll.some((item) => {
     if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return true
   });
