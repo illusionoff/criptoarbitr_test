@@ -510,11 +510,11 @@ function closureTimeStopTest() {
     console.log(`${obj.name} viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`);
     timePrevious = timeNaw;
     if (timeAll > TIME_STOP_TEST) {
-      const strCounts = `countReconnect = ${obj.countReconnect}
+      consoleLogGroup`countReconnect = ${obj.countReconnect}
       countErrors = ${obj.countErrors}
       |Time OUT sec stop = ${TIME_STOP_TEST}`
-      consoleLogGroup(strCounts);
-      // process.exit();
+      // consoleLogGroup(strCounts);
+      process.exit();
     }
   }
   return (obj) => main(obj)
@@ -526,8 +526,18 @@ function closureTimeStopTest() {
 // }
 
 // удаляем лишние пробелы для устранения эффекта форматирования шаблонных строк VSCode.
-function consoleLogGroup(str) {
-  console.log(str.split('\n').map((item) => item.trim()).join('\n'));
+// function consoleLogGroup(str) {
+//   console.log(str.split('\n').map((item) => item.trim()).join('\n'));
+// }
+function consoleLogGroup(strings, ...expressions) {
+  function trimMy(str) { return str.split('\n').map((item) => item.trim()).join('\n') }
+
+  const equals = strings.length != expressions.length ? true : false;
+
+  expressions.forEach((value, i) => {
+    if (equals && i === expressions.length - 1) console.log(trimMy(strings[i]), value, trimMy(strings[strings.length - 1]))
+    else console.log(trimMy(strings[i]), value); // Добавляем последний строковой литерал
+  })
 }
 
 function reinitGate(initialGate) {
