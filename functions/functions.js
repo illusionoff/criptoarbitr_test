@@ -29,6 +29,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   console.log('goTrade()----------------------------------------------------');
   const arrPrice = [paramsGoTrade.bayGate, paramsGoTrade.bayBith, paramsGoTrade.sellGate, paramsGoTrade.sellBith];
   // Если в данных есть ноль
+  console.log(arrPrice)
   if (arrPrice.includes(0)) return
   // если данные устарели 1
   if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
@@ -50,7 +51,6 @@ function goTrade(paramsGoTrade, writableFiles) {
   paramsGoTrade.timeBith = ${paramsGoTrade.timeBith}
   paramsGoTrade.timeGate = ${paramsGoTrade.timeGate}`;
   consoleLogGroup(strTimers);
-  process.exit()
   const timeOutAll = arrTimesAll.some((item) => {
     if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return true
   });
@@ -458,7 +458,6 @@ function changeTradeArr(initialObj) {
     // process.exit();
     return true
   }
-
   return false
 }
 
@@ -510,11 +509,12 @@ function closureTimeStopTest() {
     console.log(`${obj.name} viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`);
     timePrevious = timeNaw;
     if (timeAll > TIME_STOP_TEST) {
-      consoleLogGroup`countReconnect = ${obj.countReconnect}
-      countErrors = ${obj.countErrors}
-      |Time OUT sec stop = ${TIME_STOP_TEST}`
+      // consoleLogGroup`countReconnect = ${obj.countReconnect}
+      // countErrors = ${obj.countErrors}
+      // |Time OUT sec stop = ${TIME_STOP_TEST}`
+
       // consoleLogGroup(strCounts);
-      process.exit();
+      // process.exit();
     }
   }
   return (obj) => main(obj)
@@ -526,19 +526,19 @@ function closureTimeStopTest() {
 // }
 
 // удаляем лишние пробелы для устранения эффекта форматирования шаблонных строк VSCode.
-// function consoleLogGroup(str) {
-//   console.log(str.split('\n').map((item) => item.trim()).join('\n'));
-// }
-function consoleLogGroup(strings, ...expressions) {
-  function trimMy(str) { return str.split('\n').map((item) => item.trim()).join('\n') }
-
-  const equals = strings.length != expressions.length ? true : false;
-
-  expressions.forEach((value, i) => {
-    if (equals && i === expressions.length - 1) console.log(trimMy(strings[i]), value, trimMy(strings[strings.length - 1]))
-    else console.log(trimMy(strings[i]), value); // Добавляем последний строковой литерал
-  })
+function consoleLogGroup(str) {
+  console.log(str.split('\n').map((item) => item.trim()).join('\n'));
 }
+// function consoleLogGroup(strings, ...expressions) {
+//   function trimMy(str) { return str.split('\n').map((item) => item.trim()).join('\n') }
+
+//   const equals = strings.length != expressions.length ? true : false;
+
+//   expressions.forEach((value, i) => {
+//     if (equals && i === expressions.length - 1) console.log(trimMy(strings[i]), value, trimMy(strings[strings.length - 1]))
+//     else console.log(trimMy(strings[i]), value); // Добавляем последний строковой литерал
+//   })
+// }
 
 function reinitGate(initialGate) {
   initialGate = {
@@ -570,6 +570,25 @@ function reinitGate(initialGate) {
     timeSell: undefined,
     time: undefined,
   };
+}
+
+function maxPercentCupClosure() {
+  let maxPercent = 0;
+  function main(messageObj) {
+    const length = messageObj.result.bids.length - 1;
+    const bids0 = messageObj.result.bids[0][0];
+    const bidsMaxLength = messageObj.result.bids[length][0];
+    const percent = ((bids0 - bidsMaxLength) / bids0) * 100;
+    console.log('maxPercent=', maxPercent);
+    if (percent > maxPercent) maxPercent = percent;
+    const strLength = `initialGate.messageObj.result.bids.length = ${messageObj.result.bids.length}
+    initialGate.messageObj.result.bids[0][0] = ${messageObj.result.bids[0][0]}
+    initialGate.messageObj.result.bids[length][0]) = ${messageObj.result.bids[length][0]}
+    percent bids[0][0]-bids[length][0] = ${percent}
+    maxPercent= ${maxPercent}`; //  за 5 минут получил 0.109 % maxPercent. За 8 дней 2.41%
+    consoleLogGroup(strLength);
+  }
+  return (messageObj) => main(messageObj)
 }
 // определение средней разницы времени между своим серверным в момент получения сообщения и временем записанном в объекте биржы в момент создания ею сообщения
 
@@ -603,4 +622,4 @@ function reinitGate(initialGate) {
 //   }
 // }
 
-module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest, consoleLogGroup, reinitGate }
+module.exports = { goTrade, writtenCSV, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, closureTimeStopTest, consoleLogGroup, reinitGate, maxPercentCupClosure }
