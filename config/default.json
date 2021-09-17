@@ -5,7 +5,7 @@
   "WS_URL_GATE_v4": "wss://api.gateio.ws/ws/v4/",
   "CURRENCY_NAME": "XRP",
   "KEY_GATE": "your key",
-  "SECRET_Gate": "your secret",
+  "SECRET_GATE": "your secret",
   "port": 5000,
   "baseUrl": "http://localhost:5000",
   "TIME_DALAY": 50,
