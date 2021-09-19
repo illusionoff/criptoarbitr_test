@@ -1,14 +1,12 @@
-
+const util = require('util');
 const config = require('config');
+const assert = require('assert');
+const fs = require("fs");
+const parse = require('csv-parse');
+
 const MIN_PROFIT = config.get('MIN_PROFIT');
 const TIME_DEPRECAT = config.get('TIME_DEPRECAT');
 const TIME_DEPRECAT_ALL = config.get('TIME_DEPRECAT');
-const stringify = require('csv-stringify');
-const generate = require('csv-generate');
-const assert = require('assert');
-const fs = require("fs");
-
-const parse = require('csv-parse');
 const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
 const TIME_STOP_TEST = config.get('TIME_STOP_TEST');
 
@@ -38,19 +36,12 @@ function goTrade(paramsGoTrade, writableFiles) {
   // const arrTimesAll = [1629570640474, 1629570662475, 1629570663475, 1629570664475];
   // paramsGoTrade.timeServer = 1629570660475;
   const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
-  // console.log('Проверка 4 times');
-  // console.log('arrTimesAll=', arrTimesAll);
-  // console.log('arrPrice=', arrPrice);
-  // console.log('paramsGoTrade.timeServer=', paramsGoTrade.timeServer);
-  // console.log('paramsGoTrade.timeBith=', paramsGoTrade.timeBith);
-  // console.log('paramsGoTrade.timeGate=', paramsGoTrade.timeGate);
-  const strTimers = `Проверка 4 times
+  consoleLogGroup`Проверка 4 times
   arrTimesAll = ${arrTimesAll}
   arrPrice = ${arrPrice}
   paramsGoTrade.timeServer = ${paramsGoTrade.timeServer}
   paramsGoTrade.timeBith = ${paramsGoTrade.timeBith}
   paramsGoTrade.timeGate = ${paramsGoTrade.timeGate}`;
-  consoleLogGroup(strTimers);
   const timeOutAll = arrTimesAll.some((item) => {
     if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return true
   });
@@ -103,14 +94,9 @@ function goTrade(paramsGoTrade, writableFiles) {
     console.log('data========================================', data);
     writableFiles(data);
   }
-
-  // writableFiles(data);
 };
 
-
-
 function testWritable(data) {
-
   console.log('TestWritable(data)==============================', data);
   let testFlag = 1;
   let testCount = 0;
@@ -123,7 +109,6 @@ function testWritable(data) {
   }
   // testWriteableStream.write_1.write(`${headerName}\r\n`);
   testWriteableStream.write_1.write(`${headerName}\n`);
-  // stringifyDate(testWriteableStream.write_1, headerName, false);
   function main(data) {
     console.log('data Writable=', data);
     data = `${data.bayGate},${data.bayBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},${data.timeServer},${data.timeGate},${data.timeBith},${data.percentBonus},${data.bayOrSellGate},${data.bayOrSellBith},${data.init}\n`;
@@ -131,18 +116,18 @@ function testWritable(data) {
       testCount = 0;
       if (testFlag === 1) {
         console.log(`testFlag=${testFlag}--------------------------------------------------------------------------------------------------`);
-        // console.log('testWriteableStream.write_1._writableState=', testWriteableStream.write_1._writableState);
-        console.log(' testWriteableStream.write_1._writableState.getBuffer()=', testWriteableStream.write_1._writableState.getBuffer());
-        console.log(' testWriteableStream.write_1._writableState.getBuffer().length=', testWriteableStream.write_1._writableState.getBuffer().length);
-        console.log('testWriteableStream.write_1.writableLength=', testWriteableStream.write_1.writableLength);
         testWriteableStream.write_2.end();
         testWriteableStream.write_2.on('finish', () => {
-          console.log('estWriteableStream_2 The end-------------------------------------------------------------------------------');
+          consoleLogGroup`estWriteableStream_2 The end-----------------------------------
+          testFlag=${testFlag}-----------------------------------------------------------
+          testWriteableStream.write_1._writableState.getBuffer() =${testWriteableStream.write_1._writableState.getBuffer()}
+          testWriteableStream.write_1._writableState.getBuffer().length=${testWriteableStream.write_1._writableState.getBuffer().length}
+          testWriteableStream.write_1.writableLength=${testWriteableStream.write_1.writableLength}`;
           testWriteableStream.write_2.close();
         });
 
         testWriteableStream.write_2.on('close', () => {
-          console.log('estWriteableStream_2 close sas The end-------------------------------------------------------------------------------');
+          console.log('estWriteableStream_2 close sas The end---------------------------------------------------------');
           let time = new Date().getTime();
           console.log('time:', time);
           testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit_${testCountAll}_${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
@@ -151,15 +136,15 @@ function testWritable(data) {
         });
         return
       }
-      console.log(`testFlag=${testFlag}--------------------------------------------------------------------------------------------------`);
+      console.log(`testFlag=${testFlag}------------------------------------------------------------------------------`);
       testWriteableStream.write_1.end();
       testWriteableStream.write_1.on('finish', () => {
-        console.log('estWriteableStream_1 The end-------------------------------------------------------------------------------');
+        console.log('estWriteableStream_1 The end---------------------------------------------------------------------');
         testWriteableStream.write_1.close();
       });
 
       testWriteableStream.write_1.on('close', () => {
-        console.log('estWriteableStream_1 close sas The end-------------------------------------------------------------------------------');
+        console.log('estWriteableStream_1 close sas The end----------------------------------------------------------');
         let time = new Date().getTime();
         console.log('time:', time);
         testWriteableStream.write_1 = fs.createWriteStream(`logs/test1_profit_${testCountAll}_${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
@@ -167,21 +152,19 @@ function testWritable(data) {
         testFlag = 1;
       });
     };
-    console.log(`testFlag=${testFlag},----------------------------------------------------------------------------------------------------`);
+    console.log(`testFlag=${testFlag},-------------------------------------------------------------------------------`);
     if (testFlag === 1) {
-      console.log('writeableStream_1');
+      console.log('writeableStream_1---------------------------------------------------------------------');
       let okWritable1 = testWriteableStream.write_1.write(`${testCountAll},${data}`);
       // let okWritable1 = stringifyDate(testWriteableStream.write_1, data, false);
       // if (!okWritable1) {
       //   process.exit();
       // }
-      console.log('wtiten_1=---------------------------------------------------------------------');
     }
     if (testFlag === 2) {
       console.log('writeableStream_2');
       // console.log('testWriteableStream._writableState:', testWriteableStream.write_2._writableState);
       let okWritable2 = testWriteableStream.write_2.write(`${testCountAll},${data}`);
-
       // stringifyDate(testWriteableStream.write_2, data, false);
       // if (!okWritable2) {
       // process.exit();
@@ -216,10 +199,6 @@ function changeTradeArr(initialObj) {
   let trueSell = false;
   let bayOrSell = -1;
   // initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
-  variableClosure('1');//count= 0
-  // выход при устаревании данных
-  // if ()
-  //  Инициализация первых предыдущих значений
   // проверка изменения значения для предотвращения лишних вычислений
   if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
     console.log('changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
@@ -245,9 +224,6 @@ function changeTradeArr(initialObj) {
 
   if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
     initialObj.bayOrSell = bayOrSell;
-    variableClosure2('2');
-    // console.log('changeTradeArr()');
-    // process.exit();
     return true
   }
   return false
@@ -291,23 +267,21 @@ function timeStopTestClosure() {
   function main(obj) {//{countReconnect, countErrors,name:initialBith.name}
     let timeNaw = new Date().getTime();
     colMessage++;
-    console.log('timeNaw=', timeNaw);
-    console.log('timeStart=', timeStart);
-    console.log('colMessage======================================================', colMessage);
-
     let varPeriod = timeNaw - timePrevious;
     if (colMessage > 20 && varPeriod > maxTimePeriod) { maxTimePeriod = varPeriod }
     timeAll = Math.round((timeNaw - timeStart) / 1000);// переводим микросекунды в секунды
     let viewMAxTimePeriod = Math.round((maxTimePeriod) / 1000);
-    console.log(`${obj.name} viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`);
+
+    consoleLogGroup`timeNaw= ${timeNaw}
+    timeStart=${timeStart}
+    colMessage=${colMessage}
+    ${obj.name} viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`;
+
     timePrevious = timeNaw;
     if (timeAll > TIME_STOP_TEST) {
-      // consoleLogGroup`countReconnect = ${obj.countReconnect}
-      // countErrors = ${obj.countErrors}
-      // |Time OUT sec stop = ${TIME_STOP_TEST}`
-
-      // consoleLogGroup(strCounts);
-      // process.exit();
+      consoleLogGroup`countReconnect = ${obj.countReconnect}
+      countErrors = ${obj.countErrors}
+      |Time OUT sec stop = ${TIME_STOP_TEST}`;
     }
   }
   return (obj) => main(obj)
@@ -318,20 +292,22 @@ function timeStopTestClosure() {
 //   for (let key in objVars) console.log(`${key} = `, objVars[key]);
 // }
 
-// удаляем лишние пробелы для устранения эффекта форматирования шаблонных строк VSCode.
-function consoleLogGroup(str) {
-  console.log(str.split('\n').map((item) => item.trim()).join('\n'));
+function consoleLogGroup(strings, ...expressions) {
+  const inspectOptions = { showHidden: false, colors: true, depth: null }// depth: null глубокий вывод. compact: true минимизация количества строк
+  let strOut = '';
+  function trim(str) { return str.split('\n').map((item) => item.trim()).join('\n') }//удаляем лишние пробелы для устранения эффекта форматирования шаблонных строк VSCode.
+  expressions.forEach((value, i) => {
+    if (i === expressions.length - 1) {
+      strOut += ' ' + trim(strings[i]) +
+        util.formatWithOptions(inspectOptions, value) + ' ' +
+        trim(strings[strings.length - 1]);
+    }// Добавляем последний строковой литерал
+    else strOut += ' ' + trim(strings[i]) + ' ' + util.formatWithOptions(inspectOptions, value);
+  })
+  // console.log(util.formatWithOptions({ showHidden: false, colors: true }, expressions[3]));// depth: null глубокий вывод
+  // console.log(util.inspect(expressions[3], { showHidden: false, colors: true }))// depth: null глубокий вывод объектов и цветом
+  console.log(strOut);
 }
-// function consoleLogGroup(strings, ...expressions) {
-//   function trimMy(str) { return str.split('\n').map((item) => item.trim()).join('\n') }
-
-//   const equals = strings.length != expressions.length ? true : false;
-
-//   expressions.forEach((value, i) => {
-//     if (equals && i === expressions.length - 1) console.log(trimMy(strings[i]), value, trimMy(strings[strings.length - 1]))
-//     else console.log(trimMy(strings[i]), value); // Добавляем последний строковой литерал
-//   })
-// }
 
 function reinitGate(initialGate) {
   initialGate = {
@@ -372,47 +348,14 @@ function maxPercentCupClosure() {
     const bids0 = messageObj.result.bids[0][0];
     const bidsMaxLength = messageObj.result.bids[length][0];
     const percent = ((bids0 - bidsMaxLength) / bids0) * 100;
-    console.log('maxPercent=', maxPercent);
     if (percent > maxPercent) maxPercent = percent;
-    const strLength = `initialGate.messageObj.result.bids.length = ${messageObj.result.bids.length}
+    consoleLogGroup`initialGate.messageObj.result.bids.length = ${messageObj.result.bids.length}
     initialGate.messageObj.result.bids[0][0] = ${messageObj.result.bids[0][0]}
     initialGate.messageObj.result.bids[length][0]) = ${messageObj.result.bids[length][0]}
     percent bids[0][0]-bids[length][0] = ${percent}
     maxPercent= ${maxPercent}`; //  за 5 минут получил 0.109 % maxPercent. За 8 дней 2.41%
-    consoleLogGroup(strLength);
   }
   return (messageObj) => main(messageObj)
 }
-// определение средней разницы времени между своим серверным в момент получения сообщения и временем записанном в объекте биржы в момент создания ею сообщения
-
-
-// function changeTrade(initialGate) {
-//   if (initialGate.messageObj.result.u > initialGate.ver) {
-//     initialGate.ver = initialGate.messageObj.result.u;
-//     if (initialGate.messageObj.result.b) {
-//       if (Number(initialGate.messageObj.result.b) != initialGate.bay) {
-//         initialGate.bayOrSell = 1;
-//         initialGate.bay = Number(initialGate.messageObj.result.b);
-//         // расчет учитывая комиссии + дополнительная комиссия за счет не самого лучшего значения ордеров speedComissions
-//         initialGate.priceAndComissionsBay = initialGate.bay - initialGate.bay * initialGate.takerComissions
-//           - initialGate.bay * initialGate.speedComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
-//         console.log('Change bay:', initialGate.bay);
-//         console.log('initialGate.priceAndComissionsBay-------------------:', initialGate.priceAndComissionsBay);//для отладки себе включить
-
-//       }
-//     }
-//     if (initialGate.messageObj.result.a) {
-//       if (Number(initialGate.messageObj.result.a) != initialGate.sell) {
-//         initialGate.bayOrSell = 0;
-//         initialGate.sell = Number(initialGate.messageObj.result.a);
-//         // расчет учитывая комиссии + дополнительная комиссия за счет не самого лучшего значения ордеров speedComissions
-//         initialGate.priceAndComissionsSell = initialGate.sell + initialGate.sell * initialGate.makerComissions
-//           + initialGate.sell * initialGate.speedComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
-//         console.log('Change sell:', initialGate.sell);
-//         console.log('initialGate.priceAndComissionsSell------------------:', initialGate.priceAndComissionsSell);//для отладки себе включить
-//       }
-//     }
-//   }
-// }
 
 module.exports = { goTrade, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, timeStopTestClosure, consoleLogGroup, reinitGate, maxPercentCupClosure }
