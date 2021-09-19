@@ -61,8 +61,6 @@ function goTrade(paramsGoTrade, writableFiles) {
     console.log('Выгодно продать на Gate и купить на Bith = #2');
     console.log('percentBonus #2=', percentBonus);
   }
-  console.log('diffSell=', diffSell);
-  console.log('diffBay=', diffBay);
   //округление
   Number.prototype.round = function (places) {
     return +(Math.round(this + "e+" + places) + "e-" + places);
@@ -72,9 +70,15 @@ function goTrade(paramsGoTrade, writableFiles) {
   const comma = 8;
   const commaPercent = 4;
   // if (diffSell > 0 || diffBay > 0) {
+  console.log('diffSell=', diffSell);
+  console.log('diffBay=', diffBay);
   console.log('paramsGoTrade.bayGate=', paramsGoTrade.bayGate);
   console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
-
+  consoleLogGroup`diffSell= ${diffSell}
+  diffBay= ${diffBay}
+  paramsGoTrade.bayGate= ${paramsGoTrade.bayGate}
+  paramsGoTrade.sellGate= ${paramsGoTrade.sellGate}`;
+  process.exit()
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
     const data = {
       bayGate: paramsGoTrade.bayGate.round(comma),
@@ -115,7 +119,7 @@ function testWritable(data) {
     if (testCount >= 50) {
       testCount = 0;
       if (testFlag === 1) {
-        console.log(`testFlag=${testFlag}--------------------------------------------------------------------------------------------------`);
+        console.log(`testFlag=${testFlag}----------------------------------------------------------------------------`);
         testWriteableStream.write_2.end();
         testWriteableStream.write_2.on('finish', () => {
           consoleLogGroup`estWriteableStream_2 The end-----------------------------------
@@ -127,7 +131,7 @@ function testWritable(data) {
         });
 
         testWriteableStream.write_2.on('close', () => {
-          console.log('estWriteableStream_2 close sas The end---------------------------------------------------------');
+          console.log('estWriteableStream_2 close sas The end--------------------------------------------------------');
           let time = new Date().getTime();
           console.log('time:', time);
           testWriteableStream.write_2 = fs.createWriteStream(`logs/test2_profit_${testCountAll}_${time}.csv`, { flags: 'a', highWaterMark: highWaterMark });
@@ -139,7 +143,7 @@ function testWritable(data) {
       console.log(`testFlag=${testFlag}------------------------------------------------------------------------------`);
       testWriteableStream.write_1.end();
       testWriteableStream.write_1.on('finish', () => {
-        console.log('estWriteableStream_1 The end---------------------------------------------------------------------');
+        console.log('estWriteableStream_1 The end--------------------------------------------------------------------');
         testWriteableStream.write_1.close();
       });
 
