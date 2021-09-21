@@ -79,7 +79,6 @@ function goTrade(paramsGoTrade, writableFiles) {
   diffBay= ${diffBay}
   paramsGoTrade.bayGate= ${paramsGoTrade.bayGate}
   paramsGoTrade.sellGate= ${paramsGoTrade.sellGate}`;
-  process.exit()
   if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
     const data = {
       bayGate: paramsGoTrade.bayGate.round(comma),
