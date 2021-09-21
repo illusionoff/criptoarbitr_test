@@ -9,6 +9,7 @@ const TIME_DEPRECAT = config.get('TIME_DEPRECAT');
 const TIME_DEPRECAT_ALL = config.get('TIME_DEPRECAT');
 const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
 const TIME_STOP_TEST = config.get('TIME_STOP_TEST');
+const VERSION = config.get('VERSION');
 
 const input = '#Welcome\n"1","2","3","4"\n"a","b","c","d"'
 function parseTest() {
@@ -279,7 +280,7 @@ function timeStopTestClosure() {
     consoleLogGroup`timeNaw= ${timeNaw}
     timeStart=${timeStart}
     colMessage=${colMessage}
-    ${obj.name} viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`;
+    ${obj.name}, Ver: ${VERSION}, viewMAxTimePeriod=${viewMAxTimePeriod}, colMessage=${colMessage}, timeNaw=${timeNaw}, time All=${timeAll}`;
 
     timePrevious = timeNaw;
     if (timeAll > TIME_STOP_TEST) {
