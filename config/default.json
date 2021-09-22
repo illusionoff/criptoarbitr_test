@@ -6,7 +6,6 @@
   "CURRENCY_NAME": "XRP",
   "KEY_GATE": "your key",
   "SECRET_GATE": "your secret",
-  "port": 5000,
   "baseUrl": "http://localhost:5000",
   "TIME_DALAY": 50,
   "TIME_DEPRECAT": 30000,
