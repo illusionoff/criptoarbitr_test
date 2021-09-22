@@ -1,7 +1,7 @@
 {
   "name": "criptoarbitr_test",
   "version": "20.0.0",
-  "description": "",
+  "description": "criptoarbitr test cryptocurrency exchange bithumb.pro, gate.io nodejs",
   "main": "app.js",
   "scripts": {
     "start": "ENV=dev ./node_modules/.bin/nodemon --harmony ws.js",
