@@ -4,6 +4,11 @@ const assert = require('assert');
 const fs = require("fs");
 const parse = require('csv-parse');
 
+const { timerClosure } = require('./separate/timerClosure');
+// const { funStartPing, funEndPing, funStartReconnect } = require('./separate/timeClosure/funsStartEnd');
+const { funStartPing, funEndPing } = require('./separate/timeClosure/funsStartEnd');
+
+
 const MIN_PROFIT = config.get('MIN_PROFIT');
 const TIME_DEPRECAT = config.get('TIME_DEPRECAT');
 const TIME_DEPRECAT_ALL = config.get('TIME_DEPRECAT');
@@ -362,4 +367,4 @@ function maxPercentCupClosure() {
   return (messageObj) => main(messageObj)
 }
 
-module.exports = { goTrade, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, timeStopTestClosure, consoleLogGroup, reinitGate, maxPercentCupClosure }
+module.exports = { goTrade, testWritable, parseTest, changeTradeArr, reconnectTimeMessageClosure, timeStopTestClosure, consoleLogGroup, reinitGate, maxPercentCupClosure, timerClosure, funStartPing, funEndPing }
