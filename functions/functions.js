@@ -11,9 +11,11 @@ const { changeTradeArr } = require('./separate/changeTradeArr');
 const { consoleLogGroup } = require('./separate/consoleLogGroup');
 const { timerClosure } = require('./separate/timerClosure');
 // const { funStartPing, funEndPing, funStartReconnect } = require('./separate/timeClosure/funsStartEnd');
-const { funStartPing, funEndPing, funStartReconnect } = require('./separate/timeClosure/funsStartEnd');
-const { timeStopTestClosure } = require('./separate/timeStopTestClosure');
+const { funEndPing, funStartReconnect } = require('./separate/timeClosure/funsEndReconnect');
+const { funStartPingBith } = require('./bith/funStartPingBith');
+const { funStartPingGate } = require('./gate/funStartPingGate');
 
+const { timeStopTestClosure } = require('./separate/timeStopTestClosure');
 
 
 const MIN_PROFIT = config.get('MIN_PROFIT');
@@ -330,10 +332,6 @@ function reinitGate(initialGate) {
     name: 'gate',
     globalFlag: false, // Глобальный ключ готовности программы для основного цикла работы
     messageObj: {},
-    messageEdit: {},
-    messageRefresh: {},
-    allOrderbookBay: [],
-    allOrderbookSell: [],
     takerComissions: 0.002,
     makerComissions: 0.002,
     speedComissions: 0.002,
@@ -348,9 +346,6 @@ function reinitGate(initialGate) {
     // bayTimestamp: undefined,
     // sellTimestamp: undefined,
     timeServer: undefined,
-    timeFileServerCorrect: undefined,
-    bayQuantity: undefined,
-    sellQuantity: undefined,
     timeBay: undefined,
     timeSell: undefined,
     time: undefined,
@@ -374,4 +369,4 @@ function maxPercentCupClosure() {
   return (messageObj) => main(messageObj)
 }
 
-module.exports = { goTrade, testWritable, parseTest, changeTradeArr, timeStopTestClosure, consoleLogGroup, reinitGate, maxPercentCupClosure, timerClosure, funStartPing, funEndPing, funStartReconnect, coinConfigBith }
+module.exports = { goTrade, testWritable, parseTest, changeTradeArr, timeStopTestClosure, consoleLogGroup, reinitGate, maxPercentCupClosure, timerClosure, funStartPingGate, funStartPingBith, funEndPing, funStartReconnect, coinConfigBith }
