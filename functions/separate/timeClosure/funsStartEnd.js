@@ -10,9 +10,9 @@ let funEndPing = () => {
   console.log('This Ping End timeNaw=', timeNaw);
 };
 
-// let funStartReconnect = (ws) => {
-//   return ws.reconnect(1006, 'Reconnect error');
-// };
+let funStartReconnect = (ws) => {
+  return ws.reconnect(1006, 'Reconnect error');
+};
 
-// module.exports = { funStartPing, funEndPing, funStartReconnect }
-module.exports = { funStartPing, funEndPing }
+module.exports = { funStartPing, funEndPing, funStartReconnect }
+// module.exports = { funStartPing, funEndPing }
