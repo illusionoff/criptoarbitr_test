@@ -1,6 +1,7 @@
 const { consoleLogGroup } = require('./consoleLogGroup');
 const config = require('config');
 const TIME_DEPRECAT = config.get('TIME_DEPRECAT');
+const TIME_DEPRECAT_ALL = config.get('TIME_DEPRECAT_ALL');
 const MIN_PROFIT = config.get('MIN_PROFIT');
 
 function goTrade(paramsGoTrade, writableFiles) {
