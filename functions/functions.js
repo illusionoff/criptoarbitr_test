@@ -5,8 +5,6 @@ const fs = require("fs");
 const parse = require('csv-parse');
 
 const { coinConfigBith } = require('./bith/coinConfigBith');
-
-
 const { changeTradeArr } = require('./separate/changeTradeArr');
 const { consoleLogGroup } = require('./separate/consoleLogGroup');
 const { timerClosure } = require('./separate/timerClosure');
@@ -17,14 +15,6 @@ const { funStartPingGate } = require('./gate/funStartPingGate');
 const { timeStopTestClosure } = require('./separate/timeStopTestClosure');
 const { maxPercentCupClosure } = require('./gate/maxPercentCupClosure');
 const { goTrade } = require('./separate/goTrade');
-
-
-const MIN_PROFIT = config.get('MIN_PROFIT');
-const TIME_DEPRECAT = config.get('TIME_DEPRECAT');
-const TIME_DEPRECAT_ALL = config.get('TIME_DEPRECAT');
-const TIMER_RECONNECT_MESSAGE = config.get('TIMER_RECONNECT_MESSAGE');
-const TIME_STOP_TEST = config.get('TIME_STOP_TEST');
-const VERSION = config.get('VERSION');
 
 const input = '#Welcome\n"1","2","3","4"\n"a","b","c","d"'
 function parseTest() {
