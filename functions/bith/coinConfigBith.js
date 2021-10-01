@@ -2,12 +2,12 @@ const fetch = require('node-fetch');
 
 const config = require('config');
 const { consoleLogGroup } = require('../separate/consoleLogGroup');
+const URL_BITH_COIN_CONFIG = config.get('URL_BITH_COIN_CONFIG');
 
 async function coinConfigBith(initialBith) {
-  console.log('coinConfigBith');
-
   try {
-    const url = 'https://global-openapi.bithumb.pro/openapi/v1/spot/config';
+    console.log('coinConfigBith');
+    const url = URL_BITH_COIN_CONFIG;
     let response = await fetch(url, {
       headers: { 'Content-Type': 'application/json' },
     });

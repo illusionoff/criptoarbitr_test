@@ -14,8 +14,9 @@ const { timerClosure } = require('./separate/timerClosure');
 const { funEndPing, funStartReconnect } = require('./separate/timeClosure/funsEndReconnect');
 const { funStartPingBith } = require('./bith/funStartPingBith');
 const { funStartPingGate } = require('./gate/funStartPingGate');
-
 const { timeStopTestClosure } = require('./separate/timeStopTestClosure');
+const { maxPercentCupClosure } = require('./gate/maxPercentCupClosure');
+const { goTrade } = require('./separate/goTrade');
 
 
 const MIN_PROFIT = config.get('MIN_PROFIT');
@@ -37,82 +38,6 @@ function parseTest() {
     )
   })
 }
-
-function goTrade(paramsGoTrade, writableFiles) {
-  console.log('goTrade()----------------------------------------------------');
-  const arrPrice = [paramsGoTrade.bayGate, paramsGoTrade.bayBith, paramsGoTrade.sellGate, paramsGoTrade.sellBith];
-  // Если в данных есть ноль
-  console.log(arrPrice)
-  if (arrPrice.includes(0)) return
-  // если данные устарели 1
-  if (paramsGoTrade.timeServer - paramsGoTrade.timeBith > TIME_DEPRECAT || paramsGoTrade.timeServer - paramsGoTrade.timeGate > TIME_DEPRECAT) return
-  // если данные устарели все 4 times
-  //1629570661475
-  // const arrTimesAll = [1629570640474, 1629570662475, 1629570663475, 1629570664475];
-  // paramsGoTrade.timeServer = 1629570660475;
-  const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
-  consoleLogGroup`Проверка 4 times
-  arrTimesAll = ${arrTimesAll}
-  arrPrice = ${arrPrice}
-  paramsGoTrade.timeServer = ${paramsGoTrade.timeServer}
-  paramsGoTrade.timeBith = ${paramsGoTrade.timeBith}
-  paramsGoTrade.timeGate = ${paramsGoTrade.timeGate}`;
-  const timeOutAll = arrTimesAll.some((item) => {
-    if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return true
-  });
-  if (timeOutAll) return
-  let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
-  let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
-
-  let percentBonus = 0;
-  if (diffSell > 0) {
-    percentBonus = diffSell / paramsGoTrade.sellGate;
-    console.log('Выгодно купить на Gate и продать на Bith = #1');
-    console.log('percentBonus #1 =', percentBonus);
-  }
-
-  if (diffBay > 0) {
-    percentBonus = diffBay / paramsGoTrade.sellBith;
-    console.log('Выгодно продать на Gate и купить на Bith = #2');
-    console.log('percentBonus #2=', percentBonus);
-  }
-  //округление
-  Number.prototype.round = function (places) {
-    return +(Math.round(this + "e+" + places) + "e-" + places);
-  }
-  //   var n = 1.7777;
-  // n.round(2); // 1.78 .round(comma)
-  const comma = 8;
-  const commaPercent = 4;
-  // if (diffSell > 0 || diffBay > 0) {
-  console.log('diffSell=', diffSell);
-  console.log('diffBay=', diffBay);
-  console.log('paramsGoTrade.bayGate=', paramsGoTrade.bayGate);
-  console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
-  consoleLogGroup`diffSell= ${diffSell}
-  diffBay= ${diffBay}
-  paramsGoTrade.bayGate= ${paramsGoTrade.bayGate}
-  paramsGoTrade.sellGate= ${paramsGoTrade.sellGate}`;
-  if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
-    const data = {
-      bayGate: paramsGoTrade.bayGate.round(comma),
-      bayBith: paramsGoTrade.bayBith.round(comma),
-      sellGate: paramsGoTrade.sellGate.round(comma),
-      sellBith: paramsGoTrade.sellBith.round(comma),
-      diffSell: diffSell.round(comma),
-      diffBay: diffBay.round(comma),
-      timeServer: paramsGoTrade.timeServer,
-      timeBith: paramsGoTrade.timeBith,
-      timeGate: paramsGoTrade.timeGate,
-      percentBonus: percentBonus.round(commaPercent),
-      bayOrSellGate: paramsGoTrade.bayOrSellGate,
-      bayOrSellBith: paramsGoTrade.bayOrSellBith,
-      init: paramsGoTrade.init
-    }
-    console.log('data========================================', data);
-    writableFiles(data);
-  }
-};
 
 function testWritable(data) {
   console.log('TestWritable(data)==============================', data);
@@ -350,23 +275,6 @@ function reinitGate(initialGate) {
     timeSell: undefined,
     time: undefined,
   };
-}
-
-function maxPercentCupClosure() {
-  let maxPercent = 0;
-  function main(messageObj) {
-    const length = messageObj.result.bids.length - 1;
-    const bids0 = messageObj.result.bids[0][0];
-    const bidsMaxLength = messageObj.result.bids[length][0];
-    const percent = ((bids0 - bidsMaxLength) / bids0) * 100;
-    if (percent > maxPercent) maxPercent = percent;
-    consoleLogGroup`initialGate.messageObj.result.bids.length = ${messageObj.result.bids.length}
-    initialGate.messageObj.result.bids[0][0] = ${messageObj.result.bids[0][0]}
-    initialGate.messageObj.result.bids[length][0]) = ${messageObj.result.bids[length][0]}
-    percent bids[0][0]-bids[length][0] = ${percent}
-    maxPercent= ${maxPercent}`; //  за 5 минут получил 0.109 % maxPercent. За 8 дней 2.41%
-  }
-  return (messageObj) => main(messageObj)
 }
 
 module.exports = { goTrade, testWritable, parseTest, changeTradeArr, timeStopTestClosure, consoleLogGroup, reinitGate, maxPercentCupClosure, timerClosure, funStartPingGate, funStartPingBith, funEndPing, funStartReconnect, coinConfigBith }

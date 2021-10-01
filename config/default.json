@@ -14,5 +14,6 @@
   "TIMER_RECONNECT_MESSAGE": 20000,
   "TIME_STOP_TEST": 10,
   "VERSION": 21,
-  "TIMER_PING": 20000
+  "TIMER_PING": 20000,
+  "URL_BITH_COIN_CONFIG": "https://global-openapi.bithumb.pro/openapi/v1/spot/config"
 }
