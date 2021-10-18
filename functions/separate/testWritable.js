@@ -9,8 +9,8 @@ function testWritable(data) {
   const highWaterMark = 320 * 1024;
   const headerName = `Number,bayGate,bayBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeGate,timeBith,percentBonus,bayOrSellGate,bayOrSellBith,init`;
   let testWriteableStream = {
-    write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
-    write_2: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark })
+    write_1: fs.createWriteStream("logs/1630000000000_0.csv", { flags: 'a', highWaterMark: highWaterMark }),
+    write_2: fs.createWriteStream("logs/1630000000000_0.csv", { flags: 'a', highWaterMark: highWaterMark })
   }
   // testWriteableStream.write_1.write(`${headerName}\r\n`);
   testWriteableStream.write_1.write(`${headerName}\n`);
@@ -35,7 +35,7 @@ function testWritable(data) {
           console.log('estWriteableStream_2 close sas The end--------------------------------------------------------');
           let time = new Date().getTime();
           console.log('time:', time);
-          testWriteableStream.write_2 = fs.createWriteStream(`logs/${time}_${testCountAll}_profit_test2.csv`, { flags: 'a', highWaterMark: highWaterMark });//`logs/test2_profit_${testCountAll}_${time}.csv`
+          testWriteableStream.write_2 = fs.createWriteStream(`logs/${time}_${testCountAll}.csv`, { flags: 'a', highWaterMark: highWaterMark });//`logs/test2_profit_${testCountAll}_${time}.csv`
           testWriteableStream.write_2.write(`${headerName}\n`);
           testFlag = 2;
         });
@@ -52,7 +52,7 @@ function testWritable(data) {
         console.log('estWriteableStream_1 close sas The end----------------------------------------------------------');
         let time = new Date().getTime();
         console.log('time:', time);
-        testWriteableStream.write_1 = fs.createWriteStream(`logs/${time}_${testCountAll}_profit_test2.csv`, { flags: 'a', highWaterMark: highWaterMark });//`logs/test1_profit_${testCountAll}_${time}.csv`
+        testWriteableStream.write_1 = fs.createWriteStream(`logs/${time}_${testCountAll}.csv`, { flags: 'a', highWaterMark: highWaterMark });//`logs/test1_profit_${testCountAll}_${time}.csv`
         testWriteableStream.write_1.write(`${headerName}\n`);
         testFlag = 1;
       });
