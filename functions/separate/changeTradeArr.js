@@ -1,26 +1,26 @@
 function changeTradeArr(initialObj) {
   console.log('initialObj.name=', initialObj.name);
-  let bay = initialObj.bay;
+  let buy = initialObj.buy;
   let sell = initialObj.sell;
   let trueBay = false;
   let trueSell = false;
-  let bayOrSell = -1;
-  // initialObj.bayOrSell = -1; // для исключения влияния предыдущего значения опроса
+  let buyOrSell = -1;
+  // initialObj.buyOrSell = -1; // для исключения влияния предыдущего значения опроса
   // проверка изменения значения для предотвращения лишних вычислений
-  if (initialObj.orderbookFirstPreviousBay && bay != initialObj.orderbookFirstPreviousBay) {
+  if (initialObj.orderbookFirstPreviousBay && buy != initialObj.orderbookFirstPreviousBay) {
     console.log('changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
-    console.log('changeTradeArr() initialObj.bay=', bay);
-    bayOrSell = 1;
+    console.log('changeTradeArr() initialObj.buy=', buy);
+    buyOrSell = 1;
     initialObj.timeBay = new Date().getTime();
-    initialObj.orderbookFirstPreviousBay = bay;
-    console.log('bay=', bay);
-    initialObj.priceAndComissionsBay = bay - bay * initialObj.takerComissions;//  bay=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+    initialObj.orderbookFirstPreviousBay = buy;
+    console.log('buy=', buy);
+    initialObj.priceAndComissionsBay = buy - buy * initialObj.takerComissions;//  buy=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
     trueBay = true;
   }
   if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
-    // Если одновременно изменения и в bay и в sell
-    if (bayOrSell === 1) bayOrSell = 2
-    else bayOrSell = 0;
+    // Если одновременно изменения и в buy и в sell
+    if (buyOrSell === 1) buyOrSell = 2
+    else buyOrSell = 0;
 
     initialObj.timeSell = new Date().getTime();
     initialObj.orderbookFirstPreviousSell = sell;
@@ -30,7 +30,7 @@ function changeTradeArr(initialObj) {
   }
 
   if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
-    initialObj.bayOrSell = bayOrSell;
+    initialObj.buyOrSell = buyOrSell;
     return true
   }
   return false

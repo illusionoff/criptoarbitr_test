@@ -1,4 +1,4 @@
-"Number","bayGate","bayBith","sellGate","sellBith","diffSell","diffBay","timeServer","timeBith","timeGate","bayOrSellGate","bayOrSellBith"," init"
+"Number","buyGate","buyBith","sellGate","sellBith","diffSell","diffBay","timeServer","timeBith","timeGate","buyOrSellGate","buyOrSellBith"," init"
 "51","0.93704216","0","0.94255134","0.9569547","-0.94255134","-0.01991254","1628698034507","1628698035360","1628698035357","2","-1","0"
 "52","0.93693238","0","0.94254132","0.9569547","-0.94254132","-0.02002232","1628698034610","1628698035360","1628698035448","2","-1","0"
 "53","0.93689246","0","0.94249122","0.9569547","-0.94249122","-0.02006224","1628698034734","1628698035360","1628698035540","2","-1","0"

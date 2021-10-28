@@ -39,15 +39,15 @@ let initialBith = {
   ver: 0,
   orderbookFirstPreviousBay: undefined,
   orderbookFirstPreviousSell: undefined,
-  bayOrSell: -1,
+  buyOrSell: -1,
   priceAndComissionsBay: 0,
   priceAndComissionsSell: 0,
   takerComissions: 0,
   makerComissions: 0,
-  bay: undefined,
+  buy: undefined,
   sell: undefined,
-  baySellTimestamp: undefined,
-  bayQuantity: undefined,
+  buySellTimestamp: undefined,
+  buyQuantity: undefined,
   sellQuantity: undefined,
   status: 0,
   indexLeveragesOrderbookBay: [],
@@ -195,15 +195,15 @@ function wsStartBithOrder10(cmd, args, initialGate, writableFiles) {
 
       console.log('initialBith.messageObj.data=', initialBith.messageObj.data);
       initialBith.ver = Number(initialBith.messageObj.data.ver);
-      initialBith.baySellTimestamp = initialBith.messageObj.timestamp;
+      initialBith.buySellTimestamp = initialBith.messageObj.timestamp;
       // // allOrderbookBay = initialBith.messageObj.data.b.slice();
       // const length = initialBith.messageObj.data.b.length - 1;
       const length = 0;
-      initialBith.bay = Number(initialBith.messageObj.data.b[length][0]);
+      initialBith.buy = Number(initialBith.messageObj.data.b[length][0]);
       initialBith.sell = Number(initialBith.messageObj.data.s[length][0]);
       initialBith.initialWs = true;
       if (!Boolean(initialBith.orderbookFirstPreviousBay)) {
-        initialBith.orderbookFirstPreviousBay = initialBith.bay;
+        initialBith.orderbookFirstPreviousBay = initialBith.buy;
       }
       if (!Boolean(initialBith.orderbookFirstPreviousSell)) {
         initialBith.orderbookFirstPreviousSell = initialBith.sell;
@@ -221,19 +221,19 @@ function wsStartBithOrder10(cmd, args, initialGate, writableFiles) {
         console.log(' after sellBith: initialBith.priceAndComissionsSell=', initialBith.priceAndComissionsSell);
         console.log(' after sellBith: initialBith.priceAndComissionsBay=', initialBith.priceAndComissionsBay);
         const paramsGoTrade = {
-          bayGate: initialGate.priceAndComissionsBay,
-          bayBith: initialBith.priceAndComissionsBay,
+          buyGate: initialGate.priceAndComissionsBay,
+          buyBith: initialBith.priceAndComissionsBay,
           sellGate: initialGate.priceAndComissionsSell,
           sellBith: initialBith.priceAndComissionsSell,
           timeServer: new Date().getTime(),
-          timeBith: initialBith.baySellTimestamp,
+          timeBith: initialBith.buySellTimestamp,
           timeGate: initialGate.timeGate,
-          bayOrSellGate: initialGate.bayOrSell,
-          bayOrSellBith: initialBith.bayOrSell,
+          buyOrSellGate: initialGate.buyOrSell,
+          buyOrSellBith: initialBith.buyOrSell,
           init: 1
         }
         // testcount++;
-        // testArr.push(`${testcount}: ${initialBith.bay},${initialBith.sell}, ${paramsGoTrade.timeServer},  ${initialBith.ver}`);
+        // testArr.push(`${testcount}: ${initialBith.buy},${initialBith.sell}, ${paramsGoTrade.timeServer},  ${initialBith.ver}`);
         // console.log('initialBith.messageObj.data=', initialBith.messageObj.data);
         // console.log('testArr=', testArr);
 

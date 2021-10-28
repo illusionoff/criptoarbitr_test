@@ -40,11 +40,11 @@ let initialBith = {
   priceAndComissionsSell: 0,
   takerComissions: 0,
   makerComissions: 0,
-  bay: undefined,
+  buy: undefined,
   sell: undefined,
-  baySellTimestamp: undefined,
-  bayOrSell: -1,
-  bayQuantity: undefined,
+  buySellTimestamp: undefined,
+  buyOrSell: -1,
+  buyQuantity: undefined,
   sellQuantity: undefined,
   status: 0,
   indexLeveragesOrderbookBay: [],
@@ -106,7 +106,7 @@ function orderbookChange(allOrderbook, newMessage) {
   }
   // Если элемент не найден, то добавить в массив и упорядочить по убыванию либо возроастнию
   allOrderbook.push(newMessage[0]);
-  //Определяем это данные bay или sell. Если первый элемент allOrderbook больше последующих - убывающая последовательность то это bay иначе sell
+  //Определяем это данные buy или sell. Если первый элемент allOrderbook больше последующих - убывающая последовательность то это buy иначе sell
   if (allOrderbook[0][0] > allOrderbook[5][0]) return allOrderbook.sort((a, b) => Number(b[0]) - Number(a[0]))
   allOrderbook.sort((a, b) => Number(a[0]) - Number(b[0]));
 }
@@ -297,9 +297,9 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
 
         // //   orderbookFirstPreviousBay[0] = trackElementOrderbookBay0;
         // //   orderbookFirstPreviousBay[1] = trackElementOrderbookBay1;
-        // //   initialBith.bay = Number(trackElementOrderbookBay0);
-        // //   initialBith.bayQuantity = Number(trackElementOrderbookBay1);
-        // //   initialBith.priceAndComissionsBay = initialBith.bay - initialBith.bay * initialBith.makerComissions;;
+        // //   initialBith.buy = Number(trackElementOrderbookBay0);
+        // //   initialBith.buyQuantity = Number(trackElementOrderbookBay1);
+        // //   initialBith.priceAndComissionsBay = initialBith.buy - initialBith.buy * initialBith.makerComissions;;
         // //   console.log('Стало***************************************************');
         // //   for (let i = 0; i < 10; i++) {
         // //     console.log(allOrderbookBay[i]);
@@ -311,12 +311,12 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
         // if (resultChangeOrderbookBay) {
         //   orderbookFirstPreviousBay[0] = trackElementOrderbookBay0;
         //   orderbookFirstPreviousBay[1] = trackElementOrderbookBay1;
-        //   initialBith.bay = Number(trackElementOrderbookBay0);
-        //   initialBith.bayQuantity = Number(trackElementOrderbookBay1);
-        //   initialBith.priceAndComissionsBay = initialBith.bay - initialBith.bay * initialBith.makerComissions;
-        //   initialGate.bayOrSell =
+        //   initialBith.buy = Number(trackElementOrderbookBay0);
+        //   initialBith.buyQuantity = Number(trackElementOrderbookBay1);
+        //   initialBith.priceAndComissionsBay = initialBith.buy - initialBith.buy * initialBith.makerComissions;
+        //   initialGate.buyOrSell =
 
-        //     console.log('initialBith.bay=', initialBith.bay);
+        //     console.log('initialBith.buy=', initialBith.buy);
         //   console.log('initialBith.priceAndComissionsBay=', initialBith.priceAndComissionsBay);
 
         //   console.log('Стало***************************************************');
@@ -354,10 +354,10 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
           // process.exit();
         }
 
-        initialBith.bay = Number(initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK][0]);
+        initialBith.buy = Number(initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK][0]);
         initialBith.sell = Number(initialBith.allOrderbookSell[TRACK_ELEMENT_ORDERBOOK][0]);
         if (!Boolean(initialBith.orderbookFirstPreviousBay)) {
-          initialBith.orderbookFirstPreviousBay = initialBith.bay;
+          initialBith.orderbookFirstPreviousBay = initialBith.buy;
         }
         if (!Boolean(initialBith.orderbookFirstPreviousSell)) {
           initialBith.orderbookFirstPreviousSell = initialBith.sell;
@@ -372,16 +372,16 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
         // initialGate.globalFlag = true;
 
         console.log('bithumbpro.js initialBith.orderbookFirstPreviousBay=', initialBith.orderbookFirstPreviousBay);
-        console.log('bithumbpro.js initialBith.bay=', initialBith.bay);
+        console.log('bithumbpro.js initialBith.buy=', initialBith.buy);
         console.log('It`s Bith');
 
         if (initialGate.globalFlag && initialBith.globalFlag && initialBith.initialFetchURL && initialBith.initialWs) {
           initialBith.time = initialBith.messageObj.timestamp;
-          console.log(' initialBith.baySellTimestamp=', initialBith.baySellTimestamp);
+          console.log(' initialBith.buySellTimestamp=', initialBith.buySellTimestamp);
           if (changeTradeArr(initialBith)) {
             const paramsGoTrade = {
-              bayGate: initialGate.priceAndComissionsBay,
-              bayBith: initialBith.priceAndComissionsBay,
+              buyGate: initialGate.priceAndComissionsBay,
+              buyBith: initialBith.priceAndComissionsBay,
               sellGate: initialGate.priceAndComissionsSell,
               sellBith: initialBith.priceAndComissionsSell,
               timeServer: new Date().getTime(),
@@ -391,8 +391,8 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
               timeGateBay: initialGate.timeBay,
               timeBithSell: initialBith.timeSell,
               timeBithBay: initialBith.timeBay,
-              bayOrSellGate: initialGate.bayOrSell,
-              bayOrSellBith: initialBith.bayOrSell,
+              buyOrSellGate: initialGate.buyOrSell,
+              buyOrSellBith: initialBith.buyOrSell,
               init: 0
             }
             return goTrade(paramsGoTrade, writableFiles);
@@ -414,15 +414,15 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
 
       // if (initialBith.messageObj.data.b.length>0 ) {
       // if (initialBith.messageObj.data.s === 'buy') {
-      //   initialBith.bay = Number(initialBith.messageObj.data.p);
-      //   initialBith.bayTimestamp = initialBith.messageObj.timestamp;
-      //   initialBith.bayQuantity = Number(initialBith.messageObj.data.v);
+      //   initialBith.buy = Number(initialBith.messageObj.data.p);
+      //   initialBith.buyTimestamp = initialBith.messageObj.timestamp;
+      //   initialBith.buyQuantity = Number(initialBith.messageObj.data.v);
       //   console.log('initialBith.messageObj.data.p', initialBith.messageObj.data.p);
-      //   console.log('initialBith.bay', initialBith.bay);
-      //   console.log('initialBith.bayTimestamp', initialBith.bayTimestamp);
-      //   console.log('initialBith.bayQuantity', initialBith.bayQuantity);
+      //   console.log('initialBith.buy', initialBith.buy);
+      //   console.log('initialBith.buyTimestamp', initialBith.buyTimestamp);
+      //   console.log('initialBith.buyQuantity', initialBith.buyQuantity);
       //   console.log('initialBith.makerComissions', initialBith.makerComissions);
-      //   initialBith.priceAndComissionsBay = initialBith.bay - initialBith.bay * initialBith.makerComissions;
+      //   initialBith.priceAndComissionsBay = initialBith.buy - initialBith.buy * initialBith.makerComissions;
       //   console.log('initialBith.priceAndComissionsBay', initialBith.priceAndComissionsBay);
       // }
 
@@ -441,8 +441,8 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
 
       // }
 
-      // if ((initialBith.bay != undefined) && (initialBith.sell != undefined) && (initialBith.bayQuantity != undefined) &&
-      //  (initialBith.sellQuantity != undefined) && (initialBith.bayTimestamp != undefined) && (initialBith.sellTimestamp != undefined)) {
+      // if ((initialBith.buy != undefined) && (initialBith.sell != undefined) && (initialBith.buyQuantity != undefined) &&
+      //  (initialBith.sellQuantity != undefined) && (initialBith.buyTimestamp != undefined) && (initialBith.sellTimestamp != undefined)) {
       //   initialBith.initialWs = true;
       // }
     }

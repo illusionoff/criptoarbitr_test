@@ -6,7 +6,7 @@ const MIN_PROFIT = config.get('MIN_PROFIT');
 
 function goTrade(paramsGoTrade, writableFiles) {
   console.log('goTrade()----------------------------------------------------');
-  const arrPrice = [paramsGoTrade.bayGate, paramsGoTrade.bayBith, paramsGoTrade.sellGate, paramsGoTrade.sellBith];
+  const arrPrice = [paramsGoTrade.buyGate, paramsGoTrade.buyBith, paramsGoTrade.sellGate, paramsGoTrade.sellBith];
   // Если в данных есть ноль
   console.log(arrPrice)
   if (arrPrice.includes(0)) return
@@ -27,8 +27,8 @@ function goTrade(paramsGoTrade, writableFiles) {
     if (paramsGoTrade.timeServer - item > TIME_DEPRECAT_ALL) return true
   });
   if (timeOutAll) return
-  let diffSell = paramsGoTrade.bayBith - paramsGoTrade.sellGate;
-  let diffBay = paramsGoTrade.bayGate - paramsGoTrade.sellBith;
+  let diffSell = paramsGoTrade.buyBith - paramsGoTrade.sellGate;
+  let diffBay = paramsGoTrade.buyGate - paramsGoTrade.sellBith;
 
   let percentBonus = 0;
   if (diffSell > 0) {
@@ -53,16 +53,16 @@ function goTrade(paramsGoTrade, writableFiles) {
   // if (diffSell > 0 || diffBay > 0) {
   console.log('diffSell=', diffSell);
   console.log('diffBay=', diffBay);
-  console.log('paramsGoTrade.bayGate=', paramsGoTrade.bayGate);
+  console.log('paramsGoTrade.buyGate=', paramsGoTrade.buyGate);
   console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
   consoleLogGroup`diffSell= ${diffSell}
   diffBay= ${diffBay}
-  paramsGoTrade.bayGate= ${paramsGoTrade.bayGate}
+  paramsGoTrade.buyGate= ${paramsGoTrade.buyGate}
   paramsGoTrade.sellGate= ${paramsGoTrade.sellGate}`;
   if ((diffSell > MIN_PROFIT || diffBay > MIN_PROFIT)) {
     const data = {
-      bayGate: paramsGoTrade.bayGate.round(comma),
-      bayBith: paramsGoTrade.bayBith.round(comma),
+      buyGate: paramsGoTrade.buyGate.round(comma),
+      buyBith: paramsGoTrade.buyBith.round(comma),
       sellGate: paramsGoTrade.sellGate.round(comma),
       sellBith: paramsGoTrade.sellBith.round(comma),
       diffSell: diffSell.round(comma),
@@ -71,8 +71,8 @@ function goTrade(paramsGoTrade, writableFiles) {
       timeBith: paramsGoTrade.timeBith,
       timeGate: paramsGoTrade.timeGate,
       percentBonus: percentBonus.round(commaPercent),
-      bayOrSellGate: paramsGoTrade.bayOrSellGate,
-      bayOrSellBith: paramsGoTrade.bayOrSellBith,
+      buyOrSellGate: paramsGoTrade.buyOrSellGate,
+      buyOrSellBith: paramsGoTrade.buyOrSellBith,
       init: paramsGoTrade.init
     }
     console.log('data========================================', data);
