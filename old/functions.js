@@ -37,7 +37,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   //1629570661475
   // const arrTimesAll = [1629570640474, 1629570662475, 1629570663475, 1629570664475];
   // paramsGoTrade.timeServer = 1629570660475;
-  const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
+  const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBuy, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBuy];
   // console.log('Проверка 4 times');
   // console.log('arrTimesAll=', arrTimesAll);
   // console.log('arrPrice=', arrPrice);
@@ -56,7 +56,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   });
   if (timeOutAll) return
   let diffSell = paramsGoTrade.buyBith - paramsGoTrade.sellGate;
-  let diffBay = paramsGoTrade.buyGate - paramsGoTrade.sellBith;
+  let diffBuy = paramsGoTrade.buyGate - paramsGoTrade.sellBith;
 
   let percentBonus = 0;
   if (diffSell > 0) {
@@ -65,13 +65,13 @@ function goTrade(paramsGoTrade, writableFiles) {
     console.log('percentBonus #1 =', percentBonus);
   }
 
-  if (diffBay > 0) {
-    percentBonus = diffBay / paramsGoTrade.sellBith;
+  if (diffBuy > 0) {
+    percentBonus = diffBuy / paramsGoTrade.sellBith;
     console.log('Выгодно продать на Gate и купить на Bith = #2');
     console.log('percentBonus #2=', percentBonus);
   }
   console.log('diffSell=', diffSell);
-  console.log('diffBay=', diffBay);
+  console.log('diffBuy=', diffBuy);
   //округление
   Number.prototype.round = function (places) {
     return +(Math.round(this + "e+" + places) + "e-" + places);
@@ -80,18 +80,18 @@ function goTrade(paramsGoTrade, writableFiles) {
   // n.round(2); // 1.78 .round(comma)
   const comma = 8;
   const commaPercent = 4;
-  // if (diffSell > 0 || diffBay > 0) {
+  // if (diffSell > 0 || diffBuy > 0) {
   console.log('paramsGoTrade.buyGate=', paramsGoTrade.buyGate);
   console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
 
-  if ((diffSell > config.get("MIN_PROFIT") || diffBay > config.get("MIN_PROFIT"))) {
+  if ((diffSell > config.get("MIN_PROFIT") || diffBuy > config.get("MIN_PROFIT"))) {
     const data = {
       buyGate: paramsGoTrade.buyGate.round(comma),
       buyBith: paramsGoTrade.buyBith.round(comma),
       sellGate: paramsGoTrade.sellGate.round(comma),
       sellBith: paramsGoTrade.sellBith.round(comma),
       diffSell: diffSell.round(comma),
-      diffBay: diffBay.round(comma),
+      diffBuy: diffBuy.round(comma),
       timeServer: paramsGoTrade.timeServer,
       timeBith: paramsGoTrade.timeBith,
       timeGate: paramsGoTrade.timeGate,
@@ -148,8 +148,8 @@ function writtenCSV(data, writeableStream, counts) {
       data
     ], {
       header: true,
-      columns: ['timeServer', 'timeBith', 'init', 'buyGate', 'buyBith', 'sellGate', 'sellBith', 'diffSell', 'diffBay']
-      // timeServer,timeBith,init,buyGate,buyBith,sellGate,sellBith,diffSell,diffBay
+      columns: ['timeServer', 'timeBith', 'init', 'buyGate', 'buyBith', 'sellGate', 'sellBith', 'diffSell', 'diffBuy']
+      // timeServer,timeBith,init,buyGate,buyBith,sellGate,sellBith,diffSell,diffBuy
     }, function (err, data) {
       // assert.equal(
       //   data,
@@ -280,9 +280,9 @@ function stringifyDate(writeableStream, data, header) {
     data
     , {
       header: header,
-      // columns: ['timeServer', 'timeBith', 'init', 'buyGate', 'buyBith', 'sellGate', 'sellBith', 'diffSell', 'diffBay']
-      columns: ['diffSell', 'diffBay']
-      // timeServer,timeBith,init,buyGate,buyBith,sellGate,sellBith,diffSell,diffBay
+      // columns: ['timeServer', 'timeBith', 'init', 'buyGate', 'buyBith', 'sellGate', 'sellBith', 'diffSell', 'diffBuy']
+      columns: ['diffSell', 'diffBuy']
+      // timeServer,timeBith,init,buyGate,buyBith,sellGate,sellBith,diffSell,diffBuy
     }, function (err, data) {
       // assert.equal(
       //   data,
@@ -310,7 +310,7 @@ function testWritable(data) {
   let testCount = 0;
   let testCountAll = 1;
   const highWaterMark = 320 * 1024;
-  const headerName = `Number,buyGate,buyBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeGate,timeBith,percentBonus,buyOrSellGate,buyOrSellBith,init`;
+  const headerName = `Number,buyGate,buyBith,sellGate,sellBith,diffSell,diffBuy,timeServer,timeGate,timeBith,percentBonus,buyOrSellGate,buyOrSellBith,init`;
   let testWriteableStream = {
     write_1: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark }),
     write_2: fs.createWriteStream("logs/test_profit_1.csv", { flags: 'a', highWaterMark: highWaterMark })
@@ -320,7 +320,7 @@ function testWritable(data) {
   // stringifyDate(testWriteableStream.write_1, headerName, false);
   function main(data) {
     console.log('data Writable=', data);
-    data = `${data.buyGate},${data.buyBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},${data.timeServer},${data.timeGate},${data.timeBith},${data.percentBonus},${data.buyOrSellGate},${data.buyOrSellBith},${data.init}\n`;
+    data = `${data.buyGate},${data.buyBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBuy},${data.timeServer},${data.timeGate},${data.timeBith},${data.percentBonus},${data.buyOrSellGate},${data.buyOrSellBith},${data.init}\n`;
     if (testCount >= 50) {
       testCount = 0;
       if (testFlag === 1) {
@@ -406,7 +406,7 @@ function changeTradeArr(initialObj) {
   console.log('initialObj.name=', initialObj.name);
   let buy = initialObj.buy;
   let sell = initialObj.sell;
-  let trueBay = false;
+  let trueBuy = false;
   let trueSell = false;
   let buyOrSell = -1;
   // initialObj.buyOrSell = -1; // для исключения влияния предыдущего значения опроса
@@ -415,17 +415,17 @@ function changeTradeArr(initialObj) {
   // if ()
   //  Инициализация первых предыдущих значений
   // проверка изменения значения для предотвращения лишних вычислений
-  if (initialObj.orderbookFirstPreviousBay && buy != initialObj.orderbookFirstPreviousBay) {
-    console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBay=', initialObj.orderbookFirstPreviousBay);
+  if (initialObj.orderbookFirstPreviousBuy && buy != initialObj.orderbookFirstPreviousBuy) {
+    console.log('function changeTradeArr() initialObj.orderbookFirstPreviousBuy=', initialObj.orderbookFirstPreviousBuy);
     console.log('function changeTradeArr() initialObj.buy=', buy);
     // process.exit();
 
     buyOrSell = 1;
-    initialObj.timeBay = new Date().getTime();
-    initialObj.orderbookFirstPreviousBay = buy;
+    initialObj.timeBuy = new Date().getTime();
+    initialObj.orderbookFirstPreviousBuy = buy;
     console.log('buy=', buy);
-    initialObj.priceAndComissionsBay = buy - buy * initialObj.takerComissions;//  buy=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
-    trueBay = true;
+    initialObj.priceAndComissionsBuy = buy - buy * initialObj.takerComissions;//  buy=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+    trueBuy = true;
   }
   if (initialObj.orderbookFirstPreviousSell && sell != initialObj.orderbookFirstPreviousSell) {
     // Если одновременно изменения и в buy и в sell
@@ -441,7 +441,7 @@ function changeTradeArr(initialObj) {
     trueSell = true;
   }
 
-  if ((trueBay || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBay)) {
+  if ((trueBuy || trueSell) && (initialObj.priceAndComissionsSell && initialObj.priceAndComissionsBuy)) {
     initialObj.buyOrSell = buyOrSell;
     variableClosure2('2');
     // console.log('changeTradeArr()');
@@ -537,17 +537,17 @@ function reinitGate(initialGate) {
     messageObj: {},
     messageEdit: {},
     messageRefresh: {},
-    allOrderbookBay: [],
+    allOrderbookBuy: [],
     allOrderbookSell: [],
     takerComissions: 0.002,
     makerComissions: 0.002,
     speedComissions: 0.002,
-    priceAndComissionsBay: 0,
+    priceAndComissionsBuy: 0,
     priceAndComissionsSell: 0,
     buy: 0,
     sell: 0,
     ver: 0,
-    orderbookFirstPreviousBay: undefined,
+    orderbookFirstPreviousBuy: undefined,
     orderbookFirstPreviousSell: undefined,
     buyOrSell: -1,
     // buyTimestamp: undefined,
@@ -556,7 +556,7 @@ function reinitGate(initialGate) {
     timeFileServerCorrect: undefined,
     buyQuantity: undefined,
     sellQuantity: undefined,
-    timeBay: undefined,
+    timeBuy: undefined,
     timeSell: undefined,
     time: undefined,
   };
@@ -591,10 +591,10 @@ function maxPercentCupClosure() {
 //         initialGate.buyOrSell = 1;
 //         initialGate.buy = Number(initialGate.messageObj.result.b);
 //         // расчет учитывая комиссии + дополнительная комиссия за счет не самого лучшего значения ордеров speedComissions
-//         initialGate.priceAndComissionsBay = initialGate.buy - initialGate.buy * initialGate.takerComissions
+//         initialGate.priceAndComissionsBuy = initialGate.buy - initialGate.buy * initialGate.takerComissions
 //           - initialGate.buy * initialGate.speedComissions;//  buy=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
 //         console.log('Change buy:', initialGate.buy);
-//         console.log('initialGate.priceAndComissionsBay-------------------:', initialGate.priceAndComissionsBay);//для отладки себе включить
+//         console.log('initialGate.priceAndComissionsBuy-------------------:', initialGate.priceAndComissionsBuy);//для отладки себе включить
 
 //       }
 //     }

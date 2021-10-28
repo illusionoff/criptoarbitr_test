@@ -34,13 +34,13 @@ let initialBith = {
   initialFetchURL: false,
   messageObj: {},
   messageEdit: {},
-  allOrderbookBay: [],
+  allOrderbookBuy: [],
   allOrderbookSell: [],
   ver: 0,
-  orderbookFirstPreviousBay: undefined,
+  orderbookFirstPreviousBuy: undefined,
   orderbookFirstPreviousSell: undefined,
   buyOrSell: -1,
-  priceAndComissionsBay: 0,
+  priceAndComissionsBuy: 0,
   priceAndComissionsSell: 0,
   takerComissions: 0,
   makerComissions: 0,
@@ -50,7 +50,7 @@ let initialBith = {
   buyQuantity: undefined,
   sellQuantity: undefined,
   status: 0,
-  indexLeveragesOrderbookBay: [],
+  indexLeveragesOrderbookBuy: [],
   indexLeveragesOrderbookSell: []
 }
 
@@ -196,19 +196,19 @@ function wsStartBithOrder10(cmd, args, initialGate, writableFiles) {
       console.log('initialBith.messageObj.data=', initialBith.messageObj.data);
       initialBith.ver = Number(initialBith.messageObj.data.ver);
       initialBith.buySellTimestamp = initialBith.messageObj.timestamp;
-      // // allOrderbookBay = initialBith.messageObj.data.b.slice();
+      // // allOrderbookBuy = initialBith.messageObj.data.b.slice();
       // const length = initialBith.messageObj.data.b.length - 1;
       const length = 0;
       initialBith.buy = Number(initialBith.messageObj.data.b[length][0]);
       initialBith.sell = Number(initialBith.messageObj.data.s[length][0]);
       initialBith.initialWs = true;
-      if (!Boolean(initialBith.orderbookFirstPreviousBay)) {
-        initialBith.orderbookFirstPreviousBay = initialBith.buy;
+      if (!Boolean(initialBith.orderbookFirstPreviousBuy)) {
+        initialBith.orderbookFirstPreviousBuy = initialBith.buy;
       }
       if (!Boolean(initialBith.orderbookFirstPreviousSell)) {
         initialBith.orderbookFirstPreviousSell = initialBith.sell;
       }
-      if (initialBith.orderbookFirstPreviousBay && initialBith.orderbookFirstPreviousSell) {
+      if (initialBith.orderbookFirstPreviousBuy && initialBith.orderbookFirstPreviousSell) {
         initialBith.globalFlag = true;
         console.log('initialBith.globalFlag = true');
         // process.exit();
@@ -219,10 +219,10 @@ function wsStartBithOrder10(cmd, args, initialGate, writableFiles) {
       //  Если данные катировок изменились
       if (changeTradeArr(initialBith)) {
         console.log(' after sellBith: initialBith.priceAndComissionsSell=', initialBith.priceAndComissionsSell);
-        console.log(' after sellBith: initialBith.priceAndComissionsBay=', initialBith.priceAndComissionsBay);
+        console.log(' after sellBith: initialBith.priceAndComissionsBuy=', initialBith.priceAndComissionsBuy);
         const paramsGoTrade = {
-          buyGate: initialGate.priceAndComissionsBay,
-          buyBith: initialBith.priceAndComissionsBay,
+          buyGate: initialGate.priceAndComissionsBuy,
+          buyBith: initialBith.priceAndComissionsBuy,
           sellGate: initialGate.priceAndComissionsSell,
           sellBith: initialBith.priceAndComissionsSell,
           timeServer: new Date().getTime(),

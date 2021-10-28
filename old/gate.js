@@ -14,17 +14,17 @@ let initialGate = {
   messageObj: {},
   messageEdit: {},
   messageRefresh: {},
-  allOrderbookBay: [],
+  allOrderbookBuy: [],
   allOrderbookSell: [],
   takerComissions: 0.002,
   makerComissions: 0.002,
   speedComissions: 0.002,
-  priceAndComissionsBay: 0,
+  priceAndComissionsBuy: 0,
   priceAndComissionsSell: 0,
   buy: 0,
   sell: 0,
   ver: 0,
-  orderbookFirstPreviousBay: undefined,
+  orderbookFirstPreviousBuy: undefined,
   orderbookFirstPreviousSell: undefined,
   buyOrSell: -1,
   // buyTimestamp: undefined,
@@ -33,7 +33,7 @@ let initialGate = {
   timeFileServerCorrect: undefined,
   buyQuantity: undefined,
   sellQuantity: undefined,
-  timeBay: undefined,
+  timeBuy: undefined,
   timeSell: undefined,
   time: undefined,
 };
@@ -94,17 +94,17 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
       messageObj: {},
       messageEdit: {},
       messageRefresh: {},
-      allOrderbookBay: [],
+      allOrderbookBuy: [],
       allOrderbookSell: [],
       takerComissions: 0.002,
       makerComissions: 0.002,
       speedComissions: 0.002,
-      priceAndComissionsBay: 0,
+      priceAndComissionsBuy: 0,
       priceAndComissionsSell: 0,
       buy: 0,
       sell: 0,
       ver: 0,
-      orderbookFirstPreviousBay: undefined,
+      orderbookFirstPreviousBuy: undefined,
       orderbookFirstPreviousSell: undefined,
       buyOrSell: -1,
       // buyTimestamp: undefined,
@@ -113,7 +113,7 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
       timeFileServerCorrect: undefined,
       buyQuantity: undefined,
       sellQuantity: undefined,
-      timeBay: undefined,
+      timeBuy: undefined,
       timeSell: undefined,
       time: undefined,
     };
@@ -172,31 +172,31 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
       // берем самый худший результат т.е  последний элемент массива
       initialGate.buy = Number(initialGate.messageObj.result.bids[TRACK_ELEMENT_ORDERBOOK][0]);
       initialGate.sell = Number(initialGate.messageObj.result.asks[TRACK_ELEMENT_ORDERBOOK][0]);
-      if (!Boolean(initialGate.orderbookFirstPreviousBay)) initialGate.orderbookFirstPreviousBay = initialGate.buy;
+      if (!Boolean(initialGate.orderbookFirstPreviousBuy)) initialGate.orderbookFirstPreviousBuy = initialGate.buy;
       if (!Boolean(initialGate.orderbookFirstPreviousSell)) initialGate.orderbookFirstPreviousSell = initialGate.sell;
-      if (initialGate.orderbookFirstPreviousBay && initialGate.orderbookFirstPreviousSell) {
+      if (initialGate.orderbookFirstPreviousBuy && initialGate.orderbookFirstPreviousSell) {
         initialGate.globalFlag = true;
         console.log('initialGate.globalFlag = true');
       }
       const strPrevious = `It'sGate
-      initialGate.orderbookFirstPreviousBay = ${initialGate.orderbookFirstPreviousBay}
+      initialGate.orderbookFirstPreviousBuy = ${initialGate.orderbookFirstPreviousBuy}
       initialGate.buy = ${initialGate.buy}`;
       consoleLogGroup(strPrevious);
       process.exit();
       if (initialGate.globalFlag && initialBith.globalFlag) { // если готовы данные из bithumb
         if (changeTradeArr(initialGate)) {
           const paramsGoTrade = {
-            buyGate: initialGate.priceAndComissionsBay,
-            buyBith: initialBith.priceAndComissionsBay,
+            buyGate: initialGate.priceAndComissionsBuy,
+            buyBith: initialBith.priceAndComissionsBuy,
             sellGate: initialGate.priceAndComissionsSell,
             sellBith: initialBith.priceAndComissionsSell,
             timeServer: initialGate.timeServer,
             timeBith: initialBith.time,
             timeGate: initialGate.time,
             timeGateSell: initialGate.timeSell,
-            timeGateBay: initialGate.timeBay,
+            timeGateBuy: initialGate.timeBuy,
             timeBithSell: initialBith.timeSell,
-            timeBithBay: initialBith.timeBay,
+            timeBithBuy: initialBith.timeBuy,
             buyOrSellGate: initialGate.buyOrSell,
             buyOrSellBith: initialBith.buyOrSell,
             init: 1,
@@ -216,10 +216,10 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
     //   console.log('initialGate.globalFlag:', initialGate.globalFlag);
 
     //   if (initialGate.messageObj.params[0] === true) {
-    //     initialGate.allOrderbookBay = initialGate.messageObj.params[1].bids;
+    //     initialGate.allOrderbookBuy = initialGate.messageObj.params[1].bids;
     //     initialGate.allOrderbookSell = initialGate.messageObj.params[1].asks;
     //   }
-    //   console.log('initialGate.allOrderbookBay=GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG', initialGate.allOrderbookBay);
+    //   console.log('initialGate.allOrderbookBuy=GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG', initialGate.allOrderbookBuy);
     //   // console.log('initialGate.messageObj.params[1].bids=GGGGGGGGGGGGGGGGGGGGGGGGGGG', initialGate.messageObj.params[1].bids);
     //   // console.log('initialGate.messageObj.params[1].asks=GGGGGGGGGGGGGGGGGGGGGGGGGGG', initialGate.messageObj.params[1].asks);
     //   // TEST
@@ -271,8 +271,8 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
     //   //  Если глобальный флаг Gate готов то инициализируем обычную работу программы
     //   if (initialGate.globalFlag) {
     //     // выбираем первые значения в стаканах на buy и sell и прибавляем комисиии
-    //     initialGate.priceAndComissionsBay = initialGate.buy - initialGate.buy * initialGate.takerComissions;//  buy=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
-    //     console.log('initialGate.priceAndComissionsBay:', initialGate.priceAndComissionsBay);//для отладки себе включить
+    //     initialGate.priceAndComissionsBuy = initialGate.buy - initialGate.buy * initialGate.takerComissions;//  buy=bids это покупатели, клиенты продают самая выгодня цена для клиентов самая высокая, комиссию отнимаем
+    //     console.log('initialGate.priceAndComissionsBuy:', initialGate.priceAndComissionsBuy);//для отладки себе включить
 
     //     initialGate.priceAndComissionsSell = initialGate.sell + initialGate.sell * initialGate.makerComissions; // sell=asks это продавцы, клиенты покупатели, самая выгодня цена для клиентов самая низкая, комиссию плюсуем
     //     console.log('initialGate.priceAndComissionsSell:', initialGate.priceAndComissionsSell);//для отладки себе включить
@@ -288,12 +288,12 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
     //     //   timestamp: initialGate.messageObj.timestamp
     //     // };
     //     if (initialBith.initialFetchURL && initialBith.initialWs) { // если готовы данные из bithumb
-    //       console.log('priceAndComissionsBay For Gate:', initialBith.priceAndComissionsBay);
+    //       console.log('priceAndComissionsBuy For Gate:', initialBith.priceAndComissionsBuy);
     //       console.log('priceAndComissionsSell For Gate:', initialBith.priceAndComissionsSell);
 
     //       const paramsGoTrade = {
-    //         buyGate: initialGate.priceAndComissionsBay,
-    //         buyBith: initialBith.priceAndComissionsBay,
+    //         buyGate: initialGate.priceAndComissionsBuy,
+    //         buyBith: initialBith.priceAndComissionsBuy,
     //         sellGate: initialGate.priceAndComissionsSell,
     //         sellBith: initialBith.priceAndComissionsSell,
     //         timeServer: new Date().getTime(),
@@ -310,8 +310,8 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
     //       // }
     //       goTrade(paramsGoTrade, writableFiles);
     //     };
-    //     // let diffSellGate = initialBith.priceAndComissionsBay - initialGate.priceAndComissionsSell;
-    //     // let diffBaylGate = initialGate.priceAndComissionsBay - initialBith.priceAndComissionsSell;
+    //     // let diffSellGate = initialBith.priceAndComissionsBuy - initialGate.priceAndComissionsSell;
+    //     // let diffBuylGate = initialGate.priceAndComissionsBuy - initialBith.priceAndComissionsSell;
 
     //     // if (initialBith.initialFetchURL && initialBith.initialWs) { // если готовы данные из bithumb
 
@@ -321,13 +321,13 @@ function wsGetGate(time, channel, event, payload, initialBith, writableFiles) {
     //     //     console.log('percentBonus #1 =', percentBonus);
     //     //   }
 
-    //     //   if (diffBaylGate > 0) {
+    //     //   if (diffBuylGate > 0) {
     //     //     console.log('Выгодно продать на Gate и купить на Bith = #2');
-    //     //     const percentBonus = diffBaylGate / initialBith.priceAndComissionsSell;
+    //     //     const percentBonus = diffBuylGate / initialBith.priceAndComissionsSell;
     //     //     console.log('percentBonus #2=', percentBonus);
     //     //   }
     //     //   console.log('diffSellGate=', diffSellGate);
-    //     //   console.log('diffBaylGate=', diffBaylGate);
+    //     //   console.log('diffBuylGate=', diffBuylGate);
     //     // }
 
     //   }

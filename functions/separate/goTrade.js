@@ -16,7 +16,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   //1629570661475
   // const arrTimesAll = [1629570640474, 1629570662475, 1629570663475, 1629570664475];
   // paramsGoTrade.timeServer = 1629570660475;
-  const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBay, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBay];
+  const arrTimesAll = [paramsGoTrade.timeGateSell, paramsGoTrade.timeGateBuy, paramsGoTrade.timeBithSell, paramsGoTrade.timeBithBuy];
   consoleLogGroup`Проверка 4 times
   arrTimesAll = ${arrTimesAll}
   arrPrice = ${arrPrice}
@@ -28,7 +28,7 @@ function goTrade(paramsGoTrade, writableFiles) {
   });
   if (timeOutAll) return
   let diffSell = paramsGoTrade.buyBith - paramsGoTrade.sellGate;
-  let diffBay = paramsGoTrade.buyGate - paramsGoTrade.sellBith;
+  let diffBuy = paramsGoTrade.buyGate - paramsGoTrade.sellBith;
 
   let percentBonus = 0;
   if (diffSell > 0) {
@@ -37,8 +37,8 @@ function goTrade(paramsGoTrade, writableFiles) {
     console.log('percentBonus #1 =', percentBonus);
   }
 
-  if (diffBay > 0) {
-    percentBonus = diffBay / paramsGoTrade.sellBith;
+  if (diffBuy > 0) {
+    percentBonus = diffBuy / paramsGoTrade.sellBith;
     console.log('Выгодно продать на Gate и купить на Bith = #2');
     console.log('percentBonus #2=', percentBonus);
   }
@@ -50,23 +50,23 @@ function goTrade(paramsGoTrade, writableFiles) {
   // n.round(2); // 1.78 .round(comma)
   const comma = 8;
   const commaPercent = 4;
-  // if (diffSell > 0 || diffBay > 0) {
+  // if (diffSell > 0 || diffBuy > 0) {
   console.log('diffSell=', diffSell);
-  console.log('diffBay=', diffBay);
+  console.log('diffBuy=', diffBuy);
   console.log('paramsGoTrade.buyGate=', paramsGoTrade.buyGate);
   console.log('paramsGoTrade.sellGate=', paramsGoTrade.sellGate);
   consoleLogGroup`diffSell= ${diffSell}
-  diffBay= ${diffBay}
+  diffBuy= ${diffBuy}
   paramsGoTrade.buyGate= ${paramsGoTrade.buyGate}
   paramsGoTrade.sellGate= ${paramsGoTrade.sellGate}`;
-  if ((diffSell > MIN_PROFIT || diffBay > MIN_PROFIT)) {
+  if ((diffSell > MIN_PROFIT || diffBuy > MIN_PROFIT)) {
     const data = {
       buyGate: paramsGoTrade.buyGate.round(comma),
       buyBith: paramsGoTrade.buyBith.round(comma),
       sellGate: paramsGoTrade.sellGate.round(comma),
       sellBith: paramsGoTrade.sellBith.round(comma),
       diffSell: diffSell.round(comma),
-      diffBay: diffBay.round(comma),
+      diffBuy: diffBuy.round(comma),
       timeServer: paramsGoTrade.timeServer,
       timeBith: paramsGoTrade.timeBith,
       timeGate: paramsGoTrade.timeGate,

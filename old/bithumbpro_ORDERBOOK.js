@@ -31,12 +31,12 @@ let initialBith = {
   initialFetchURL: false,
   messageObj: {},
   messageEdit: {},
-  allOrderbookBay: [],
+  allOrderbookBuy: [],
   allOrderbookSell: [],
   ver: 0,
-  orderbookFirstPreviousBay: undefined,
+  orderbookFirstPreviousBuy: undefined,
   orderbookFirstPreviousSell: undefined,
-  priceAndComissionsBay: 0,
+  priceAndComissionsBuy: 0,
   priceAndComissionsSell: 0,
   takerComissions: 0,
   makerComissions: 0,
@@ -47,9 +47,9 @@ let initialBith = {
   buyQuantity: undefined,
   sellQuantity: undefined,
   status: 0,
-  indexLeveragesOrderbookBay: [],
+  indexLeveragesOrderbookBuy: [],
   indexLeveragesOrderbookSell: [],
-  timeBay: undefined,
+  timeBuy: undefined,
   timeSell: undefined,
   time: undefined,
 }
@@ -88,16 +88,16 @@ function orderbookChange(allOrderbook, newMessage) {
   if (index >= 0) {
     // Тест сбор статистики частоты использоваания индексов  сделок в Orderbook
     // if (index < 20) {
-    //   if (BayOrSell) {
-    //     let nawQuantity = initialBith.indexLeveragesOrderbookBay[index] + 1;
-    //     initialBith.indexLeveragesOrderbookBay[index] = nawQuantity;
+    //   if (BuyOrSell) {
+    //     let nawQuantity = initialBith.indexLeveragesOrderbookBuy[index] + 1;
+    //     initialBith.indexLeveragesOrderbookBuy[index] = nawQuantity;
     //   } else {
     //     let nawQuantity = initialBith.indexLeveragesOrderbookSell[index] + 1;
     //     initialBith.indexLeveragesOrderbookSell[index] = nawQuantity;
 
     //   }
     // }
-    //   console.log('indexLeveragesOrderbookBay====================', initialBith.indexLeveragesOrderbookBay);
+    //   console.log('indexLeveragesOrderbookBuy====================', initialBith.indexLeveragesOrderbookBuy);
     //   console.log('indexLeveragesOrderbookSell===================', initialBith.indexLeveragesOrderbookSell);
     //   //  удалить из массива этот элемент
     if (newMessage[0][1] === '0.000000') return allOrderbook.splice(index, 1)
@@ -199,13 +199,13 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
       timePrevious = timeNaw;
       if (timeAll > 300) {
         // // тест
-        // console.log('initialBith.allOrderbookBay');
+        // console.log('initialBith.allOrderbookBuy');
         // for (let i = 0; i < 10; i++) {
-        //   console.log(`allOrderbookBay[${i}]= ${initialBith.allOrderbookBay[i]}`);
+        //   console.log(`allOrderbookBuy[${i}]= ${initialBith.allOrderbookBuy[i]}`);
         // }
         // console.log('initialBith.allOrderbookSell');
         // for (let i = 0; i < 10; i++) {
-        //   console.log(`allOrderbookBay[${i}]= ${initialBith.allOrderbookSell[i]}`);
+        //   console.log(`allOrderbookBuy[${i}]= ${initialBith.allOrderbookSell[i]}`);
         // }
         console.log('|Time OUT 5 min test');
         // process.exit();
@@ -215,11 +215,11 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
 
     if (initialBith.messageObj.code === "00006") {
       initialBith.ver = Number(initialBith.messageObj.data.ver);
-      initialBith.allOrderbookBay = initialBith.messageObj.data.b.slice();
+      initialBith.allOrderbookBuy = initialBith.messageObj.data.b.slice();
       initialBith.allOrderbookSell = initialBith.messageObj.data.s.slice();
       //замена функционала на аналогичное как у Gate
-      // orderbookFirstPreviousBay = allOrderbookBay[TRACK_ELEMENT_ORDERBOOK].slice();
-      // orderbookFirstPreviousSell = allOrderbookBay[TRACK_ELEMENT_ORDERBOOK].slice();
+      // orderbookFirstPreviousBuy = allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK].slice();
+      // orderbookFirstPreviousSell = allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK].slice();
       console.log('initialBith.messageObj.data.b.length=', initialBith.messageObj.data.b.length);
       console.log('initialBith.messageObj.data.s.length=', initialBith.messageObj.data.s.length);
 
@@ -244,12 +244,12 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
       if (Number(initialBith.messageObj.data.ver) === initialBith.ver + 1) {
         initialBith.ver++;
         console.log('_____________________________________________________________TRUE');
-        console.log('Было***************************************************Bay');
+        console.log('Было***************************************************Buy');
         // for (let i = 0; i < 10; i++) {
-        //   console.log(allOrderbookBay[i]);
+        //   console.log(allOrderbookBuy[i]);
         //   // console.log(allOrderbookSell[i]);
         // }
-        console.log('initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK]);
+        console.log('initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK]);
 
         console.log('Было***************************************************Sell');
         // for (let i = 0; i < 10; i++) {
@@ -260,17 +260,17 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
 
         console.log('initialBith.messageObj.data.b:', initialBith.messageObj.data.b);//для отладки себе включить
         console.log('initialBith.messageObj.data.s:', initialBith.messageObj.data.s);//для отладки себе включить
-        if (initialBith.messageObj.data.b.length === 1) orderbookChange(initialBith.allOrderbookBay, initialBith.messageObj.data.b)
+        if (initialBith.messageObj.data.b.length === 1) orderbookChange(initialBith.allOrderbookBuy, initialBith.messageObj.data.b)
         if (initialBith.messageObj.data.s.length === 1) orderbookChange(initialBith.allOrderbookSell, initialBith.messageObj.data.s)
 
-        console.log('initialBith.allOrderbookBay.length=((((((((((((((((((((((((((((((((((', initialBith.allOrderbookBay.length);
+        console.log('initialBith.allOrderbookBuy.length=((((((((((((((((((((((((((((((((((', initialBith.allOrderbookBuy.length);
         console.log('initialBith.allOrderbookSell.length=((((((((((((((((((((((((((((((((((', initialBith.allOrderbookSell.length);
-        console.log('Стало***************************************************Bay');
+        console.log('Стало***************************************************Buy');
         // for (let i = 0; i < 10; i++) {
-        //   console.log(allOrderbookBay[i]);
+        //   console.log(allOrderbookBuy[i]);
         //   // console.log(allOrderbookSell[i]);
         // }
-        console.log('initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK]);
+        console.log('initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK]);
 
         console.log('Стало***************************************************Sell');
         // for (let i = 0; i < 10; i++) {
@@ -279,53 +279,53 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
         // }
         console.log('initialBith.allOrderbookSell[TRACK_ELEMENT_ORDERBOOK]=', initialBith.allOrderbookSell[TRACK_ELEMENT_ORDERBOOK]);
         //отслеживаемый элемент ORDERBOOK
-        // const trackElementOrderbookBay0 = allOrderbookBay[TRACK_ELEMENT_ORDERBOOK][0];
-        // const trackElementOrderbookBay1 = allOrderbookBay[TRACK_ELEMENT_ORDERBOOK][1];
-        // const trackElementOrderbookBay = allOrderbookBay[TRACK_ELEMENT_ORDERBOOK];
+        // const trackElementOrderbookBuy0 = allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK][0];
+        // const trackElementOrderbookBuy1 = allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK][1];
+        // const trackElementOrderbookBuy = allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK];
 
         // const trackElementOrderbookSell0 = allOrderbookSell[TRACK_ELEMENT_ORDERBOOK][0];
         // const trackElementOrderbookSell1 = allOrderbookSell[TRACK_ELEMENT_ORDERBOOK][1];
         // const trackElementOrderbookSell = allOrderbookSell[TRACK_ELEMENT_ORDERBOOK];
-        // console.log('orderbookFirstPreviousBay', orderbookFirstPreviousBay);
+        // console.log('orderbookFirstPreviousBuy', orderbookFirstPreviousBuy);
         // console.log('orderbookFirstPreviousSell', orderbookFirstPreviousSell);
-        // // console.log('changeFirstOrderbook=', changeFirstOrderbook(orderbookFirstPreviousBay, allOrderbookBay));
-        // //  Проверяем изменился ли n-й (TRACK_ELEMENT_ORDERBOOK) элемент ORDERBOOK на Bay и Sell
-        // const resultChangeOrderbookBay = changeFirstOrderbook(orderbookFirstPreviousBay, trackElementOrderbookBay);
+        // // console.log('changeFirstOrderbook=', changeFirstOrderbook(orderbookFirstPreviousBuy, allOrderbookBuy));
+        // //  Проверяем изменился ли n-й (TRACK_ELEMENT_ORDERBOOK) элемент ORDERBOOK на Buy и Sell
+        // const resultChangeOrderbookBuy = changeFirstOrderbook(orderbookFirstPreviousBuy, trackElementOrderbookBuy);
         // const resultChangeOrderbookSell = changeFirstOrderbook(orderbookFirstPreviousSell, trackElementOrderbookSell);
 
-        // // function objBayOrSell(resultChangeOrderbookBay, resultChangeOrderbookSell) {
+        // // function objBuyOrSell(resultChangeOrderbookBuy, resultChangeOrderbookSell) {
 
-        // //   orderbookFirstPreviousBay[0] = trackElementOrderbookBay0;
-        // //   orderbookFirstPreviousBay[1] = trackElementOrderbookBay1;
-        // //   initialBith.buy = Number(trackElementOrderbookBay0);
-        // //   initialBith.buyQuantity = Number(trackElementOrderbookBay1);
-        // //   initialBith.priceAndComissionsBay = initialBith.buy - initialBith.buy * initialBith.makerComissions;;
+        // //   orderbookFirstPreviousBuy[0] = trackElementOrderbookBuy0;
+        // //   orderbookFirstPreviousBuy[1] = trackElementOrderbookBuy1;
+        // //   initialBith.buy = Number(trackElementOrderbookBuy0);
+        // //   initialBith.buyQuantity = Number(trackElementOrderbookBuy1);
+        // //   initialBith.priceAndComissionsBuy = initialBith.buy - initialBith.buy * initialBith.makerComissions;;
         // //   console.log('Стало***************************************************');
         // //   for (let i = 0; i < 10; i++) {
-        // //     console.log(allOrderbookBay[i]);
+        // //     console.log(allOrderbookBuy[i]);
         // //   }
-        // //   console.log('orderbookFirstPreviousBay exit=', orderbookFirstPreviousBay);
-        // //   console.log('Data first element ORDERBOOK changes Bay exit');
+        // //   console.log('orderbookFirstPreviousBuy exit=', orderbookFirstPreviousBuy);
+        // //   console.log('Data first element ORDERBOOK changes Buy exit');
         // // }
 
-        // if (resultChangeOrderbookBay) {
-        //   orderbookFirstPreviousBay[0] = trackElementOrderbookBay0;
-        //   orderbookFirstPreviousBay[1] = trackElementOrderbookBay1;
-        //   initialBith.buy = Number(trackElementOrderbookBay0);
-        //   initialBith.buyQuantity = Number(trackElementOrderbookBay1);
-        //   initialBith.priceAndComissionsBay = initialBith.buy - initialBith.buy * initialBith.makerComissions;
+        // if (resultChangeOrderbookBuy) {
+        //   orderbookFirstPreviousBuy[0] = trackElementOrderbookBuy0;
+        //   orderbookFirstPreviousBuy[1] = trackElementOrderbookBuy1;
+        //   initialBith.buy = Number(trackElementOrderbookBuy0);
+        //   initialBith.buyQuantity = Number(trackElementOrderbookBuy1);
+        //   initialBith.priceAndComissionsBuy = initialBith.buy - initialBith.buy * initialBith.makerComissions;
         //   initialGate.buyOrSell =
 
         //     console.log('initialBith.buy=', initialBith.buy);
-        //   console.log('initialBith.priceAndComissionsBay=', initialBith.priceAndComissionsBay);
+        //   console.log('initialBith.priceAndComissionsBuy=', initialBith.priceAndComissionsBuy);
 
         //   console.log('Стало***************************************************');
         //   for (let i = 0; i < 10; i++) {
-        //     console.log(allOrderbookBay[i]);
+        //     console.log(allOrderbookBuy[i]);
         //   }
 
-        //   console.log('orderbookFirstPreviousBay exit=', orderbookFirstPreviousBay);
-        //   console.log('Data first element ORDERBOOK changes Bay exit');
+        //   console.log('orderbookFirstPreviousBuy exit=', orderbookFirstPreviousBuy);
+        //   console.log('Data first element ORDERBOOK changes Buy exit');
 
         // }
 
@@ -343,7 +343,7 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
         //     console.log(allOrderbookSell[i]);
         //   }
         //   console.log('orderbookFirstPreviousSell exit=', orderbookFirstPreviousSell);
-        //   console.log('Data first element ORDERBOOK changes Bay exit');
+        //   console.log('Data first element ORDERBOOK changes Buy exit');
         // }
 
         if (initialBith.initialFetchURL) {
@@ -354,24 +354,24 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
           // process.exit();
         }
 
-        initialBith.buy = Number(initialBith.allOrderbookBay[TRACK_ELEMENT_ORDERBOOK][0]);
+        initialBith.buy = Number(initialBith.allOrderbookBuy[TRACK_ELEMENT_ORDERBOOK][0]);
         initialBith.sell = Number(initialBith.allOrderbookSell[TRACK_ELEMENT_ORDERBOOK][0]);
-        if (!Boolean(initialBith.orderbookFirstPreviousBay)) {
-          initialBith.orderbookFirstPreviousBay = initialBith.buy;
+        if (!Boolean(initialBith.orderbookFirstPreviousBuy)) {
+          initialBith.orderbookFirstPreviousBuy = initialBith.buy;
         }
         if (!Boolean(initialBith.orderbookFirstPreviousSell)) {
           initialBith.orderbookFirstPreviousSell = initialBith.sell;
         }
-        if (initialBith.orderbookFirstPreviousBay && initialBith.orderbookFirstPreviousSell) {
+        if (initialBith.orderbookFirstPreviousBuy && initialBith.orderbookFirstPreviousSell) {
           initialBith.globalFlag = true;
           console.log('initialBith.globalFlag = true');
           // process.exit();
         }
-        // if ((resultChangeOrderbookBay || resultChangeOrderbookSell) && initialBith.initialFetchURL) {
+        // if ((resultChangeOrderbookBuy || resultChangeOrderbookSell) && initialBith.initialFetchURL) {
         initialBith.initialWs = true;
         // initialGate.globalFlag = true;
 
-        console.log('bithumbpro.js initialBith.orderbookFirstPreviousBay=', initialBith.orderbookFirstPreviousBay);
+        console.log('bithumbpro.js initialBith.orderbookFirstPreviousBuy=', initialBith.orderbookFirstPreviousBuy);
         console.log('bithumbpro.js initialBith.buy=', initialBith.buy);
         console.log('It`s Bith');
 
@@ -380,17 +380,17 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
           console.log(' initialBith.buySellTimestamp=', initialBith.buySellTimestamp);
           if (changeTradeArr(initialBith)) {
             const paramsGoTrade = {
-              buyGate: initialGate.priceAndComissionsBay,
-              buyBith: initialBith.priceAndComissionsBay,
+              buyGate: initialGate.priceAndComissionsBuy,
+              buyBith: initialBith.priceAndComissionsBuy,
               sellGate: initialGate.priceAndComissionsSell,
               sellBith: initialBith.priceAndComissionsSell,
               timeServer: new Date().getTime(),
               timeBith: initialBith.time,
               timeGate: initialGate.time,
               timeGateSell: initialGate.timeSell,
-              timeGateBay: initialGate.timeBay,
+              timeGateBuy: initialGate.timeBuy,
               timeBithSell: initialBith.timeSell,
-              timeBithBay: initialBith.timeBay,
+              timeBithBuy: initialBith.timeBuy,
               buyOrSellGate: initialGate.buyOrSell,
               buyOrSellBith: initialBith.buyOrSell,
               init: 0
@@ -422,8 +422,8 @@ function wsStartBith(cmd, args, initialGate, writableFiles) {
       //   console.log('initialBith.buyTimestamp', initialBith.buyTimestamp);
       //   console.log('initialBith.buyQuantity', initialBith.buyQuantity);
       //   console.log('initialBith.makerComissions', initialBith.makerComissions);
-      //   initialBith.priceAndComissionsBay = initialBith.buy - initialBith.buy * initialBith.makerComissions;
-      //   console.log('initialBith.priceAndComissionsBay', initialBith.priceAndComissionsBay);
+      //   initialBith.priceAndComissionsBuy = initialBith.buy - initialBith.buy * initialBith.makerComissions;
+      //   console.log('initialBith.priceAndComissionsBuy', initialBith.priceAndComissionsBuy);
       // }
 
       // if (initialBith.messageObj.data.s === 'sell') {

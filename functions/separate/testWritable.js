@@ -7,7 +7,7 @@ function testWritable(data) {
   let testCount = 0;
   let testCountAll = 1;
   const highWaterMark = 320 * 1024;
-  const headerName = `Number,buyGate,buyBith,sellGate,sellBith,diffSell,diffBay,timeServer,timeGate,timeBith,percentBonus,buyOrSellGate,buyOrSellBith,init`;
+  const headerName = `Number,buyGate,buyBith,sellGate,sellBith,diffSell,diffBuy,timeServer,timeGate,timeBith,percentBonus,buyOrSellGate,buyOrSellBith,init`;
   let testWriteableStream = {
     write_1: fs.createWriteStream("logs/1630000000000_0.csv", { flags: 'a', highWaterMark: highWaterMark }),
     write_2: fs.createWriteStream("logs/1630000000000_0.csv", { flags: 'a', highWaterMark: highWaterMark })
@@ -16,7 +16,7 @@ function testWritable(data) {
   testWriteableStream.write_1.write(`${headerName}\n`);
   function main(data) {
     console.log('data Writable=', data);
-    data = `${data.buyGate},${data.buyBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBay},${data.timeServer},${data.timeGate},${data.timeBith},${data.percentBonus},${data.buyOrSellGate},${data.buyOrSellBith},${data.init}\n`;
+    data = `${data.buyGate},${data.buyBith},${data.sellGate},${data.sellBith},${data.diffSell},${data.diffBuy},${data.timeServer},${data.timeGate},${data.timeBith},${data.percentBonus},${data.buyOrSellGate},${data.buyOrSellBith},${data.init}\n`;
     if (testCount >= 50) {
       testCount = 0;
       if (testFlag === 1) {
