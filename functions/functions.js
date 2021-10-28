@@ -1,6 +1,3 @@
-const assert = require('assert');
-const parse = require('csv-parse');
-
 const { coinConfigBith } = require('./bith/coinConfigBith');
 const { changeTradeArr } = require('./separate/changeTradeArr');
 const { consoleLogGroup } = require('./separate/consoleLogGroup');
@@ -14,17 +11,4 @@ const { goTrade } = require('./separate/goTrade');
 const { testWritable } = require('./separate/testWritable');
 const { reinitGate } = require('./gate/reinitGate');
 
-const input = '#Welcome\n"1","2","3","4"\n"a","b","c","d"'
-function parseTest() {
-  parse(input, {
-    comment: '#'
-  }, function (err, output) {
-    if (err) throw err; // если возникла ошибка
-    assert.deepStrictEqual(
-      output,
-      [['1', '2', '3', '4'], ['a', 'b', 'c', 'd']]
-    )
-  })
-}
-
-module.exports = { goTrade, testWritable, parseTest, changeTradeArr, timeStopTestClosure, consoleLogGroup, reinitGate, maxPercentCupClosure, timerClosure, funStartPingGate, funStartPingBith, funEndPing, funStartReconnect, coinConfigBith }
+module.exports = { goTrade, testWritable, changeTradeArr, timeStopTestClosure, consoleLogGroup, reinitGate, maxPercentCupClosure, timerClosure, funStartPingGate, funStartPingBith, funEndPing, funStartReconnect, coinConfigBith }
