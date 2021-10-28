@@ -1,4 +1,3 @@
-
 function reinitGate(initialGate) {
   initialGate = {
     name: 'gate',

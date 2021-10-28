@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-
 const config = require('config');
 const { consoleLogGroup } = require('../separate/consoleLogGroup');
 const URL_BITH_COIN_CONFIG = config.get('URL_BITH_COIN_CONFIG');
@@ -15,14 +14,13 @@ async function coinConfigBith(initialBith) {
     if (!response.ok) {
       // throw new Error(responseSMS.status); // 404
       console.log('responseSMS.status', responseSMS.status);
-      // message = 'SMS:err ' + message;
       return
     }
 
     const data = await response.json();
     let coinConfig = data.data.coinConfig.find(coin => coin.name === config.get("CURRENCY_NAME"));
     console.log('coinConfigXRP:', coinConfig);
-    console.log('response.status:', response.status);//{"size":0,"timeout":0}
+    console.log('response.status:', response.status);
     let spotConfigXRP = data.data.spotConfig.find(coin => coin.symbol === "XRP-USDT");
     console.log('data.data.spotConfig-XRP:', spotConfigXRP);
     // рассчитываем все комисии на taker - покупателя и maker - продавца
@@ -37,7 +35,7 @@ async function coinConfigBith(initialBith) {
     initialBith.initialFetchURL = true;
   } catch (e) {
     initialBith.initialFetchURL = false;
-    console.log('My error', e);
+    console.log('coinConfigBith error', e);
     coinConfigBith();
   }
 }
