@@ -4,9 +4,9 @@
   "description": "criptoarbitr test cryptocurrency exchange bithumb.pro, gate.io nodejs",
   "main": "app.js",
   "scripts": {
-    "start": "ENV=dev ./node_modules/.bin/nodemon --harmony ws.js",
+    "start": "ENV=dev ./node_modules/.bin/nodemon --harmony app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon ws.js"
+    "server": "nodemon app.js"
   },
   "author": "Siniakou Alex <siniakoualiaksandr@gmail.com>",
   "license": "ISC",
