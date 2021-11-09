@@ -3,7 +3,7 @@
 
 ### criptoarbitr_test - основное приложения исследовательского проекта [Criptoarbitr](http://criptoarbitr.178.20.42.150.sslip.io/)
 
-### Проект состоит из двух back-end приложений и одного front-end приложения:
+#### Проект состоит из двух back-end приложений и одного front-end приложения:
 
 **back-end :**
 * [criptoarbitr_test](https://github.com/illusionoff/criptoarbitr_test) - основное приложение
