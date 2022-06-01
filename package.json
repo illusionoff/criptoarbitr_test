@@ -4,7 +4,7 @@
   "description": "criptoarbitr test cryptocurrency exchange bithumb.pro, gate.io nodejs",
   "main": "app.js",
   "scripts": {
-    "start": "ENV=dev ./node_modules/.bin/nodemon --harmony app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon app.js"
   },
@@ -16,8 +16,5 @@
     "nodemon": "^2.0.7",
     "reconnecting-websocket": "^4.4.0",
     "ws": "^7.4.6"
-  },
-  "execMap": {
-    "js": "node –harmony"
   }
 }
